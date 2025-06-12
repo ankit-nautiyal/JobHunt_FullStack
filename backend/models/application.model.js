@@ -15,7 +15,7 @@ const appicationSchema= new mongoose.Schema({
         type: String,
         enum: ['pending','accepted', 'rejected'],
         default: 'pending',
-    },
-},{timestamps:true});
+    }, 
+}, {timestamps:true});
 
 export const Application= mongoose.model("Application", appicationSchema);
