@@ -15,7 +15,7 @@ const companySchema= new mongoose.Schema({
         type: String,
     },
     logo: {
-        type: String,  //for company's URl stored on cloudinarty
+        type: String,  //for company's logo URl stored on cloudinarty
         required: true,
     },
     userId: {

@@ -1,4 +1,4 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 const jobSchema = new mongoose.Schema({
     title: {
@@ -11,7 +11,7 @@ const jobSchema = new mongoose.Schema({
     },
     requirements: {
         type: String,
-        // required: true,
+        // required: true
     },
     salary: {
         type: Number,
