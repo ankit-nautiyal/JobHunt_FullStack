@@ -26,10 +26,10 @@ const userSchema= new mongoose.Schema({
     profile: {
         bio: {type: String},
         skills: [{type: String}],
-        resume: {type: String}, //to store URL of CV stored on cloudinary
-        resumeOriginalName: {type: String},  //to store in format like: AnkitNautiyal_Resume.pdf
-        company: {type: mongoose.Schema.Types.ObjectId, ref: 'Company'},  //reference to 'Company' model
-        profilePhoto: {      //to store URL of profile pic stored on cloudinary
+        resume: {type: String},           //to store URL of CV stored on cloudinary
+        resumeOriginalName: {type: String},       //to store in format like: AnkitNautiyal_Resume.pdf
+        company: {type: mongoose.Schema.Types.ObjectId, ref: 'Company'},       //reference to 'Company' model
+        profilePhoto: {           //to store URL of profile pic stored on cloudinary
             type: String,
             default: ""
         }
@@ -37,6 +37,7 @@ const userSchema= new mongoose.Schema({
 }, {timestamps: true});
 
 export const User= mongoose.model('User', userSchema);
+
 
 
 //or
