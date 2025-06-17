@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 
 const companySchema= new mongoose.Schema({
-    name: {
+    companyName: {
         type: String,
         required: true,
+        unique: true,
     },
     description: {
         type: String
@@ -11,13 +12,14 @@ const companySchema= new mongoose.Schema({
     website: {
         type: String,
         required: true,
+        unique: true,
     },
     location: {
         type: String,
     },
     logo: {
         type: String,  //for company's logo URl stored on cloudinarty
-        required: true,
+        // required: true,
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
