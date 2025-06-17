@@ -6,6 +6,8 @@ dotenv.config({});
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 
 //REGISTER
 export const register = async (req, res) => {
@@ -13,8 +15,10 @@ export const register = async (req, res) => {
         const {fullName, email, phoneNumber, password, role}= req.body;
 
         //check if all data is entered in the form or not (server-side validation)
+        //check if all data is entered in the form or not (server-side validation)
         if (!fullName || !email || !phoneNumber || !password || !role) {
             return res.status(400).json({
+                message: "Please fill all the fields",
                 message: "Please fill all the fields",
                 success: false
             });
@@ -23,7 +27,10 @@ export const register = async (req, res) => {
         const user= await User.findOne({email});
 
         //check if the user is already registered or not
+
+        //check if the user is already registered or not
         if (user) {
+            return res.status(409).json({
             return res.status(409).json({
                 message: "User already exists with this email!",
                 success: false
@@ -32,7 +39,10 @@ export const register = async (req, res) => {
 
         //hash password
         const hashedPassword= await bcrypt.hash(password, 10);  //(password, salt)
+        //hash password
+        const hashedPassword= await bcrypt.hash(password, 10);  //(password, salt)
 
+        //create new user
         //create new user
         await User.create({
             fullName,
@@ -44,10 +54,18 @@ export const register = async (req, res) => {
 
         return res.status(201).json({
             message: "User registered successfully.",
+            message: "User registered successfully.",
             success: true
         })
 
     } catch (error) {
+        console.log ("Register error:", error);
+
+        return res.status(500).json({
+            message: "Something went wrong during registration",
+            success: false,
+            error: error.message, // Optional: for frontend debugging
+        });
         console.log ("Register error:", error);
 
         return res.status(500).json({
@@ -64,9 +82,11 @@ export const login = async (req, res) => {
         const {email, password, role}= req.body;
 
         //check if all data is entered in the form or not (server-side validation)
+        //check if all data is entered in the form or not (server-side validation)
         if (!email || !password || !role) {
             return res.status(400).json({
                 message: "Please enter all the fields",
+                message: "Please fill all the fields",
                 success: false
             });
         };
@@ -74,9 +94,13 @@ export const login = async (req, res) => {
         let user= await User.findOne({email});
 
         //check if the user is already registered or not
+
+        //check if the user is already registered or not
         if (!user) {
             return res.status(401).json({
                 message: "Account doesn't exist with the current email",
+            return res.status(401).json({
+                message: "Invalid email or password!",
                 success: false
             })
         };
@@ -84,27 +108,37 @@ export const login = async (req, res) => {
         const isPasswordMatch= await bcrypt.compare(password, user.password);
 
         //check if the password is correct or not
+
+        //check if the password is correct or not
         if (!isPasswordMatch) {
             return res.status(401).json({
                 message: "Invalid password",
+            return res.status(401).json({
+                message: "Invalid email or password!",
                 success: false
             })
         };
 
         //check if the role is correct or not
+        //check if the role is correct or not
         if (role !== user.role) {
             return res.status(403).json({
                 message: "Account doesn't exist with the current role",
+            return res.status(403).json({
+                message: "Account does'nt exist with the current role",
                 success: false
             })
         };
 
 
         //genrate tokenData to be sent in payload
+        //genrate tokenData to be sent in payload
         const tokenData={
             userId: user._id
         }
 
+        //create JWT
+        const token= jwt.sign(tokenData, process.env.JWT_SECRET, { expiresIn: '1d' });
         //create JWT
         const token= jwt.sign(tokenData, process.env.JWT_SECRET, { expiresIn: '1d' });
 
@@ -125,9 +159,25 @@ export const login = async (req, res) => {
         }).json({    
             message: `Logged in successfully! Welcome back ${user.fullName} `,
             user,
+        //sending generated token in cookie
+        return res.status(200).cookie("token", token, {
+            maxAge: 24 * 60 * 60 * 1000,   //=1 day (here in ms)
+            httpOnly: true,         //for preventing XXS attacks
+            secure: isProduction,   // Ensures the cookie is only transmitted over an HTTPS (secure) connection. (Dynamic, Automatically true in production, false in dev)
+            sameSite: 'strict'    //to prevent CSRF (Cross-Site Request Forgery) attacks
+        }).json({    
+            message: `Welcome back ${user.fullName}`,
             success: true
         }) 
+        }) 
     } catch (error) {
+        console.log ("Login error:", error);
+
+        return res.status(500).json({
+            message: "Something went wrong during login",
+            success: false,
+            error: error.message, // Optional: helpful in dev
+        });
         console.log ("Login error:", error);
 
         return res.status(500).json({
@@ -148,9 +198,23 @@ export const logout = async (req, res) => {
             secure: isProduction
         }).json({
             message: "Logged out successfully",
+        return res.status(200).cookie("token", "", {
+            maxAge: 0,
+            httpOnly: true,
+            sameSite: 'strict',
+            secure: isProduction
+        }).json({
+            message: "Logged out successfully",
             success: true
         })
     } catch (error) {
+        console.log ("Logout error:", error);
+
+        return res.status(500).json({
+            message: "Logout failed. Please try again.",
+            success: false,
+            error: error.message // optional: helpful for frontend debugging
+        });
         console.log ("Logout error:", error);
 
         return res.status(500).json({
@@ -215,6 +279,66 @@ export const updateProfile = async (req, res) => {
         return res.status(500).json({
             message: error.message || "Profile update failed.",
             success: false,
+        });
+    }
+}
+export const updateProfile = async (req, res) => {
+    try {
+        const {fullName, email, phoneNumber, bio, skills}= req.body;
+
+        //check if all data is entered in the form or not (server-side validation)
+        if (!fullName || !email || !phoneNumber || !bio || !skills) {
+            return res.status(400).json({
+                message: "Please fill all the fields",
+                success: false
+            });
+        };
+
+        //TODO: cloudinary thing will come here
+
+        const skillsArray= skills.split(",");
+        const userId= req.id; //middleware authentication
+        let user= await User.findById(userId);
+
+        if (!user) {
+            return res.status(400).json({
+                message: "User not found",
+                success: false
+            });
+        }
+
+        //updating data
+        user.fullName= fullName,
+        user.email= email,
+        user.phoneNumber= phoneNumber,
+        user.profile.bio= bio,
+        user.profile.skills= skillsArray
+
+        //TODO: resume update comes later here...
+
+        await user.save();
+
+        user= {
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            profile: user.profile
+        }
+
+        return res.status(200).json({
+            message: "Profile updated successfully",
+            user,
+            success: true
+        })
+
+    } catch (error) {
+        console.log ("Error in updating profile:", error);
+
+        return res.status(500).json({
+            message: "Profile update failed.",
+            success: false,
+            error: error.message // optional: helpful for frontend debugging
         });
     }
 }
