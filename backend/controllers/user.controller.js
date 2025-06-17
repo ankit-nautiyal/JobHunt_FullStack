@@ -1,6 +1,7 @@
 import {User} from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 dotenv.config({});
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -65,7 +66,7 @@ export const login = async (req, res) => {
         //check if all data is entered in the form or not (server-side validation)
         if (!email || !password || !role) {
             return res.status(400).json({
-                message: "Please fill all the fields",
+                message: "Please enter all the fields",
                 success: false
             });
         };
@@ -75,7 +76,7 @@ export const login = async (req, res) => {
         //check if the user is already registered or not
         if (!user) {
             return res.status(401).json({
-                message: "Invalid email or password!",
+                message: "Account doesn't exist with the current email",
                 success: false
             })
         };
@@ -85,7 +86,7 @@ export const login = async (req, res) => {
         //check if the password is correct or not
         if (!isPasswordMatch) {
             return res.status(401).json({
-                message: "Invalid email or password!",
+                message: "Invalid password",
                 success: false
             })
         };
@@ -93,7 +94,7 @@ export const login = async (req, res) => {
         //check if the role is correct or not
         if (role !== user.role) {
             return res.status(403).json({
-                message: "Account does'nt exist with the current role",
+                message: "Account doesn't exist with the current role",
                 success: false
             })
         };
@@ -122,7 +123,8 @@ export const login = async (req, res) => {
             secure: isProduction,   // Ensures the cookie is only transmitted over an HTTPS (secure) connection. (Dynamic, Automatically true in production, false in dev)
             sameSite: 'strict'    //to prevent CSRF (Cross-Site Request Forgery) attacks
         }).json({    
-            message: `Welcome back ${user.fullName}`,
+            message: `Logged in successfully! Welcome back ${user.fullName} `,
+            user,
             success: true
         }) 
     } catch (error) {
@@ -164,49 +166,46 @@ export const updateProfile = async (req, res) => {
     try {
         const {fullName, email, phoneNumber, bio, skills}= req.body;
 
-        //check if all data is entered in the form or not (server-side validation)
-        if (!fullName || !email || !phoneNumber || !bio || !skills) {
-            return res.status(400).json({
-                message: "Please fill all the fields",
-                success: false
-            });
-        };
-
         //TODO: cloudinary thing will come here
 
-        const skillsArray= skills.split(",");
-        const userId= req.id; //middleware authentication
-        let user= await User.findById(userId);
+        // To receive skills as comma-separated values from the frontend while storing them as an array in the database.
+        if (skills && typeof skills === 'string') {               
+            req.body.profile = req.body.profile || {};  //initializes profile as an empty object if it doesn't exist
+            req.body.profile.skills = skills.split(',').map(skill => skill.trim());  //split skills & convert into an array of CSVs, then trimms whitespaces
+        }
 
-        if (!user) {
-            return res.status(400).json({
-                message: "User not found",
-                success: false
+        const userId= req.id;   //from the isAuthenticated middleware 
+        
+        // Update user with findByIdAndUpdate
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            req.body,      // Update with the data from frontend
+            { 
+                new: true,       // Return the updated document
+                runValidators: true  // Run schema validators on update
+            }
+        ).select('-password');  // Exclude password from returned data
+        
+        if (!updatedUser) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
             });
         }
 
-        //updating data
-        user.fullName= fullName,
-        user.email= email,
-        user.phoneNumber= phoneNumber,
-        user.profile.bio= bio,
-        user.profile.skills= skillsArray
-
         //TODO: resume update comes later here...
 
-        await user.save();
-
-        user= {
-            _id: user._id,
-            fullName: user.fullName,
-            email: user.email,
-            phoneNumber: user.phoneNumber,
-            profile: user.profile
+        const userResponse= {
+            _id: updatedUser._id,
+            fullName: updatedUser.fullName,
+            email: updatedUser.email,
+            phoneNumber: updatedUser.phoneNumber,
+            profile: updatedUser.profile
         }
 
         return res.status(200).json({
             message: "Profile updated successfully",
-            user,
+            user: userResponse,
             success: true
         })
 
@@ -214,9 +213,8 @@ export const updateProfile = async (req, res) => {
         console.log ("Error in updating profile:", error);
 
         return res.status(500).json({
-            message: "Profile update failed.",
+            message: error.message || "Profile update failed.",
             success: false,
-            error: error.message // optional: helpful for frontend debugging
         });
     }
 }
