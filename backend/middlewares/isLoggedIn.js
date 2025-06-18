@@ -2,12 +2,12 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config({});
 
-const isAuthenticated= async (req, res, next) => {
+const isLoggedIn= async (req, res, next) => {
     try {
         const token= req.cookies.token;
         if (!token) {
             return res.status(401).json({
-                message: "User not authenticated",
+                message: "User not logged in",
                 success: false
             })
         }
@@ -32,4 +32,4 @@ const isAuthenticated= async (req, res, next) => {
     }
 }
 
-export default isAuthenticated;
+export default isLoggedIn;
