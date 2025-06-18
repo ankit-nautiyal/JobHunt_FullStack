@@ -7,7 +7,9 @@ const router= express.Router();
 router.route("/auth/register").post(register);  //Register a new user
 router.route("/auth/login").post(login);  //Login a user
 router.route("/auth/logout").post(isLoggedIn, logout);  //Logout a user
-router.route("/profile").patch(isLoggedIn, updateProfile);  //Update a user profile
+router.route("/profile/update").patch(isLoggedIn, updateProfile);  //Update a user profile
+
+//although using verbs like "update" in the API path is not recommended in RESTful APIs pattern
 
 export default router;
 

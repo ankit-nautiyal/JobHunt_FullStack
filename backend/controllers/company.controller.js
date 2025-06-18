@@ -1,4 +1,4 @@
-import { Company } from "../models/company.model";
+import { Company } from "../models/company.model.js";
 
 
 //REGISTER COMPANY
@@ -21,17 +21,23 @@ export const registerCompany = async (req, res) => {
         }
 
         company = await Company.create({
-            name: companyName,
-            website: website,
+            companyName,
+            website,
             userId: req.id,  //from isAuthenticated Middleware
         })
 
         return res.status(201).json({
             message: "Company registered successfully",
+            company,
             success: true
         })
     } catch (error) {
         console.log(error);
+        res.status(500).json({
+            message: "Something went wrong during company registration",
+            error: error.message,
+            success: false
+        });
     }
 }
 
@@ -54,6 +60,11 @@ export const getCompanies = async (req, res) => {
 
     } catch (error) {
         console.log(error);
+        res.status(500).json({
+            message: "Error in getting companies",
+            error: error.message,
+            success: false,
+        });
     }
 }
 
@@ -61,7 +72,7 @@ export const getCompanies = async (req, res) => {
 export const getCompanyById = async (req, res) => {
     try {
         const companyId = req.params.id;
-        const company = await Company.findById({ companyId });
+        const company = await Company.findById(companyId);
         if (!company) {
             return res.status(404).json({
                 message: "Company not found",
@@ -76,6 +87,11 @@ export const getCompanyById = async (req, res) => {
 
     } catch (error) {
         console.log(error);
+        res.status(500).json({
+            message: "Error in getting company",
+            error: error.message,
+            success: false,
+        });
     }
 }
 

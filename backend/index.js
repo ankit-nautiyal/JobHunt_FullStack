@@ -4,8 +4,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./utils/db.js";
-import usersRoute from "./routes/users.route.js";
-import companiesRoute from"./routes/companies.route.js";
+import userRoutes from "./routes/user.route.js";
+import companyRoutes from"./routes/company.route.js";
 dotenv.config({});
 
 const app= express();
@@ -24,8 +24,8 @@ app.use(cors(corsOptions));
 const PORT= process.env.PORT || 3000;
 
 //APIs
-app.use("/api/v1/users", usersRoute);
-app.use("/api/v1/companies", companiesRoute);
+app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/companies", companyRoutes);
 
 
 app.listen(PORT, ()=>{
