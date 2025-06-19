@@ -16,7 +16,7 @@ export const applyJob = async (req, res) => {
         }
 
         // check if the user has already applied for the job
-        const existingApplication= await Application.findOne({job: jobId, applicant: userId});
+        const existingApplication = await Application.findOne({ job: jobId, applicant: userId });
 
         if (existingApplication) {
             return res.status(400).json({
@@ -26,7 +26,7 @@ export const applyJob = async (req, res) => {
         }
 
         //check if the job exists
-        const job= await Job.findById(jobId);
+        const job = await Job.findById(jobId);
         if (!job) {
             return res.status(404).json({
                 message: "Job not found",
@@ -35,7 +35,7 @@ export const applyJob = async (req, res) => {
         }
 
         //create new job application
-        const newApplication= await Application.create({
+        const newApplication = await Application.create({
             job: jobId,
             applicant: userId
         })
@@ -62,12 +62,12 @@ export const applyJob = async (req, res) => {
 export const getAppliedJobs = async (req, res) => {
     try {
         const userId = req.id; //from isLoggedIn middleware
-        const applications = await Application.find({applicant: userId}).sort({createdAt: -1}).populate({
+        const applications = await Application.find({ applicant: userId }).sort({ createdAt: -1 }).populate({
             path: "job",
-            options: {sort:{createdAt: -1}},
-            populate:{
+            options: { sort: { createdAt: -1 } },
+            populate: {
                 path: "company",
-                options: {sort:{createdAt: -1}},
+                options: { sort: { createdAt: -1 } },
             }
         });
 
@@ -94,15 +94,15 @@ export const getAppliedJobs = async (req, res) => {
     }
 }
 
-//GET ALL APPLICANTS WHO HAVE APPLIED (For the admin/recuiter to see)
+//GET ALL APPLICANTS WHO HAVE APPLIED FOR A JOB (For the admin/recuiter to see)
 export const getApplicants = async (req, res) => {
     try {
-        const jobId = req.params.id; 
+        const jobId = req.params.id;
 
         const jobs = await Job.findById(jobId).populate({
             path: "applications",
-            options: {sort:{createdAt: -1}},
-            populate:{
+            options: { sort: { createdAt: -1 } },
+            populate: {
                 path: "applicant",
             }
         });
@@ -133,7 +133,7 @@ export const getApplicants = async (req, res) => {
 //UPDATE THE  JOB STATUS (admin/recruiter will do this)
 export const updateJobStatus = async (req, res) => {
     try {
-        const {status} = req.body;   //admin/recruiter will do this on his admin/recruiter panel via frontend
+        const { status } = req.body;   // admin/recruiter will do this on his admin/recruiter panel via frontend
         const applicationId = req.params.id;
 
         if (!status) {
@@ -143,21 +143,31 @@ export const updateJobStatus = async (req, res) => {
             })
         }
 
+        const validStatuses = ["pending", "accepted", "rejected"];
+        const lowercaseStatuses = req.body.status?.toLowerCase();  //convert status value to lowercase then match with validStatuses value
+
+        if (!validStatuses.includes(lowercaseStatuses)) {
+            return res.status(400).json({
+                message: "Invalid status value",
+                success: false
+            });
+        }
+
         // find the application by applicantion id
-        const application= await Application.findOne({_id: applicationId});
-        if(!application){
+        const application = await Application.findOne({ _id: applicationId });
+        if (!application) {
             return res.status(404).json({
-                message:"Application not found.",
-                success:false
+                message: "Application not found.",
+                success: false
             })
         }
 
         //update the status
-        application.status= status.toLowerCase();
+        application.status = status.toLowerCase();
         await application.save();
 
         return res.status(200).json({
-            message: "Status updated successfully",
+            message: "Job status updated successfully",
             success: true
         });
 
