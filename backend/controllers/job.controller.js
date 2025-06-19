@@ -14,7 +14,7 @@ export const postJob = async (req, res) => {
             })
         };
 
-        const job = Job.create({
+        const job = await Job.create({
             title,
             description,
             requirements: requirements.split(","),
@@ -49,7 +49,9 @@ export const getAllJobs = async (req, res) => {
             ]
         };
 
-        const jobs = await Job.find(query);  //TODO: add populate method to populate jobs
+        const jobs = await Job.find(query).populate({
+            path: "company"
+        }).sort({createdAt: -1})  //latest posted job will come first
 
         if (!jobs) {
             return res.status(404).json({
@@ -73,7 +75,7 @@ export const getJobById = async (req, res) => {
     try {
         const jobId = req.params.id;
     
-        const job = await Job.findById(jobId);  //TODO: add populate method to populate jobs
+        const job = await Job.findById(jobId).populate({path: "applications"}).populate({path: "company"});
 
         if (!job) {
             return res.status(404).json({
@@ -96,7 +98,7 @@ export const getAdminJobs = async (req, res) => {
     try {
         const adminId = req.id; //from isLoggedIn middleware
     
-        const jobs = await Job.find({created_by: adminId});  //TODO: add populate method to populate jobs
+        const jobs = await Job.find({created_by: adminId}).populate({path: "company"}).sort({createdAt: -1});  //latest posted job will come first
 
         if (!jobs) {
             return res.status(404).json({

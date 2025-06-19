@@ -7,6 +7,7 @@ import connectDB from "./utils/db.js";
 import userRoutes from "./routes/user.route.js";
 import companyRoutes from"./routes/company.route.js";
 import jobRoutes from "./routes/job.route.js";
+import "./models/application.model.js";
 dotenv.config({});
 
 const app= express();

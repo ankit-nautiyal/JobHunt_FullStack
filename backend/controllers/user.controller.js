@@ -102,7 +102,8 @@ export const login = async (req, res) => {
 
         //genrate tokenData to be sent in payload
         const tokenData={
-            userId: user._id
+            userId: user._id,
+            role: user.role
         }
 
         //create JWT

@@ -21,6 +21,7 @@ const isLoggedIn= async (req, res, next) => {
         }
 
         req.id= decode.userId;  // userId is Now accessible in next middleware or (update) controller 
+        req.role = decode.role;  // " "  " "
         next();
     } catch (error) {
         console.log(error);
