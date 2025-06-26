@@ -66,7 +66,7 @@ export const login = async (req, res) => {
         //check if all data is entered in the form or not (server-side validation)
         if (!email || !password || !role) {
             return res.status(400).json({
-                message: "Please enter all the fields",
+                message: "Please fill all the fields",
                 success: false
             });
         };
@@ -176,13 +176,13 @@ export const updateProfile = async (req, res) => {
 
         const userId= req.id;   //from the isAuthenticated middleware 
         
-        // Update user with findByIdAndUpdate
+        // Update user with findByIdAndUpdate()
         const updatedUser = await User.findByIdAndUpdate(
             userId,
-            req.body,      // Update with the data from frontend
+            req.body,      // Update with the data received from frontend form
             { 
                 new: true,       // Return the updated document
-                runValidators: true  // Run schema validators on update
+                runValidators: true  // Run schema validators on update too
             }
         ).select('-password');  // Exclude password from returned data
         
