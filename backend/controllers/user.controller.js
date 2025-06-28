@@ -25,7 +25,7 @@ export const register = async (req, res) => {
         //check if the user is already registered or not
         if (user) {
             return res.status(409).json({
-                message: "User already exists with this email!",
+                message: "User already exists with this email",
                 success: false
             })
         };
@@ -42,8 +42,9 @@ export const register = async (req, res) => {
             role
         });
 
+        //This exact object becomes "res.data" in the frontend.
         return res.status(201).json({
-            message: "User registered successfully.",
+            message: "User registered successfully",
             success: true
         })
 

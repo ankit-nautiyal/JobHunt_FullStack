@@ -20,7 +20,7 @@ app.use(cookieParser());
 
 const corsOptions = {
     origin: "http://localhost:5173",
-    credentials: true,
+    credentials: true,  //so that frontend can send cookie (token) with the requests
 }
 app.use(cors(corsOptions));
 

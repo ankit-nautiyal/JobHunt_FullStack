@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config({});
 
-const isLoggedIn= async (req, res, next) => {
+const isAuthenticated= async (req, res, next) => {
     try {
         const token= req.cookies.token;
         if (!token) {
@@ -33,4 +33,4 @@ const isLoggedIn= async (req, res, next) => {
     }
 }
 
-export default isLoggedIn;
+export default isAuthenticated;
