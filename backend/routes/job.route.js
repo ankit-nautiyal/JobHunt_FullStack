@@ -10,6 +10,5 @@ router.route("/").post(isAuthenticated, postJob)  // Post a new job
 router.route("/admin-jobs").get(isAuthenticated, getAdminJobs);  // get admin jobs
 router.route("/:id").get(isAuthenticated, getJobById)   // Get job by ID
 
-
 export default router;
 
