@@ -23,17 +23,17 @@ const Signup = () => {
 
     const navigate= useNavigate();
 
-    const changeEventHandler= (e) =>{
+    const handleFormChange= (e) =>{
         setInput({...input, [e.target.name]: e.target.value});
     }
 
-    const changeFileHandler= (e) =>{
+    const handleFormFileChange= (e) =>{
         setInput({...input, file: e.target.files?.[0]});
     }
 
-    const submitHandler= async (e) => {
+    const handleSubmit= async (e) => {
         e.preventDefault();
-        const formData= new formData;
+        const formData= new formData();  //built-in special class provided by the browser, automatically builds your form submission with: key-value pairs and file blobs
         formData.append('fullName', input.fullName);
         formData.append('email', input.email);
         formData.append('phoneNumber', input.phoneNumber);
@@ -46,18 +46,18 @@ const Signup = () => {
         try {
             const res= axios.post(`${USER_API_ENDPOINT}/auth/register`, formData, {
                 headers:{
-                    "Content-Type": "multipart/form-data"
+                    "Content-Type": "multipart/form-data"   //Lets backend know we're sending some file data (like pdf, jpeg, etc)
                 },
-                withCredentials: true
+                withCredentials: true  //to include cookies (like token) from backend in the request
             });
 
             if (res.data.success) {
                 navigate('/login');
-                
                 toast.success(res.data.message);
             }
         } catch (error) {
             console.log(error);
+            toast.error(error.response.data.message);
         }
     }
 
@@ -65,7 +65,7 @@ const Signup = () => {
         <div>
             <Navbar />
             <div className='flex items-center justify-center max-w-7xl mx-auto'>
-                <form onSubmit={submitHandler} method="post" className='w-1/2 border border-gray-200 rounded-md p-4 my-10'>
+                <form onSubmit={handleSubmit} className='w-1/2 border border-gray-200 rounded-md p-4 my-10'>
                     <h1 className='font-bold text-xl mb-5'>Sign Up</h1>
                     <div className='my-4'>
                         <Label className='my-1'> Full Name</Label>
@@ -74,18 +74,18 @@ const Signup = () => {
                             placeholder='John Doe'
                             name='fullName'
                             value={input.fullName}
-                            onChange={changeEventHandler}
+                            onChange={handleFormChange}
                             required
                         />
                     </div>
                     <div className='my-4'>
-                        <Label className='my-1'> Email</Label>
+                        <Label className='my-1'>Email</Label>
                         <Input
                             type='email'
                             placeholder='john@gmail.com'
                             name='email'
                             value={input.email}
-                            onChange={changeEventHandler}
+                            onChange={handleFormChange}
                             required
 
                         />
@@ -94,10 +94,10 @@ const Signup = () => {
                         <Label className='my-1'> Phone Number</Label>
                         <Input
                             type='number'
-                            placeholder='901520xxxx'
+                            placeholder='8800880088'
                             name='phoneNumber'
                             value={input.phoneNumber}
-                            onChange={changeEventHandler}
+                            onChange={handleFormChange}
                             required
 
                         />
@@ -109,7 +109,7 @@ const Signup = () => {
                             placeholder='password'
                             name='password'
                             value={input.password}
-                            onChange={changeEventHandler}
+                            onChange={handleFormChange}
                             required
 
                         />
@@ -123,7 +123,7 @@ const Signup = () => {
                                     id='applicant'
                                     className='cursor-pointer'
                                     value='applicant'
-                                    onChange={changeEventHandler}
+                                    onChange={handleFormChange}
                                     checked={input.role=== 'applicant'}
                                     required
 
@@ -135,7 +135,7 @@ const Signup = () => {
                                     name='role'
                                     id='recruiter'
                                     value='recruiter'
-                                    onChange={changeEventHandler}
+                                    onChange={handleFormChange}
                                     checked={input.role=== 'recruiter'}
                                     required
 
@@ -149,7 +149,7 @@ const Signup = () => {
                                 accept='image/*'
                                 type='file'
                                 className='cursor-pointer'
-                                onChange={changeFileHandler}
+                                onChange={handleFormFileChange}
                             />
                         </div>
                     </div>
