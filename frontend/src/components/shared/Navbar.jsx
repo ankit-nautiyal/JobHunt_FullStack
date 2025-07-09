@@ -5,6 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover.jsx'
 import { User2, LogOut } from 'lucide-react';
 import {Link} from 'react-router-dom';
 
+
 const Navbar = () => {
     const user = false;
     return (
@@ -63,15 +64,13 @@ const Navbar = () => {
                             </Popover>
                         )
                     }
-
-
                 </div>
             </div>
         </div>
     )
 }
 
-export default Navbar
+export default Navbar;
 
 
 
