@@ -20,9 +20,9 @@ const isAuthenticated= async (req, res, next) => {
             })
         }
 
-        req.id= decode.userId;  // userId is Now accessible in next middleware or (update) controller 
-        req.role = decode.role;  // " "  " "
-        next();
+        req.id= decode.userId; 
+        req.role = decode.role;  
+        next();      // userId & role are Now accessible in next middleware or controller (see routes like---> router.route("/profile").patch(isAuthenticated, updateProfile);) 
     } catch (error) {
         console.log(error);
 

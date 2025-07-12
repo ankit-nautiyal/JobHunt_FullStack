@@ -1,7 +1,6 @@
 import { Application } from "../models/application.model.js";
 import { Job } from "../models/job.model.js";
 
-
 //APPLY JOB
 export const applyJob = async (req, res) => {
     try {
@@ -144,16 +143,16 @@ export const updateJobStatus = async (req, res) => {
         }
 
         const validStatuses = ["pending", "accepted", "rejected"];
-        const lowercaseStatuses = req.body.status?.toLowerCase();  //convert status value to lowercase then match with validStatuses value
+        const lowercaseStatuses = req.body.status?.toLowerCase();  //convert status value to lowercase... 
 
-        if (!validStatuses.includes(lowercaseStatuses)) {
+        if (!validStatuses.includes(lowercaseStatuses)) {  //...then match with validStatuses value
             return res.status(400).json({
                 message: "Invalid status value",
                 success: false
             });
         }
 
-        // find the application by applicantion id
+        // find the application by application id
         const application = await Application.findOne({ _id: applicationId });
         if (!application) {
             return res.status(404).json({

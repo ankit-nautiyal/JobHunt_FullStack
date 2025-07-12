@@ -6,7 +6,6 @@ dotenv.config({});
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-
 //REGISTER
 export const register = async (req, res) => {
     try {
@@ -42,7 +41,7 @@ export const register = async (req, res) => {
             role
         });
 
-        //This exact object becomes "res.data" in the frontend.
+        //This exact "res" object becomes "res.data" in the frontend.
         return res.status(201).json({
             message: "User registered successfully",
             success: true
@@ -77,7 +76,7 @@ export const login = async (req, res) => {
         //check if the user is already registered or not
         if (!user) {
             return res.status(401).json({
-                message: "Account doesn't exist with the current email",
+                message: "Account doesn't exist. Please register first.",
                 success: false
             })
         };
@@ -95,11 +94,10 @@ export const login = async (req, res) => {
         //check if the role is correct or not
         if (role !== user.role) {
             return res.status(403).json({
-                message: "Account does'nt exist with the current role",
+                message: "Account doesn't exist with the current role",
                 success: false
             })
         };
-
 
         //genrate tokenData to be sent in payload
         const tokenData={
@@ -125,7 +123,7 @@ export const login = async (req, res) => {
             secure: isProduction,   // Ensures the cookie is only transmitted over an HTTPS (secure) connection. (Dynamic, Automatically true in production, false in dev)
             sameSite: 'strict'    //to prevent CSRF (Cross-Site Request Forgery) attacks
         }).json({    
-            message: `Logged in successfully! Welcome back ${user.fullName} `,
+            message: `Logged in successfully. Welcome back ${user.fullName}! `,
             user
         }) 
     } catch (error) {

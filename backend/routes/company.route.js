@@ -9,7 +9,7 @@ router.route("/").get(isAuthenticated, getCompanies);      // Get all companies
 router.route("/:id").get(isAuthenticated, getCompanyById)   // Get company by ID
                     .patch(isAuthenticated, updateCompany);  // Update company by ID
 
-//although using verbs like "update" in the API path is not recommended in RESTful APIs pattern
+//Using verbs like "update" in the API path is not recommended in RESTful APIs pattern
 
 export default router;
 
