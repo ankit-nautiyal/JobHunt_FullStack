@@ -11,7 +11,6 @@ import axios from 'axios'
 import { USER_API_ENDPOINT } from '@/utils/constants'
 import { toast } from 'sonner'
 
-
 const Login = () => {
 
     const [input, setInput] = useState({
