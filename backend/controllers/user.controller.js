@@ -123,8 +123,9 @@ export const login = async (req, res) => {
             secure: isProduction,   // Ensures the cookie is only transmitted over an HTTPS (secure) connection. (Dynamic, Automatically true in production, false in dev)
             sameSite: 'strict'    //to prevent CSRF (Cross-Site Request Forgery) attacks
         }).json({    
-            message: `Logged in successfully. Welcome back ${user.fullName}! `,
-            user
+            message: `Login successfull. Welcome back ${user.fullName}! `,
+            user,
+            success: true
         }) 
     } catch (error) {
         console.log ("Login error:", error);

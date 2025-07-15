@@ -9,44 +9,56 @@ import { useState } from 'react'
 import axios from 'axios'
 import { USER_API_ENDPOINT } from '@/utils/constants'
 import { toast } from 'sonner'
+import { userSignupSchema } from '@/schema/userSchema'
+
 
 const Signup = () => {
 
-    const [input, setInput]= useState({
+    const [input, setInput] = useState({
         fullName: "",
         email: "",
         phoneNumber: "",
         password: "",
+        confirmPassword: "",
         role: "",
-        file: ""
+        file: null
     })
+    const [errors, setErrors] = useState({});
 
-    const navigate= useNavigate();
+    const navigate = useNavigate();
 
-    const handleFormChange= (e) =>{
-        setInput({...input, [e.target.name]: e.target.value});
+    const handleFormChange = (e) => {
+        setInput({ ...input, [e.target.name]: e.target.value });
     }
 
-    const handleFormFileChange= (e) =>{
-        setInput({...input, file: e.target.files?.[0]});
+    const handleFormFileChange = (e) => {
+        setInput({ ...input, file: e.target.files?.[0] });
     }
 
-    const handleSubmit= async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const formData= new formData();  //built-in special class provided by the browser, automatically builds your form submission with: key-value pairs and file blobs
+
+        const result = userSignupSchema.safeParse(input);
+        if (!result.success) {
+            const { fieldErrors } = result.error.flatten();
+            setErrors(fieldErrors);
+            return;
+        }
+
+        const formData = new FormData();  //built-in special object provided by the browser, automatically builds your form submission with: key-value pairs and file blobs
         formData.append('fullName', input.fullName);
         formData.append('email', input.email);
         formData.append('phoneNumber', input.phoneNumber);
         formData.append('password', input.password);
         formData.append('role', input.role);
-        if (input.file) {
+        if (input.file && input.file instanceof File) {
             formData.append('file', input.file);
         }
 
         try {
-            const res= axios.post(`${USER_API_ENDPOINT}/auth/register`, formData, {
-                headers:{
-                    "Content-Type": "multipart/form-data"   //Lets backend know we're sending some file data (like pdf, jpeg, etc)
+            const res = await axios.post(`${USER_API_ENDPOINT}/auth/register`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"   //Lets the backend know we're sending some file data (like png, jpeg, etc)
                 },
                 withCredentials: true  //to include cookies (like token) from backend in the request
             });
@@ -75,8 +87,11 @@ const Signup = () => {
                             name='fullName'
                             value={input.fullName}
                             onChange={handleFormChange}
-                            required
                         />
+                        
+                        {errors?.fullName?.map((err, i) => (
+                            <span key={i} className="text-sm text-red-500 block">{err}</span>
+                        ))}
                     </div>
                     <div className='my-4'>
                         <Label className='my-1'>Email</Label>
@@ -86,21 +101,20 @@ const Signup = () => {
                             name='email'
                             value={input.email}
                             onChange={handleFormChange}
-                            required
-
                         />
+                        {errors && errors.email && <span className='text-sm text-red-500'> {errors.email}</span>}
                     </div>
                     <div className='my-4'>
                         <Label className='my-1'> Phone Number</Label>
                         <Input
-                            type='number'
+                            type='tel'
                             placeholder='8800880088'
                             name='phoneNumber'
                             value={input.phoneNumber}
                             onChange={handleFormChange}
-                            required
-
+                            
                         />
+                        {errors && errors.phoneNumber && <span className='text-sm text-red-500'> {errors.phoneNumber}</span>}
                     </div>
                     <div className='my-4'>
                         <Label className='my-1'> Password</Label>
@@ -110,12 +124,24 @@ const Signup = () => {
                             name='password'
                             value={input.password}
                             onChange={handleFormChange}
-                            required
-
                         />
+                        {errors?.password?.map((err, i) => (
+                            <span key={i} className="text-sm text-red-500 block">{err}</span>
+                        ))}
+                    </div>
+                    <div className='my-4'>
+                        <Label className='my-1'>Confirm Password</Label>
+                        <Input
+                            type='password'
+                            placeholder='Confirm password'
+                            name='confirmPassword'
+                            value={input.confirmPassword}
+                            onChange={handleFormChange}
+                        />
+                        {errors && errors.confirmPassword && <span className='text-sm text-red-500'> {errors.confirmPassword}</span>}
                     </div>
 
-                    <div className='flex items-center justify-between'>
+                    <div className='flex items-center justify-between gap-10'>
                         <RadioGroup className='flex items-center gap-4 my-5' required>
                             <div className="flex items-center space-x-2">
                                 <input type="radio"
@@ -124,9 +150,7 @@ const Signup = () => {
                                     className='cursor-pointer'
                                     value='applicant'
                                     onChange={handleFormChange}
-                                    checked={input.role=== 'applicant'}
-                                    required
-
+                                    checked={input.role === 'applicant'}
                                 />
                                 <Label htmlFor="applicant">Applicant</Label>
                             </div>
@@ -136,13 +160,15 @@ const Signup = () => {
                                     id='recruiter'
                                     value='recruiter'
                                     onChange={handleFormChange}
-                                    checked={input.role=== 'recruiter'}
-                                    required
-
+                                    checked={input.role === 'recruiter'}
                                 />
                                 <Label htmlFor="recruiter">Recruiter</Label>
                             </div>
+                            
                         </RadioGroup>
+                        
+
+
                         <div className='flex items-center gap-2'>
                             <Label>Picture </Label>
                             <Input
@@ -151,11 +177,16 @@ const Signup = () => {
                                 className='cursor-pointer'
                                 onChange={handleFormFileChange}
                             />
+                            {errors && errors.file && <span className='text-sm text-red-500'> {errors.file}</span>}
                         </div>
+                        
+                        
                     </div>
+                    {errors && errors.role && <span className='text-sm text-red-500 text-left block'> {errors.role}</span>}
 
-                    <Button type='submit' className='w-full my-4'>Sign up</Button>
-                    <span className='text-sm'>Already have an account? <Link to='/login' className='text-blue-600 hover:underline'>Login</Link></span>
+
+                    <Button type='submit' className='w-full my-4 cursor-pointer'>Sign up</Button>
+                    <span className='text-sm cursor-pointer'>Already have an account? <Link to='/login' className='text-blue-600 hover:underline'>Login</Link></span>
                 </form>
             </div>
         </div>

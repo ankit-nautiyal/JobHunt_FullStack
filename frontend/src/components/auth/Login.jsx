@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { USER_API_ENDPOINT } from '@/utils/constants'
 import { toast } from 'sonner'
-
+import { userLoginSchema } from '@/schema/userSchema'
 
 const Login = () => {
 
@@ -20,7 +20,10 @@ const Login = () => {
         role: "",
     })
 
-    const navigate= useNavigate();
+    const [errors, setErrors] = useState({});
+
+
+    const navigate = useNavigate();
 
     const handleFormChange = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
@@ -28,8 +31,16 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const result = userLoginSchema.safeParse(input);
+        if (!result.success) {
+            const { fieldErrors } = result.error.flatten();
+            setErrors(fieldErrors);
+            return;
+        }
+
         try {
-            const res = axios.post(`${USER_API_ENDPOINT}/auth/login`, input, {
+            const res = await axios.post(`${USER_API_ENDPOINT}/auth/login`, input, {
                 headers: {
                     "Content-Type": "application/json"   //Lets backend know we're sending json data
                 },
@@ -43,7 +54,6 @@ const Login = () => {
         } catch (error) {
             console.log(error);
             toast.error(error.response.data.message);
-            
         }
     }
 
@@ -62,8 +72,8 @@ const Login = () => {
                             name='email'
                             value={input.email}
                             onChange={handleFormChange}
-                            required
                         />
+                        {errors && errors.email && <span className='text-sm text-red-500'> {errors.email}</span>}
                     </div>
 
                     <div className='my-4'>
@@ -74,8 +84,8 @@ const Login = () => {
                             name='password'
                             value={input.password}
                             onChange={handleFormChange}
-                            required
                         />
+                        {errors && errors.password && <span className='text-sm text-red-500'> {errors.password}</span>}
                     </div>
 
                     <div className='flex items-center justify-between'>
@@ -88,8 +98,8 @@ const Login = () => {
                                     value='applicant'
                                     onChange={handleFormChange}
                                     checked={input.role === 'applicant'}
-                                    required
                                 />
+
                                 <Label htmlFor="applicant">Applicant</Label>
                             </div>
                             <div className="flex items-center space-x-2">
@@ -99,17 +109,18 @@ const Login = () => {
                                     value='recruiter'
                                     onChange={handleFormChange}
                                     checked={input.role === 'recruiter'}
-                                    required
 
                                 />
                                 <Label htmlFor="recruiter">Recruiter</Label>
                             </div>
+                    {errors && errors.role && <span className='text-sm text-red-500 text-left block'> {errors.role}</span>}
+
                         </RadioGroup>
 
                     </div>
 
 
-                    <Button type='submit' className='w-full my-4'>Login</Button>
+                    <Button type='submit' className='w-full my-4 cursor-pointer'>Login</Button>
                     <span className='text-sm'>Don't have an account? <Link to='/signup' className='text-blue-600 hover:underline'>Signup</Link></span>
                 </form>
             </div>
