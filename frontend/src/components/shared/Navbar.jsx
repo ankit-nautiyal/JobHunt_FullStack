@@ -1,4 +1,3 @@
-import React from 'react'
 import { Avatar, AvatarImage } from '../ui/avatar.jsx'
 import { Button } from '../ui/button.jsx'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover.jsx'

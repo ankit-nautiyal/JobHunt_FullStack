@@ -1,6 +1,6 @@
-import React from 'react'
+
 import { Button } from './ui/button'
-import { Search, SearchCheck } from 'lucide-react'
+import { Search } from 'lucide-react'
 
 const HeroSection = () => {
     return (
