@@ -10,7 +10,9 @@ import axios from 'axios'
 import { USER_API_ENDPOINT } from '@/utils/constants'
 import { toast } from 'sonner'
 import { userSignupSchema } from '@/schema/userSchema'
-
+import { useDispatch, useSelector } from 'react-redux'
+import { setLoading } from '@/redux/authSlice'
+import { Loader2 } from 'lucide-react'
 
 const Signup = () => {
 
@@ -26,11 +28,14 @@ const Signup = () => {
     const [errors, setErrors] = useState({});
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { loading } = useSelector(store => store.auth);
+
 
     const handleFormChange = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     }
-
+    //for handling profile pic 
     const handleFormFileChange = (e) => {
         setInput({ ...input, file: e.target.files?.[0] });
     }
@@ -56,6 +61,7 @@ const Signup = () => {
         }
 
         try {
+            dispatch(setLoading(true));
             const res = await axios.post(`${USER_API_ENDPOINT}/auth/register`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"   //Lets the backend know we're sending some file data (like png, jpeg, etc)
@@ -70,6 +76,8 @@ const Signup = () => {
         } catch (error) {
             console.log(error);
             toast.error(error.response.data.message);
+        } finally{
+            dispatch(setLoading(false));
         }
     }
 
@@ -88,7 +96,7 @@ const Signup = () => {
                             value={input.fullName}
                             onChange={handleFormChange}
                         />
-                        
+
                         {errors?.fullName?.map((err, i) => (
                             <span key={i} className="text-sm text-red-500 block">{err}</span>
                         ))}
@@ -112,7 +120,7 @@ const Signup = () => {
                             name='phoneNumber'
                             value={input.phoneNumber}
                             onChange={handleFormChange}
-                            
+
                         />
                         {errors && errors.phoneNumber && <span className='text-sm text-red-500'> {errors.phoneNumber}</span>}
                     </div>
@@ -164,9 +172,9 @@ const Signup = () => {
                                 />
                                 <Label htmlFor="recruiter">Recruiter</Label>
                             </div>
-                            
+
                         </RadioGroup>
-                        
+
 
 
                         <div className='flex items-center gap-2'>
@@ -179,13 +187,15 @@ const Signup = () => {
                             />
                             {errors && errors.file && <span className='text-sm text-red-500'> {errors.file}</span>}
                         </div>
-                        
-                        
+
+
                     </div>
                     {errors && errors.role && <span className='text-sm text-red-500 text-left block'> {errors.role}</span>}
 
+                    {
+                        loading ? <Button className='w-full my-4'> <Loader2 className='mr-2 w-4 h-4 animate-spin' /> Please wait...</Button> : <Button type='submit' className='w-full my-4 cursor-pointer'>Sign up</Button>
+                    }
 
-                    <Button type='submit' className='w-full my-4 cursor-pointer'>Sign up</Button>
                     <span className='text-sm cursor-pointer'>Already have an account? <Link to='/login' className='text-blue-600 hover:underline'>Login</Link></span>
                 </form>
             </div>

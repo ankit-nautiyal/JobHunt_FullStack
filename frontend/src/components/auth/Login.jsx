@@ -9,6 +9,10 @@ import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 import { RadioGroup } from '../ui/radio-group'
+import { useDispatch, useSelector } from 'react-redux'
+import { setLoading } from '@/redux/authSlice'
+import { Loader2 } from 'lucide-react'
+
 
 const Login = () => {
 
@@ -20,8 +24,9 @@ const Login = () => {
 
     const [errors, setErrors] = useState({});
 
-
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const {loading} = useSelector(store=> store.auth);
 
     const handleFormChange = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
@@ -38,6 +43,7 @@ const Login = () => {
         }
 
         try {
+            dispatch(setLoading(true));
             const res = await axios.post(`${USER_API_ENDPOINT}/auth/login`, input, {
                 headers: {
                     "Content-Type": "application/json"   //Lets backend know we're sending json data
@@ -52,6 +58,8 @@ const Login = () => {
         } catch (error) {
             console.log(error);
             toast.error(error.response.data.message);
+        } finally{
+            dispatch(setLoading(false));
         }
     }
 
@@ -111,14 +119,14 @@ const Login = () => {
                                 />
                                 <Label htmlFor="recruiter">Recruiter</Label>
                             </div>
-                    {errors && errors.role && <span className='text-sm text-red-500 text-left block'> {errors.role}</span>}
-
+                            {errors && errors.role && <span className='text-sm text-red-500 text-left block'> {errors.role}</span>}
                         </RadioGroup>
-
                     </div>
 
+                    {
+                        loading ? <Button className='w-full my-4'> <Loader2 className='mr-2 w-4 h-4 animate-spin'/> Please wait...</Button> :  <Button type='submit' className='w-full my-4 cursor-pointer'>Login</Button>
+                    }
 
-                    <Button type='submit' className='w-full my-4 cursor-pointer'>Login</Button>
                     <span className='text-sm'>Don't have an account? <Link to='/signup' className='text-blue-600 hover:underline'>Signup</Link></span>
                 </form>
             </div>
