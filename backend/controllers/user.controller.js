@@ -123,7 +123,7 @@ export const login = async (req, res) => {
             secure: isProduction,   // Ensures the cookie is only transmitted over an HTTPS (secure) connection. (Dynamic, Automatically true in production, false in dev)
             sameSite: 'strict'    //to prevent CSRF (Cross-Site Request Forgery) attacks
         }).json({    
-            message: `Login successfull. Welcome back ${user.fullName}! `,
+            message: `Welcome back ${user.fullName.split(" ")[0]}! `, //extract only first name of the user
             user,
             success: true
         }) 

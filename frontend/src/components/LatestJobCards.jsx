@@ -1,9 +1,9 @@
 import React from 'react'
 import { Badge } from './ui/badge'
-
+//transition-transform duration-300 ease-in-out
 const LatestJobCards = () => {
     return (
-        <div className=' text-left p-5 rounded-md shadow-xl bg-white border border-gray-100 cursor-pointer'>
+        <div className='hover:scale-110 transition-transform ease-in-out duration-200 text-left p-5 rounded-md shadow-[#6A38C2] shadow-md  bg-white border border-gray-100 cursor-pointer'>
             <div>
                 <h1 className='font-medium text-lg'>Company Name</h1>
                 <p className='text-sm text-gray-500'>India</p>
@@ -13,7 +13,7 @@ const LatestJobCards = () => {
                 <p className='text-sm text-gray-600'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, eum.</p>
             </div>
             <div className='flex items-center gap-2 mt-4'>
-                <Badge className={'text-blue-700 font-bold'} variant={'ghost'}>12 Positions</Badge>
+                <Badge className={'text-green-600 font-bold'} variant={'ghost'}>12 Positions</Badge>
                 <Badge className={'text-[#F83002] font-bold'} variant={'ghost'}>Part Time</Badge>
                 <Badge className={'text-[#6A38C2]  font-bold'} variant={'ghost'}>24 LPA</Badge>
             </div>
