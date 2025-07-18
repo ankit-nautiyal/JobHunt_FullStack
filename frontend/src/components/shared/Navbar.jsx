@@ -2,7 +2,8 @@ import { Avatar, AvatarImage } from '../ui/avatar.jsx'
 import { Button } from '../ui/button.jsx'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover.jsx'
 import { User2, LogOut } from 'lucide-react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 
 const Navbar = () => {
@@ -12,13 +13,25 @@ const Navbar = () => {
             <div className='flex items-center justify-between mx-auto max-w-7xl mb-3'>
                 <div className='cursor-pointer'>
                     <Link to='/'> <h1 className='text-2xl font-bold'>Job<span className='text-[#F83002]'>Hunt</span> </h1></Link>
-                    
+
                 </div>
                 <div className='flex items-center gap-15'>
                     <ul className='flex font-medium items-center gap-5 '>
-                        <li className=' hover:text-[#F83002] cursor-pointer'>Home</li>
-                        <li className='hover:text-[#F83002] cursor-pointer'>Jobs</li>
-                        <li className='hover:text-[#F83002] cursor-pointer'>Browse</li>
+                        <li className='cursor-pointer'>
+                            <NavLink to='/' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>
+                                Home
+                            </NavLink>
+                        </li>
+                        <li className='cursor-pointer'>
+                            <NavLink to='/jobs' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>
+                                Jobs
+                            </NavLink>
+                        </li>
+                        <li className='cursor-pointer'>
+                            <NavLink >
+                                Browse
+                            </NavLink>
+                        </li>
                     </ul>
 
                     {
@@ -26,7 +39,7 @@ const Navbar = () => {
                             <div className='flex items-center gap-2'>
                                 <Link to="/login"> <Button variant='outline' className='cursor-pointer'>Login</Button></Link>
                                 <Link to="/signup"> <Button className='bg-[#6A38C2] hover:bg-[#5b30a6] cursor-pointer'>Sign up</Button></Link>
-                                
+
                             </div>
                         ) : (
                             <Popover >
