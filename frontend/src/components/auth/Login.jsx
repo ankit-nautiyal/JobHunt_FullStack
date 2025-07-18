@@ -4,7 +4,6 @@ import axios from 'axios'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import Navbar from '../shared/Navbar'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
@@ -65,7 +64,7 @@ const Login = () => {
 
     return (
         <div>
-            <Navbar />
+           
             <div className='flex items-center justify-center max-w-7xl mx-auto'>
                 <form onSubmit={handleSubmit} className='w-1/2 border border-gray-200 rounded-md p-4 my-10'>
                     <h1 className='font-bold text-xl mb-5'>Login</h1>

@@ -28,7 +28,7 @@ const Navbar = () => {
                             </NavLink>
                         </li>
                         <li className='cursor-pointer'>
-                            <NavLink >
+                            <NavLink to='/browse' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>
                                 Browse
                             </NavLink>
                         </li>
