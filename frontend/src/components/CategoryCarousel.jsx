@@ -23,8 +23,8 @@ const CategoryCarousel = () => {
                         ))
                     }
                 </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
+                <CarouselPrevious className='cursor-pointer' />
+                <CarouselNext className='cursor-pointer'/>
             </Carousel>
         </div>
 
