@@ -18,11 +18,10 @@ const CategoryCarousel = () => {
                     {
                         category.map((cat, index) => (
                             <CarouselItem className='md:basis-1/2 lg:basis-1/3'>
-                                <Button variant='outline' className='rounded-full'>{cat}</Button>
+                                <Button variant='outline' className='rounded-full cursor-pointer'>{cat}</Button>
                             </CarouselItem>
                         ))
                     }
-
                 </CarouselContent>
                 <CarouselPrevious />
                 <CarouselNext />
@@ -32,4 +31,4 @@ const CategoryCarousel = () => {
     )
 }
 
-export default CategoryCaruosel
+export default CategoryCarousel
