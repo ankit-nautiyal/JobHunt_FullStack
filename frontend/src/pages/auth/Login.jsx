@@ -1,16 +1,16 @@
+import { setLoading } from '@/redux/authSlice'
 import { userLoginSchema } from '@/schema/userSchema'
 import { USER_API_ENDPOINT } from '@/utils/constants'
 import axios from 'axios'
+import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { Button } from '../ui/button'
-import { Input } from '../ui/input'
-import { Label } from '../ui/label'
-import { RadioGroup } from '../ui/radio-group'
-import { useDispatch, useSelector } from 'react-redux'
-import { setLoading } from '@/redux/authSlice'
-import { Loader2 } from 'lucide-react'
+import { Button } from '../../components/ui/button'
+import { Input } from '../../components/ui/input'
+import { Label } from '../../components/ui/label'
+import { RadioGroup } from '../../components/ui/radio-group'
 
 
 const Login = () => {
