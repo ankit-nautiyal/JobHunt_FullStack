@@ -13,15 +13,21 @@ function App() {
   return (
     <>
       <Router>
-          <Navbar/>
-              <Routes>
-                <Route path='/' element={<Home/>}></Route>
-                <Route path='/jobs' element={<Jobs/>}></Route>
-                {/* <Route path='browse/' element={<browse/>}></Route> */}
-                <Route path='/login' element={<Login/>}></Route>
-                <Route path='/signup' element={<Signup/>}></Route>
-              </Routes>
-          <Footer/>
+        <div className='flex flex-col min-h-screen'>
+          <Navbar />
+
+          <main className='flex-grow'>
+            <Routes>
+              <Route path='/' element={<Home />}></Route>
+              <Route path='/jobs' element={<Jobs />}></Route>
+              {/* <Route path='browse/' element={<browse/>}></Route> */}
+              <Route path='/login' element={<Login />}></Route>
+              <Route path='/signup' element={<Signup />}></Route>
+            </Routes>
+          </main>
+
+          <Footer />
+        </div>
       </Router>
     </>
   )
