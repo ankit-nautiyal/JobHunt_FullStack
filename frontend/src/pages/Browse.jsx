@@ -1,7 +1,7 @@
 import Job from '@/components/Job';
 import React from 'react'
 
-const randomJobs= [1, 2, 3];
+const randomJobs= [1, 2, 3, 4, 5, 6];
 
 const Browse = () => {
     return (
