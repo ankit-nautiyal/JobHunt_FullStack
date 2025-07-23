@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const userSignupSchema = z.object({
+export const signupSchema = z.object({
     fullName: z
         .string({ required_error: "Full name is required" })
         .trim()
@@ -51,7 +51,7 @@ export const userSignupSchema = z.object({
     error: "Passwords do not match"
 })
 
-export const userLoginSchema = z.object({
+export const loginSchema = z.object({
     email: z.email("Invalid email address"),
     password: z
         .string({ required_error: "Password is required" })

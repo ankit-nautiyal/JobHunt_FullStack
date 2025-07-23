@@ -1,5 +1,5 @@
 import { setLoading } from '@/redux/authSlice'
-import { userSignupSchema } from '@/schema/userSchema'
+import { signupSchema } from '@/schema/authSchema'
 import { USER_API_ENDPOINT } from '@/utils/constants'
 import axios from 'axios'
 import { Loader2 } from 'lucide-react'
@@ -41,7 +41,7 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const result = userSignupSchema.safeParse(input);
+        const result = signupSchema.safeParse(input);
         if (!result.success) {
             const { fieldErrors } = result.error.flatten();
             setErrors(fieldErrors);

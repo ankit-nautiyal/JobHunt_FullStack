@@ -1,5 +1,5 @@
 import { setLoading } from '@/redux/authSlice'
-import { userLoginSchema } from '@/schema/userSchema'
+import { loginSchema } from '@/schema/authSchema'
 import { USER_API_ENDPOINT } from '@/utils/constants'
 import axios from 'axios'
 import { Loader2 } from 'lucide-react'
@@ -34,7 +34,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const result = userLoginSchema.safeParse(input);
+        const result = loginSchema.safeParse(input);
         if (!result.success) {
             const { fieldErrors } = result.error.flatten();
             setErrors(fieldErrors);
@@ -64,7 +64,6 @@ const Login = () => {
 
     return (
         <div>
-           
             <div className='flex items-center justify-center max-w-7xl mx-auto'>
                 <form onSubmit={handleSubmit} className='w-1/2 border border-gray-200 rounded-md p-4 my-10'>
                     <h1 className='font-bold text-xl mb-5'>Login</h1>
