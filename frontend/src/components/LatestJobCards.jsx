@@ -1,9 +1,8 @@
-import React from 'react'
 import { Badge } from './ui/badge'
-//transition-transform duration-300 ease-in-out
+
 const LatestJobCards = () => {
     return (
-        <div className='hover:scale-110 transition-transform ease-in-out duration-200 text-left p-5 rounded-md shadow-[#6A38C2] shadow-md  bg-white border border-gray-100 cursor-pointer'>
+        <div className='hover:scale-110 transition-transform ease-in-out duration-200 text-left p-5 rounded-md shadow-lg  bg-white border border-gray-100 cursor-pointer'>
             <div>
                 <h1 className='font-medium text-lg'>Company Name</h1>
                 <p className='text-sm text-gray-500'>India</p>

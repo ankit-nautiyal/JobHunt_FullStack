@@ -12,7 +12,6 @@ const LatestJobs = () => {
                     randomJobs.slice(0,6).map((item, index) => <LatestJobCards />)
                 }
             </div>
-
         </div>
     )
 }

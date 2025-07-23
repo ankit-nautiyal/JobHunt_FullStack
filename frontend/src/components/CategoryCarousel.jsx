@@ -27,7 +27,6 @@ const CategoryCarousel = () => {
                 <CarouselNext className='cursor-pointer'/>
             </Carousel>
         </div>
-
     )
 }
 
