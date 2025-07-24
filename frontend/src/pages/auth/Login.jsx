@@ -1,4 +1,4 @@
-import { setLoading } from '@/redux/authSlice'
+import { setLoading, setUser } from '@/redux/authSlice'
 import { loginSchema } from '@/schema/authSchema'
 import { USER_API_ENDPOINT } from '@/utils/constants'
 import axios from 'axios'
@@ -51,6 +51,7 @@ const Login = () => {
             });
 
             if (res.data.success) {
+                dispatch(setUser(res.data.user));
                 navigate('/');
                 toast.success(res.data.message);
             }
