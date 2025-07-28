@@ -1,7 +1,6 @@
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel'
 import { Button } from './ui/button'
 
-
 const category = [
     "Frontend Developer",
     "Backend Developer",
@@ -9,6 +8,7 @@ const category = [
     "Android Developer",
     "Graphic Designer",
 ]
+
 const CategoryCarousel = () => {
 
     return (
