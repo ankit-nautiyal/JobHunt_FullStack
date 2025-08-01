@@ -6,8 +6,10 @@ import Home from '@/pages/Home';
 import Jobs from '@/pages/Jobs';
 import Browse from '@/pages/Browse';
 import Profile from '@/pages/Profile';
+import JobDescription from '@/pages/JobDescription';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
+
 
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
               <Route path='/login' element={<Login />}></Route>
               <Route path='/signup' element={<Signup />}></Route>
               <Route path='/profile' element={<Profile/>}></Route>
+              <Route path='jobs/description/:id' element={<JobDescription/>}></Route>
+              <Route path='browse/description/:id' element={<JobDescription/>}></Route>
             </Routes>
           </main>
 
