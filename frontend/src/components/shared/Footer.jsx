@@ -10,6 +10,8 @@ const Footer = () => {
                         <p className="text-sm">© {new Date().getFullYear()} JobHunt. All rights reserved.</p>
                     </div>
 
+                    <div className='text-sm text-gray-500 '> &lt; Made with ❤️ by Ankit Nautiyal /&gt; </div>
+
                     <div className="flex space-x-4 mt-4 md:mt-0">
                         <a href="https://www.linkedin.com/in/ankit--nautiyal/" className="hover:text-gray-400" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
                             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">

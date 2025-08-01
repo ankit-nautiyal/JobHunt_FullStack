@@ -24,7 +24,7 @@ const Profile = () => {
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique aperiam atque voluptas pariatur mollitia!</p>
                         </div>
                     </div>
-                    <Button className="text-right" variant="outline"> <Pen /> </Button>
+                    <Button className="text-right cursor-pointer" variant="outline"> <Pen /> </Button>
                 </div>
                 <div className='my-5'>
                     <div className='flex items-center gap-3 my-2'>
@@ -48,7 +48,13 @@ const Profile = () => {
                 <div className='grid w-full max-w-sm items-center gap-1.5'>
                     <Label className="text-md font-bold">Resume</Label>
                     {
-                        haveResume ? <a className='text-blue-700 hover:underline w-full cursor-pointer text-sm' target='_blank' href="https://drive.google.com/file/d/1LyRzSNkvwX9btQjL9rw3Cwuv-Vid8X6g/view?usp=sharing">Click to see</a> : <span>No resume found</span>
+                        haveResume ?
+                            <a className='text-blue-700 hover:underline w-full cursor-pointer text-sm' target='_blank' href="https://drive.google.com/file/d/1LyRzSNkvwX9btQjL9rw3Cwuv-Vid8X6g/view?usp=sharing">
+                                Ankit Nautiyal
+                            </a> :
+                            <span>
+                                No resume found
+                            </span>
                     }
                 </div>
             </div>
