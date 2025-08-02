@@ -1,4 +1,4 @@
-import {User} from "../models/user.model.js";
+import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -9,7 +9,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 //REGISTER
 export const register = async (req, res) => {
     try {
-        const {fullName, email, phoneNumber, password, role}= req.body;
+        const { fullName, email, phoneNumber, password, role } = req.body;
 
         //check if all data is entered in the form or not (server-side validation)
         if (!fullName || !email || !phoneNumber || !password || !role) {
@@ -19,7 +19,7 @@ export const register = async (req, res) => {
             });
         };
 
-        const user= await User.findOne({email});
+        const user = await User.findOne({ email });
 
         //check if the user is already registered or not
         if (user) {
@@ -30,7 +30,7 @@ export const register = async (req, res) => {
         };
 
         //hash password
-        const hashedPassword= await bcrypt.hash(password, 10);  //(password, salt)
+        const hashedPassword = await bcrypt.hash(password, 10);  //(password, salt)
 
         //create new user
         await User.create({
@@ -48,7 +48,7 @@ export const register = async (req, res) => {
         })
 
     } catch (error) {
-        console.log ("Register error:", error);
+        console.log("Register error:", error);
 
         return res.status(500).json({
             message: "Something went wrong during registration",
@@ -61,7 +61,7 @@ export const register = async (req, res) => {
 //LOGIN
 export const login = async (req, res) => {
     try {
-        const {email, password, role}= req.body;
+        const { email, password, role } = req.body;
 
         //check if all data is entered in the form or not (server-side validation)
         if (!email || !password || !role) {
@@ -71,7 +71,7 @@ export const login = async (req, res) => {
             });
         };
 
-        let user= await User.findOne({email});
+        let user = await User.findOne({ email });
 
         //check if the user is already registered or not
         if (!user) {
@@ -81,7 +81,7 @@ export const login = async (req, res) => {
             })
         };
 
-        const isPasswordMatch= await bcrypt.compare(password, user.password);
+        const isPasswordMatch = await bcrypt.compare(password, user.password);
 
         //check if the password is correct or not
         if (!isPasswordMatch) {
@@ -100,15 +100,15 @@ export const login = async (req, res) => {
         };
 
         //genrate tokenData to be sent in payload
-        const tokenData={
+        const tokenData = {
             userId: user._id,
             role: user.role
         }
 
         //create JWT
-        const token= jwt.sign(tokenData, process.env.JWT_SECRET, { expiresIn: '1d' });
+        const token = jwt.sign(tokenData, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-        user= {
+        user = {
             _id: user._id,
             fullName: user.fullName,
             email: user.email,
@@ -122,13 +122,13 @@ export const login = async (req, res) => {
             httpOnly: true,         //for preventing XXS attacks
             secure: isProduction,   // Ensures the cookie is only transmitted over an HTTPS (secure) connection. (Dynamic, Automatically true in production, false in dev)
             sameSite: 'strict'    //to prevent CSRF (Cross-Site Request Forgery) attacks
-        }).json({    
+        }).json({
             message: `Welcome back ${user.fullName.split(" ")[0]}! `, //extract only first name of the user
             user,
             success: true
-        }) 
+        })
     } catch (error) {
-        console.log ("Login error:", error);
+        console.log("Login error:", error);
 
         return res.status(500).json({
             message: "Something went wrong during login",
@@ -151,7 +151,7 @@ export const logout = async (req, res) => {
             success: true
         })
     } catch (error) {
-        console.log ("Logout error:", error);
+        console.log("Logout error:", error);
 
         return res.status(500).json({
             message: "Logout failed. Please try again.",
@@ -164,53 +164,54 @@ export const logout = async (req, res) => {
 //UPDATE PROFILE
 export const updateProfile = async (req, res) => {
     try {
-        const {fullName, email, phoneNumber, bio, skills}= req.body;
-
+        const { fullName, email, phoneNumber, bio, skills } = req.body;
+        // const file= req.file;
         //TODO: cloudinary thing will come here
 
         // To receive skills as comma-separated values from the frontend while storing them as an array in the database.
-        if (skills && typeof skills === 'string') {               
-            req.body.profile = req.body.profile || {};  //initializes profile as an empty object if it doesn't exist
-            req.body.profile.skills = skills.split(',').map(skill => skill.trim());  //split skills & convert into an array of CSVs, then trimms whitespaces
+        let skillsArray;
+        if (skills) {
+            skillsArray= skills.split(',').map(skill => skill.trim());  //split skills & convert into an array of CSVs, then trimms whitespaces
         }
 
-        const userId= req.id;   //from the isAuthenticated middleware 
-        
-        // Update user with findByIdAndUpdate()
-        const updatedUser = await User.findByIdAndUpdate(
-            userId,
-            req.body,      // Update with the data received from frontend form
-            { 
-                new: true,       // Return the updated document
-                runValidators: true  // Run schema validators on update too
-            }
-        ).select('-password');  // Exclude password from returned data
-        
-        if (!updatedUser) {
-            return res.status(404).json({
-                success: false,
-                message: 'User not found'
-            });
+        const userId = req.id;   //from the isAuthenticated middleware 
+        let user = await User.findById(userId);
+        if (!user) {
+            return res.status(400).json({
+                message: "User not found.",
+                success: false
+            })
         }
+
+        // updating data
+        if(fullName) user.fullName = fullName
+        if(email) user.email = email
+        if(phoneNumber)  user.phoneNumber = phoneNumber
+        if(bio) user.profile.bio = bio
+        if(skills) user.profile.skills = skillsArray
+
 
         //TODO: resume update comes later here...
+        await user.save();
 
-        const userResponse= {
-            _id: updatedUser._id,
-            fullName: updatedUser.fullName,
-            email: updatedUser.email,
-            phoneNumber: updatedUser.phoneNumber,
-            profile: updatedUser.profile
+
+        user = {
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            role: user.role,
+            profile: user.profile
         }
 
         return res.status(200).json({
             message: "Profile updated successfully",
-            user: userResponse,
+            user,
             success: true
         })
 
     } catch (error) {
-        console.log ("Error in updating profile:", error);
+        console.log("Error in updating profile:", error);
         return res.status(500).json({
             message: error.message || "Profile update failed.",
             success: false,
