@@ -11,6 +11,6 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "../backend/utils/cloudinary.js"],
   "exclude": ["node_modules", "dist"]
 }

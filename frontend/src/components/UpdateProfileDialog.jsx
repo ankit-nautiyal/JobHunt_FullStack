@@ -51,6 +51,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
         }
 
         try {
+            setLoading(true);
             const res= await axios.patch(`${USER_API_ENDPOINT}/profile`, formData, {
                 headers:{
                     'Content-Type': 'multipart/form-data'
@@ -63,10 +64,11 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.response.datta.message);           
+            toast.error(error.response.data.message);           
+        }finally{
+            setLoading(false);
         }
         setOpen(false);
-        console.log(input);
     }
 
     return (
@@ -148,7 +150,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                 <Label htmlFor='resume' className='text-right'>Resume</Label>
                                 <Input
                                     id='resume'
-                                    name='resume'
+                                    name='file'
                                     type='file'
                                     accept='application/pdf'
                                     onChange={handleFileChange}

@@ -53,8 +53,8 @@ const Profile = () => {
                     <Label className="text-md font-bold">Resume</Label>
                     {
                         haveResume ?
-                            <a className='text-blue-700 hover:underline w-full cursor-pointer text-sm' target='_blank' href="https://drive.google.com/file/d/1LyRzSNkvwX9btQjL9rw3Cwuv-Vid8X6g/view?usp=sharing">
-                                Ankit Nautiyal
+                            <a href={user?.profile?.resume} className='text-blue-700 hover:underline w-full cursor-pointer text-sm' target='_blank' >
+                                {user?.profile?.resumeOriginalName}
                             </a> :
                             <span>
                                 No resume found

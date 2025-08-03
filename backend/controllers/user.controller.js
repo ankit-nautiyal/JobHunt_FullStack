@@ -2,6 +2,8 @@ import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import getDataUri from "../utils/dataUri.js";
+import cloudinary from "../utils/cloudinary.js"
 dotenv.config({});
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -165,13 +167,23 @@ export const logout = async (req, res) => {
 export const updateProfile = async (req, res) => {
     try {
         const { fullName, email, phoneNumber, bio, skills } = req.body;
-        // const file= req.file;
-        //TODO: cloudinary thing will come here
+
+        let cloudResponse;
+        const file = req.file;
+        if (req.file) {
+            const fileUri = getDataUri(file);
+            cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+                folder: 'jobhunt_project', // optional
+                resource_type: 'auto',
+                type: 'upload', // THIS makes it public by default
+            });
+        }
+
 
         // To receive skills as comma-separated values from the frontend while storing them as an array in the database.
         let skillsArray;
         if (skills) {
-            skillsArray= skills.split(',').map(skill => skill.trim());  //split skills & convert into an array of CSVs, then trimms whitespaces
+            skillsArray = skills.split(',').map(skill => skill.trim());  //split skills & convert into an array of CSVs, then trimms whitespaces
         }
 
         const userId = req.id;   //from the isAuthenticated middleware 
@@ -184,14 +196,18 @@ export const updateProfile = async (req, res) => {
         }
 
         // updating data
-        if(fullName) user.fullName = fullName
-        if(email) user.email = email
-        if(phoneNumber)  user.phoneNumber = phoneNumber
-        if(bio) user.profile.bio = bio
-        if(skills) user.profile.skills = skillsArray
+        if (fullName) user.fullName = fullName
+        if (email) user.email = email
+        if (phoneNumber) user.phoneNumber = phoneNumber
+        if (bio) user.profile.bio = bio
+        if (skills) user.profile.skills = skillsArray
 
 
-        //TODO: resume update comes later here...
+        if (cloudResponse) {
+            user.profile.resume = cloudResponse.secure_url // save the cloudinary url
+            user.profile.resumeOriginalName = file.originalname // Save the original file name
+        }
+
         await user.save();
 
 

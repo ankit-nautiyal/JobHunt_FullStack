@@ -48,7 +48,7 @@ const userSchema= new mongoose.Schema({
         bio: {type: String},
         skills: [{type: String}],  //Array of strings
         resume: {type: String},           //to store URL of CV stored on cloudinary
-        resumeOriginalName: {type: String},       //to store in format like: AnkitNautiyal_Resume.pdf
+        resumeOriginalName: {type: String},       //to store in format like: AnkitNautiyal.pdf using clouidinary
         company: {type: mongoose.Schema.Types.ObjectId, ref: 'Company'},       //reference to 'Company' model
         profilePhoto: {           //to store URL of profile pic stored on cloudinary
             type: String,
