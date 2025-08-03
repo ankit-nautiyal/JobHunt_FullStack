@@ -4,10 +4,12 @@ const jobSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
+        trim: true
     },
     description: {
         type: String,
         required: true,
+        trim: true
     },
     requirements: [{   //skills (array of strings)
         type: String,
@@ -23,6 +25,7 @@ const jobSchema = new mongoose.Schema({
     location: {
         type: String,
         required: true,
+        trim: true
     },
     jobType: {
         type: String,
@@ -50,5 +53,14 @@ const jobSchema = new mongoose.Schema({
         }
     ]
 }, {timestamps: true});
+
+//To apply trim on each individual requirement string if it exists
+jobSchema.pre('save', function (next) {
+    if (Array.isArray(this.requirements)) {
+        this.requirements = this.requirements.map(skill => skill.trim());
+    }
+    next();
+});
+
 
 export const Job= mongoose.model('Job', jobSchema);

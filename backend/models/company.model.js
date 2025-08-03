@@ -5,21 +5,26 @@ const companySchema= new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
+        trim: true
     },
     description: {
-        type: String
+        type: String,
+        trim: true
     },
     website: {
         type: String,
         required: true,
         unique: true,
+        trim: true
     },
     location: {
         type: String,
+        required: true,
+        trim: true
     },
     logo: {
         type: String,  //for company's logo URl stored on cloudinarty
-        // required: true,
+        required: true,
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,

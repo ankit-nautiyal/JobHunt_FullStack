@@ -33,7 +33,8 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        
+        //for form-validation using zod
         const result = loginSchema.safeParse(input);
         if (!result.success) {
             const { fieldErrors } = result.error.flatten();

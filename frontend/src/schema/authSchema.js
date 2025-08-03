@@ -1,20 +1,20 @@
 import { z } from "zod";
 
+//SIGNUP FORM SCHEMA
 export const signupSchema = z.object({
     fullName: z
         .string({ required_error: "Full name is required" })
         .trim()
-        // .min(3, "Full name must be at least 3 characters")
         .regex(/^[A-Za-z\s]+$/, "Full name can contain only alphabets"),
 
-    email: z.email("Invalid email address"),
+    email: z.email("Invalid email address"),  //PRIMARY KEY FOR USERS
 
     phoneNumber: z
-        .string()
+        .string({ required_error: "Phone number is required" })  //as using "number()" may not preserve leading zeros
         .regex(/^\d{10}$/, "Phone number must be exactly 10 digits"),
 
     password: z
-        .string()
+        .string({ required_error: "Password is required" })
         .min(8, "Password must be at least 8 characters")
         .max(64, "Password must be under 64 characters")
         .regex(
@@ -32,13 +32,13 @@ export const signupSchema = z.object({
 
     file: z
         .union([
-            z.instanceof(File),
-            z.string().max(0),  // Empty string
-            z.null()            // Null
+            z.instanceof(File),  // must be a file
+            z.string().max(0),  // can be an empty string
+            z.null()            // can be null
         ])
         .refine(
-            (file) => !file || file === "" || file === null || file.size <= 0.5 * 1024 * 1024,
-            { message: "File must be less than 500 KB" }
+            (file) => !file || file === "" || file === null || file.size <= 0.5 * 1024 * 1024, //0.5 * 1024 * 1024 = 512000 bytes = 500 KB
+            { message: "Image must be less than 500 KB" }
         )
         .refine(
             (file) => !file || file === "" || file === null || file.type.startsWith('image/'),
@@ -47,15 +47,20 @@ export const signupSchema = z.object({
         .optional(),
 
 }).refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],  //attach to cofnirmPassword field
+    path: ["confirmPassword"],  //attach to confirmPassword field
     error: "Passwords do not match"
 })
 
+
+//================================================================================================
+
+
+//LOGIN FORM SCHEMA
 export const loginSchema = z.object({
     email: z.email("Invalid email address"),
     password: z
         .string({ required_error: "Password is required" })
-        .min(1, "Password is required"),
+        .min(8, "Password must be at least 8 characters"),
     role: z
         .string({ required_error: "Role is required" })
         .refine((val) => ['recruiter', 'applicant'].includes(val), {

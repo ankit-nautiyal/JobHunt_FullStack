@@ -60,7 +60,7 @@ export const applyJob = async (req, res) => {
 //GET ALL APPLIED JOBS (for the student/applicant)
 export const getAppliedJobs = async (req, res) => {
     try {
-        const userId = req.id; //from isLoggedIn middleware
+        const userId = req.id; //from isAuthenticated middleware
         const applications = await Application.find({ applicant: userId }).sort({ createdAt: -1 }).populate({
             path: "job",
             options: { sort: { createdAt: -1 } },

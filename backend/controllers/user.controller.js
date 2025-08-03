@@ -21,7 +21,7 @@ export const register = async (req, res) => {
             });
         };
 
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }); //email is being used as the primary key
 
         //check if the user is already registered or not
         if (user) {
@@ -167,9 +167,22 @@ export const logout = async (req, res) => {
 export const updateProfile = async (req, res) => {
     try {
         const { fullName, email, phoneNumber, bio, skills } = req.body;
+        const file = req.file;
+
+        // Get current user's ID from token
+        let user = await User.findById(req.id);  //from isAuthenticated middleware
+
+        // Check if another user already has the same email
+        const existingUser = await User.findOne({ email, _id: { $ne: req.id } }); // exclude the current user to avoid any conflict
+
+        if (existingUser) {
+            return res.status(409).json({
+                message: "User already exists with this email",
+                success: false
+            });
+        }
 
         let cloudResponse;
-        const file = req.file;
         if (req.file) {
             const fileUri = getDataUri(file);
             cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
@@ -179,21 +192,12 @@ export const updateProfile = async (req, res) => {
             });
         }
 
-
-        // To receive skills as comma-separated values from the frontend while storing them as an array in the database.
+        // To receive skills as comma-separated values from the frontend while storing them as an array of strings in the database.
         let skillsArray;
         if (skills) {
             skillsArray = skills.split(',').map(skill => skill.trim());  //split skills & convert into an array of CSVs, then trimms whitespaces
         }
 
-        const userId = req.id;   //from the isAuthenticated middleware 
-        let user = await User.findById(userId);
-        if (!user) {
-            return res.status(400).json({
-                message: "User not found.",
-                success: false
-            })
-        }
 
         // updating data
         if (fullName) user.fullName = fullName
@@ -209,7 +213,6 @@ export const updateProfile = async (req, res) => {
         }
 
         await user.save();
-
 
         user = {
             _id: user._id,

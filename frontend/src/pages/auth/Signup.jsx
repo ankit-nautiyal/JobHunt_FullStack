@@ -29,7 +29,7 @@ const Signup = () => {
     const dispatch = useDispatch();
     const { loading } = useSelector(store => store.auth);
 
-
+    //for handling form input data
     const handleFormChange = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     }
@@ -42,6 +42,7 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        //for form-validation using zod
         const result = signupSchema.safeParse(input);
         if (!result.success) {
             const { fieldErrors } = result.error.flatten();
@@ -55,7 +56,7 @@ const Signup = () => {
         formData.append('phoneNumber', input.phoneNumber);
         formData.append('password', input.password);
         formData.append('role', input.role);
-        if (input.file && input.file instanceof File) {
+        if (input.file) {
             formData.append('file', input.file);
         }
 
@@ -111,7 +112,7 @@ const Signup = () => {
                         {errors && errors.email && <span className='text-sm text-red-500'> {errors.email}</span>}
                     </div>
                     <div className='my-4'>
-                        <Label className='my-1'> Phone Number</Label>
+                        <Label className='my-1'> Phone No.</Label>
                         <Input
                             type='tel'
                             placeholder='8800880088'

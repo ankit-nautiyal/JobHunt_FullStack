@@ -3,41 +3,24 @@ import mongoose from "mongoose";
 const userSchema= new mongoose.Schema({
     fullName: {
         type: String,
-        required: [true, "Full name is required"],
-        trim: true,
-        validate: {
-            validator: function(v) {
-                return v.trim().length > 0; // Prevent empty strings
-            },
-            message: 'Full name cannot be empty'
-        }
+        required: true,
+        trim: true
     },
     email: {
         type: String,
-        required: [true, 'Email is required'],
-        unique: true, //primary key (unique identifer of a user)
+        required: true,
+        unique: true, //]PRIMARY KEY (unique identifer of a user)
         lowercase: true,
-        validate: {
-            validator: function(v) {
-                return /^\S+@\S+\.\S+$/.test(v); // Basic email validation
-            },
-            message: 'Please enter a valid email address'
-        }
+        trim: true
     },
     phoneNumber: {
-        type: Number,
-        required: [true, 'Phone number is required'],
-        validate: {
-            validator: function(v) {
-                return /^\d{10}$/.test(v); // Exactly 10 digits
-            },
-            message: 'Phone number must be exactly 10 digits'
-        }
+        type: String,  //as trim applies only to strings and //as using "Number" may not preserve leading/initial zeros in the number
+        required: true,
+        trim: true
     },
     password: {
         type: String,
-        required: [true, 'Password is required'],
-        minlength: [8, 'Password must be at least 8 characters'],
+        required: true,
     },
     role: {
         type: String,
@@ -45,9 +28,9 @@ const userSchema= new mongoose.Schema({
         required: true,
     },
     profile: {
-        bio: {type: String},
+        bio: {type: String, trim: true},
         skills: [{type: String}],  //Array of strings
-        resume: {type: String},           //to store URL of CV stored on cloudinary
+        resume: {type: String},      //to store URL of CV stored on cloudinary
         resumeOriginalName: {type: String},       //to store in format like: AnkitNautiyal.pdf using clouidinary
         company: {type: mongoose.Schema.Types.ObjectId, ref: 'Company'},       //reference to 'Company' model
         profilePhoto: {           //to store URL of profile pic stored on cloudinary
@@ -56,6 +39,15 @@ const userSchema= new mongoose.Schema({
         }
     }
 }, {timestamps: true});
+
+
+//To apply trim on each individual skill string if it exists
+userSchema.pre('save', function (next) {
+    if (this.profile && Array.isArray(this.profile.skills)) {
+        this.profile.skills = this.profile.skills.map(s => s.trim());
+    }
+    next();
+});
 
 export const User= mongoose.model('User', userSchema);
 
