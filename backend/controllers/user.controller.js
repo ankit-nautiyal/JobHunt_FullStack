@@ -21,6 +21,22 @@ export const register = async (req, res) => {
             });
         };
 
+        const file = req.file;
+        let cloudResponse;
+
+        if (req.file) {
+            //server-side validation too, for extra security
+            if (file.size > 0.5 * 1024 * 1024) { // 500 KB
+                return res.status(400).json({ message: 'Image size should be less than 500 KB' });
+            }
+            const fileUri = getDataUri(file);
+            cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+                folder: 'jobhunt_project', //optional, all files will be uploaded to this folder in cloudinary
+                resource_type: 'image',  //for JPG, PNG, SVG, WebP, etc.
+                type: 'upload', // THIS makes it public by default
+            });
+        }
+
         const user = await User.findOne({ email }); //email is being used as the primary key
 
         //check if the user is already registered or not
@@ -40,7 +56,10 @@ export const register = async (req, res) => {
             email,
             phoneNumber,
             password: hashedPassword,
-            role
+            role,
+            profile: {
+                profilePhoto: cloudResponse.secure_url
+            }
         });
 
         //This exact "res" object becomes "res.data" in the frontend.
@@ -53,9 +72,8 @@ export const register = async (req, res) => {
         console.log("Register error:", error);
 
         return res.status(500).json({
-            message: "Something went wrong during registration",
+            message: error.message || "Something went wrong during registration",
             success: false,
-            error: error.message, // Optional: for frontend debugging
         });
     }
 }
@@ -183,10 +201,19 @@ export const updateProfile = async (req, res) => {
 
         let cloudResponse;
         if (req.file) {
+            if (file.mimetype !== 'application/pdf') {  //just to add extra security as server-side/backend validation
+                return res.status(400).json({ message: 'Only PDF files are allowed' });
+            }
+
+            //server-side validation too, for extra security
+            if (file.size > 0.5 * 1024 * 1024) { // 500 KB
+                return res.status(400).json({ message: 'File size should be less than 500 KB' });
+            }
+
             const fileUri = getDataUri(file);
             cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
-                folder: 'jobhunt_project', // optional
-                resource_type: 'auto',
+                folder: 'jobhunt_project', // optional, // all files will be uploaded to this folder in cloudinary
+                resource_type: 'auto', // auto-detect file type
                 type: 'upload', // THIS makes it public by default
             });
         }

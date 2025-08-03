@@ -20,7 +20,7 @@ const Profile = () => {
                 <div className='flex justify-between'>
                     <div className='flex items-center gap-4'>
                         <Avatar className='h-24 w-24'>
-                            <AvatarImage src="https://static.vecteezy.com/system/resources/previews/047/656/219/non_2x/abstract-logo-design-for-any-corporate-brand-business-company-vector.jpg" />
+                            <AvatarImage src={user?.profile?.profilePhoto}/>
                         </Avatar>
 
                         <div>
@@ -53,7 +53,7 @@ const Profile = () => {
                     <Label className="text-md font-bold">Resume</Label>
                     {
                         haveResume ?
-                            <a href={user?.profile?.resume} className='text-blue-700 hover:underline w-full cursor-pointer text-sm' target='_blank' >
+                            <a href={user?.profile?.resume} rel="noopener noreferrer" className='text-blue-700 hover:underline w-full cursor-pointer text-sm' target='_blank' >
                                 {user?.profile?.resumeOriginalName}
                             </a> :
                             <span>

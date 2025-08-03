@@ -194,7 +194,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                     id='resume'
                                     name='file'
                                     type='file'
-                                    accept='application/pdf'
+                                    accept='application/pdf'  //This limits the file picker in the browser to show only .pdf files.
                                     onChange={handleFileChange}
                                     className='col-span-3'
                                 />
