@@ -44,11 +44,12 @@ const Login = () => {
 
         try {
             dispatch(setLoading(true));
+            //axios.post(url, data, config);
             const res = await axios.post(`${USER_API_ENDPOINT}/auth/login`, input, {
                 headers: {
                     "Content-Type": "application/json"   //Lets backend know we're sending json data
                 },
-                withCredentials: true  //to include cookies (like token) from backend in the request
+                withCredentials: true  //config object: to include cookies (like token) from backend in the request
             });
 
             if (res.data.success) {

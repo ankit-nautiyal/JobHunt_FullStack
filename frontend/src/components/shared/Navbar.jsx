@@ -2,13 +2,38 @@ import { Avatar, AvatarImage } from '../ui/avatar.jsx'
 import { Button } from '../ui/button.jsx'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover.jsx'
 import { User2, LogOut } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { USER_API_ENDPOINT } from '@/utils/constants.js';
+import { setUser } from '@/redux/authSlice.js';
+import { toast } from 'sonner';
 
 
 const Navbar = () => {
     const {user} = useSelector(store=> store.auth);
+    const dispatch= useDispatch();
+    const navigate= useNavigate();
+
+    const handleLogout = async ()=>{
+        try {
+            //axios.post(url, data, config);
+            const res= await axios.post(`${USER_API_ENDPOINT}/auth/logout`,
+                {}, // empty data since logout doesn't need body
+                {withCredentials: true} //config object: ensures cookies (like auth token) are sent with the request
+            );
+            if (res.data.success) {
+                dispatch(setUser(null));
+                navigate('/');
+                toast.success(res.data.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message);
+        }
+    }
+
     return (
         <div className='bg-white'>
             <div className='flex items-center justify-between mx-auto max-w-7xl mb-3'>
@@ -68,7 +93,7 @@ const Navbar = () => {
                                         </div>
                                         <div className='flex w-fit items-center gap-1.5'>
                                             <LogOut />
-                                            <Button className='cursor-pointer' variant='link'>  Logout </Button>
+                                            <Button onClick={handleLogout} className='cursor-pointer' variant='link'>  Logout </Button>
                                         </div>
 
                                     </div>

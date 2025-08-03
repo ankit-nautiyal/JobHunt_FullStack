@@ -156,9 +156,8 @@ export const logout = async (req, res) => {
         console.log("Logout error:", error);
 
         return res.status(500).json({
-            message: "Logout failed. Please try again.",
+            message: error.message || "Logout failed. Please try again.",
             success: false,
-            error: error.message // optional: helpful for frontend debugging
         });
     }
 }

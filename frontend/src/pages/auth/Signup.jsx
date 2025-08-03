@@ -62,12 +62,15 @@ const Signup = () => {
 
         try {
             dispatch(setLoading(true));
-            const res = await axios.post(`${USER_API_ENDPOINT}/auth/register`, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data"   //Lets the backend know we're sending some file data (like png, jpeg, etc)
-                },
-                withCredentials: true  //to include cookies (like token) from backend in the request
-            });
+            //axios.post(url, data, config);
+            const res = await axios.post(`${USER_API_ENDPOINT}/auth/register`, formData, 
+                {    //config object:
+                    headers: {
+                        "Content-Type": "multipart/form-data"   //Lets the backend know we're sending some file data (like png, jpeg, etc)
+                    },
+                    withCredentials: true  //to include cookies (like token) from backend in the request
+                }
+            );
 
             if (res.data.success) {
                 navigate('/login');
