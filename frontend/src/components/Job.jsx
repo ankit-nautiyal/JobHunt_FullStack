@@ -4,13 +4,27 @@ import { Avatar, AvatarImage } from './ui/avatar'
 import { Badge } from './ui/badge'
 import { useNavigate } from 'react-router-dom'
 
-const Job = ({job}) => {
-    const navigate= useNavigate();
+const Job = ({ job }) => {
+    const navigate = useNavigate();
+
+
+    //calculate how many days ago the job was created/posted
+    const daysAgoFunction = (mongodbTime) => {
+        const createdAt = new Date(mongodbTime);  //time at which job was created
+        const currentTime = new Date();  //curent time
+        const timeDifference = currentTime - createdAt;
+        return Math.floor(timeDifference / (24 * 60 * 60 * 1000))  //for days: (24 hrs * 60min * 60s * 1000ms)
+    }
+    const formatDaysAgo = (date) => {
+        const days = daysAgoFunction(date);
+        if (days === 0) return "Today";
+        return `${days} day${days === 1 ? "" : "s"} ago`; // "day" if 1 day ago o/w "days"
+    };
 
     return (
         <div className='p-5 rounded-md shadow-xl bg-white border border-gray-100 '>
             <div className='flex items-center justify-between'>
-                <p className='text-sm text-gray-500'>2 days ago</p>
+                <p className='text-sm text-gray-500'> {formatDaysAgo(job?.createdAt)}</p>
                 <Button variant='outline' className='rounded-full cursor-pointer' size='icon'> <Bookmark /></Button>
             </div>
 
@@ -38,7 +52,7 @@ const Job = ({job}) => {
             </div>
 
             <div className='flex items-center gap-4 mt-4'>
-                <Button onClick={()=> navigate(`${job?._id}/description`)} variant='outline' className='cursor-pointer'>Details</Button>
+                <Button onClick={() => navigate(`${job?._id}/description`)} variant='outline' className='cursor-pointer'>Details</Button>
                 <Button className='bg-[#6A38C2] cursor-pointer'>Save for later</Button>
             </div>
         </div>

@@ -58,9 +58,7 @@ export const signupSchema = z.object({
 //LOGIN FORM SCHEMA
 export const loginSchema = z.object({
     email: z.email("Invalid email address"),
-    password: z
-        .string({ required_error: "Password is required" })
-        .min(8, "Password must be at least 8 characters"),
+    password: z.string({ required_error: "Password is required" }),
     role: z
         .string({ required_error: "Role is required" })
         .refine((val) => ['recruiter', 'applicant'].includes(val), {

@@ -9,10 +9,13 @@ import { useParams } from 'react-router-dom';
 
 
 const JobDescription = () => {
-    const hasApplied = true;
     const dispatch= useDispatch();
     const {singleJob}= useSelector(store => store.job);
     const {user}= useSelector(store => store.auth);
+    const isApplied = singleJob?.applications?.some(application => application.applicant === user._id) || false; 
+    //redundant to write 'true' using ternary optr as some() fn always returns a boolean value
+    // const isApplied = singleJob?.applications?.some(application => application.applicant === user._id) ? true : false;
+
 
     const params = useParams();  //to fetch params from URL
     const jobId = params.id;   //to fetch :id from params
@@ -46,10 +49,10 @@ const JobDescription = () => {
                     </div>
                 </div>
                 <Button
-                    disabled={hasApplied}
-                    className={`rounded-lg ${hasApplied ? 'cursor-not-allowed' : 'bg-[#7e5db7] cursor-pointer hover:bg-[#9983bc]'}`}
+                    disabled={isApplied}
+                    className={`rounded-lg ${isApplied ? 'cursor-not-allowed' : 'bg-[#7e5db7] cursor-pointer hover:bg-[#9983bc]'}`}
                 >
-                    {hasApplied ? 'Already Applied' : 'Apply Now'}
+                    {isApplied ? 'Already Applied' : 'Apply Now'}
                 </Button>
             </div>
             <h1 className='border-b-2 border-b-gray-300 font-medium py-4'>Job Description</h1>
@@ -58,6 +61,7 @@ const JobDescription = () => {
                 <h1 className='font-bold my-1'>Company Name: <span className='pl-4 font-normal text-gray-800'>{singleJob?.company?.companyName}</span></h1>
                 <h1 className='font-bold my-1'>Location: <span className='pl-4 font-normal text-gray-800'>{singleJob?.location}</span></h1>
                 <h1 className='font-bold my-1'>Description: <span className='pl-4 font-normal text-gray-800'>{singleJob?.description}</span></h1>
+                <h1 className='font-bold my-1'>Requirements: <span className='pl-4 font-normal text-gray-800'>{singleJob?.requirements?.join(", ")}</span></h1>
                 <h1 className='font-bold my-1'>Experience: <span className='pl-4 font-normal text-gray-800'>{singleJob?.experience} year(s)</span></h1>
                 <h1 className='font-bold my-1'>Salary: <span className='pl-4 font-normal text-gray-800'>{singleJob?.salary} LPA</span></h1>
                 <h1 className='font-bold my-1'>Total Applicants: <span className='pl-4 font-normal text-gray-800'>{singleJob?.applications?.length}</span></h1>
