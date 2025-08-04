@@ -82,6 +82,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 
         try {
             setLoading(true);
+            //axios.post(url, payload, config);
             const res = await axios.patch(`${USER_API_ENDPOINT}/profile`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'

@@ -184,7 +184,6 @@ export const logout = async (req, res) => {
 export const updateProfile = async (req, res) => {
     try {
         const { fullName, email, phoneNumber, bio, skills } = req.body;
-        const file = req.file;
 
         // Get current user's ID from token
         let user = await User.findById(req.id);  //from isAuthenticated middleware
@@ -200,6 +199,7 @@ export const updateProfile = async (req, res) => {
         }
 
         let cloudResponse;
+        const file = req.file;  //file received on the server/backend
         if (req.file) {
             if (file.mimetype !== 'application/pdf') {  //just to add extra security as server-side/backend validation
                 return res.status(400).json({ message: 'Only PDF files are allowed' });
