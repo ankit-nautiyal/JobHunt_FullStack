@@ -180,10 +180,11 @@ const Signup = () => {
 
 
                         <div className='flex items-center gap-2'>
-                            <Label>Picture </Label>
+                            <Label>Profile Photo </Label>
                             <Input
                                 accept='image/*'
                                 type='file'
+                                name='file'
                                 className='cursor-pointer'
                                 onChange={handleFormFileChange}
                             />

@@ -20,7 +20,7 @@ const Profile = () => {
                 <div className='flex justify-between'>
                     <div className='flex items-center gap-4'>
                         <Avatar className='h-24 w-24'>
-                            <AvatarImage src={user?.profile?.profilePhoto}/>
+                            <AvatarImage src={user?.profile?.profilePhoto?.trim() || "dummyProfilePic.jpg"}/>
                         </Avatar>
 
                         <div>

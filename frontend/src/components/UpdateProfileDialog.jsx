@@ -202,6 +202,20 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                 {errors && errors.file && <span className='text-right col-span-4 text-sm text-red-500'> {errors.file}</span>}
                             </div>
                         </div>
+                        {/* <div className="grid  py-2">
+                            <div className="grid grid-cols-4 items-center ">
+                                <Label htmlFor='profilePhoto' className='text-right'>Profile Photo</Label>
+                                <Input
+                                    id='profilePhoto'
+                                    name='file'
+                                    type='file'
+                                    accept='image/*'  //This limits the file picker in the browser to show only image files.
+                                    onChange={handleFileChange}
+                                    className='col-span-3'
+                                />
+                                {errors && errors.file && <span className='text-right col-span-4 text-sm text-red-500'> {errors.file}</span>}
+                            </div>
+                        </div> */}
                         <DialogFooter>
                             {
                                 loading ? <Button className='w-full my-4'> <Loader2 className='mr-2 w-4 h-4 animate-spin' /> Please wait...</Button> : <Button type='submit' className='w-full my-4 cursor-pointer'>Save</Button>

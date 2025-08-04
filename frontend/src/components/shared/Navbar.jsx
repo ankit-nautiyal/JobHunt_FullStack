@@ -64,21 +64,21 @@ const Navbar = () => {
                         !user ? (
                             <div className='flex items-center gap-2'>
                                 <Link to="/login"> <Button variant='outline' className='cursor-pointer'>Login</Button></Link>
-                                <Link to="/signup"> <Button className='bg-[#6A38C2] hover:bg-[#5b30a6] cursor-pointer'>Sign up</Button></Link>
+                                <Link to="/signup"> <Button className='bg-[#6A38C2] hover:bg-[#5b30a6] cursor-pointer'>Signup</Button></Link>
 
                             </div>
                         ) : (
                             <Popover >
                                 <PopoverTrigger asChild>
                                     <Avatar className='cursor-pointer'>
-                                        <AvatarImage src={user?.profile?.profilePhoto} alt="profilePhoto" />
+                                        <AvatarImage src={user?.profile?.profilePhoto?.trim() || "dummyProfilePic.jpg"}  alt="profilePhoto" />
                                     </Avatar>
                                 </PopoverTrigger>
 
                                 <PopoverContent className="w-80">
                                     <div className='flex gap-4 space-y-2'>
                                         <Avatar className='cursor-pointer'>
-                                            <AvatarImage src={user?.profile?.profilePhoto} alt="profilePhoto" />
+                                            <AvatarImage src={user?.profile?.profilePhoto?.trim() || "dummyProfilePic.jpg"} alt="profilePhoto" />
                                         </Avatar>
                                         <div>
                                             <h4 className='font-medium'>{user?.fullName}</h4>

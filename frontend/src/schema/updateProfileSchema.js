@@ -31,7 +31,7 @@ export const updateProfileSchema = z.object({
         ])
         .refine(
             (file) => !file || file === "" || file === null || file.size <= 0.5 * 1024 * 1024,  //0.5 * 1024 * 1024 = 512000 bytes = 500 KB
-            { message: "Resume must be less than 500 KB" }
+            { message: "File must be less than 500 KB" }
         )
         .refine(
             (file) => !file || file === "" || file === null || file.type === 'application/pdf',
