@@ -16,7 +16,6 @@ const JobDescription = () => {
     //redundant to write 'true' using ternary optr as some() fn always returns a boolean value
     // const isApplied = singleJob?.applications?.some(application => application.applicant === user._id) ? true : false;
 
-
     const params = useParams();  //to fetch params from URL
     const jobId = params.id;   //to fetch :id from params
 
