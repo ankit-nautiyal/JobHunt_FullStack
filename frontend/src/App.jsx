@@ -3,12 +3,13 @@ import Navbar from '@/components/shared/Navbar';
 import Login from '@/pages/auth/Login';
 import Signup from '@/pages/auth/Signup';
 import Home from '@/pages/Home';
-import Jobs from '@/pages/Jobs';
+import JobsPage from '@/pages/JobsPage';
 import Browse from '@/pages/Browse';
 import Profile from '@/pages/Profile';
 import JobDescription from '@/pages/JobDescription';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
+
 
 
 
@@ -23,7 +24,7 @@ function App() {
           <main className='flex-grow'>
             <Routes>
               <Route path='/' element={<Home />}></Route>
-              <Route path='/jobs' element={<Jobs />}></Route>
+              <Route path='/jobs' element={<JobsPage />}></Route>
               <Route path='browse/' element={<Browse/>}></Route>
               <Route path='/login' element={<Login />}></Route>
               <Route path='/signup' element={<Signup />}></Route>

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const jobSlice = createSlice({
-    name: "autjob",   //name
+    name: "job",   //name
     initialState:{   //initialState
         allJobs: []
     },

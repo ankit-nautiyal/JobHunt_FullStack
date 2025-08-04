@@ -1,18 +1,19 @@
 import Job from '@/components/Job';
-import React from 'react'
+import { useSelector } from 'react-redux';
 
-const randomJobs= [1, 2, 3, 4, 5, 6];
 
 const Browse = () => {
+    const { allJobs } = useSelector(store => store.job);  //fetch the latest availabel jobs from the redux store
+
     return (
         <div>
             <div className=' max-w-7xl mx-auto my-10'>
-                <h1 className='font-bol text-xl my-10'>Search Results ({randomJobs.length})</h1>
+                <h1 className='font-bol text-xl my-10'>Search Results ({allJobs.length})</h1>
                 <div className='grid grid-cols-3 gap-4'>
                     {
-                        randomJobs.map((items, index) => {
-                            return(
-                                <Job/>
+                        allJobs.map((job) => {
+                            return (
+                                <Job job={job} />
                             )
                         })
                     }
