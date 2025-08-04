@@ -12,8 +12,9 @@ const JobDescription = () => {
     const dispatch= useDispatch();
     const {singleJob}= useSelector(store => store.job);
     const {user}= useSelector(store => store.auth);
+
     const isApplied = singleJob?.applications?.some(application => application.applicant === user._id) || false; 
-    //redundant to write 'true' using ternary optr as some() fn always returns a boolean value
+    //redundant to write 'true' using ternary optr as given below, as some() fn always returns a boolean value
     // const isApplied = singleJob?.applications?.some(application => application.applicant === user._id) ? true : false;
 
     const params = useParams();  //to fetch params from URL
