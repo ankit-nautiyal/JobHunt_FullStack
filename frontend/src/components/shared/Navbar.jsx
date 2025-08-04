@@ -12,7 +12,7 @@ import { toast } from 'sonner';
 
 
 const Navbar = () => {
-    const {user} = useSelector(store=> store.auth);
+    const {user} = useSelector(store=> store.auth); // w/o Redux we need to have use prop-drilling to have user object
     const dispatch= useDispatch();
     const navigate= useNavigate();
 
