@@ -69,8 +69,8 @@ export const getAllJobs = async (req, res) => {
     }
 }
 
-//GET JOB BY ID
-//for students/applicants
+//GET A SINGLE JOB BY ID
+//for applicants
 export const getJobById = async (req, res) => {
     try {
         const jobId = req.params.id;

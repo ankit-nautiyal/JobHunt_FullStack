@@ -13,7 +13,7 @@ const useGetAllJobs = () => {
                 //axios.get(url, config);
                 const res= await axios.get(`${JOB_API_ENDPOINT}`, {withCredentials: true} );
                 if (res.data.success) {
-                    dispatch(setAllJobs(res.data.jobs)) //received from the backend (job.controller.js)
+                    dispatch(setAllJobs(res.data.jobs));
                 }
             } catch (error) {
                 console.log('Error fetching jobs:', error);
