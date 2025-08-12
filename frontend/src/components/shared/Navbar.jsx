@@ -9,22 +9,24 @@ import axios from 'axios';
 import { USER_API_ENDPOINT } from '@/utils/constants.js';
 import { setUser } from '@/redux/authSlice.js';
 import { toast } from 'sonner';
+import { PURGE } from 'redux-persist';
 
 
 const Navbar = () => {
-    const {user} = useSelector(store=> store.auth); // w/o Redux we need to have use prop-drilling to have user object
-    const dispatch= useDispatch();
-    const navigate= useNavigate();
+    const { user } = useSelector(store => store.auth); // w/o Redux we need to have use prop-drilling to have user object
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const handleLogout = async ()=>{
+    const handleLogout = async () => {
         try {
             //axios.post(url, data, config);
-            const res= await axios.post(`${USER_API_ENDPOINT}/auth/logout`,
+            const res = await axios.post(`${USER_API_ENDPOINT}/auth/logout`,
                 {}, // empty data since logout doesn't need body
-                {withCredentials: true} //config object: ensures cookies (like auth token) are sent with the request
+                { withCredentials: true } //config object: ensures cookies (like auth token) are sent with the request
             );
             if (res.data.success) {
                 dispatch(setUser(null));
+                dispatch({ type: PURGE, key: 'root', result: () => null });
                 navigate('/');
                 toast.success(res.data.message);
             }
@@ -43,21 +45,42 @@ const Navbar = () => {
                 </div>
                 <div className='flex items-center gap-15'>
                     <ul className='flex font-medium items-center gap-5 '>
-                        <li className='cursor-pointer'>
-                            <NavLink to='/' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>
-                                Home
-                            </NavLink>
-                        </li>
-                        <li className='cursor-pointer'>
-                            <NavLink to='/jobs' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>
-                                Jobs
-                            </NavLink>
-                        </li>
-                        <li className='cursor-pointer'>
-                            <NavLink to='/browse' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>
-                                Browse
-                            </NavLink>
-                        </li>
+                        {
+                            user && user.role === 'recruiter' ? (
+                                <>
+                                    <li className='cursor-pointer'>
+                                        <NavLink to='/admin/companies' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>
+                                            Companies
+                                        </NavLink>
+                                    </li>
+                                    <li className='cursor-pointer'>
+                                        <NavLink to='/admin/jobs' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>
+                                            Jobs
+                                        </NavLink>
+                                    </li>
+                                </>
+
+                            ) : (
+                                <>
+
+                                    <li className='cursor-pointer'>
+                                        <NavLink to='/' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>
+                                            Home
+                                        </NavLink>
+                                    </li>
+                                    <li className='cursor-pointer'>
+                                        <NavLink to='/jobs' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>
+                                            Jobs
+                                        </NavLink>
+                                    </li>
+                                    <li className='cursor-pointer'>
+                                        <NavLink to='/browse' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>
+                                            Browse
+                                        </NavLink>
+                                    </li>
+                                </>
+                            )
+                        }
                     </ul>
 
                     {
@@ -65,13 +88,12 @@ const Navbar = () => {
                             <div className='flex items-center gap-2'>
                                 <Link to="/login"> <Button variant='outline' className='cursor-pointer'>Login</Button></Link>
                                 <Link to="/signup"> <Button className='bg-[#6A38C2] hover:bg-[#5b30a6] cursor-pointer'>Signup</Button></Link>
-
                             </div>
                         ) : (
                             <Popover >
                                 <PopoverTrigger asChild>
                                     <Avatar className='cursor-pointer'>
-                                        <AvatarImage src={user?.profile?.profilePhoto?.trim() || "dummyProfilePic.jpg"}  alt="profilePhoto" />
+                                        <AvatarImage src={user?.profile?.profilePhoto?.trim() || "dummyProfilePic.jpg"} alt="profilePhoto" />
                                     </Avatar>
                                 </PopoverTrigger>
 
@@ -87,15 +109,18 @@ const Navbar = () => {
                                     </div>
 
                                     <div className='flex flex-col my-2 text-gray-600'>
-                                        <div className='flex w-fit items-center gap-1.5  '>
-                                            <User2 />
-                                            <Button className='cursor-pointer' variant='link'> <Link to='/profile'>View Profile</Link></Button>
-                                        </div>
+                                        {
+                                            user && user.role === 'applicant' && (
+                                                <div className='flex w-fit items-center gap-1.5  '>
+                                                    <User2 />
+                                                    <Button className='cursor-pointer' variant='link'> <Link to='/profile'>View Profile</Link></Button>
+                                                </div>
+                                            )
+                                        }
                                         <div className='flex w-fit items-center gap-1.5'>
                                             <LogOut />
                                             <Button onClick={handleLogout} className='cursor-pointer' variant='link'>  Logout </Button>
                                         </div>
-
                                     </div>
 
                                 </PopoverContent>
