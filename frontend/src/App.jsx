@@ -7,10 +7,9 @@ import JobsPage from '@/pages/JobsPage';
 import Browse from '@/pages/Browse';
 import Profile from '@/pages/Profile';
 import JobDescription from '@/pages/JobDescription';
+import Companies from '@/pages/admin/Companies';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
-
-
 
 
 function App() {
@@ -31,6 +30,9 @@ function App() {
               <Route path='/profile' element={<Profile/>}></Route>
               <Route path='jobs/:id/description' element={<JobDescription/>}></Route>
               <Route path='browse/:id/description' element={<JobDescription/>}></Route>
+
+              //FOR ADMIN
+              <Route path='admin/companies' element={<Companies/>}></Route>
             </Routes>
           </main>
 
