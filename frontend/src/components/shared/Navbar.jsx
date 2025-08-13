@@ -9,7 +9,7 @@ import axios from 'axios';
 import { USER_API_ENDPOINT } from '@/utils/constants.js';
 import { setUser } from '@/redux/authSlice.js';
 import { toast } from 'sonner';
-import { PURGE } from 'redux-persist';
+import { persistor } from '@/main.jsx';
 
 
 const Navbar = () => {
@@ -21,18 +21,18 @@ const Navbar = () => {
         try {
             //axios.post(url, data, config);
             const res = await axios.post(`${USER_API_ENDPOINT}/auth/logout`,
-                {}, // empty data since logout doesn't need body
-                { withCredentials: true } //config object: ensures cookies (like auth token) are sent with the request
+                {},   // empty data since logout doesn't need body
+                { withCredentials: true }   //config object: ensures cookies (like auth token) are sent with the request
             );
             if (res.data.success) {
-                dispatch(setUser(null));
-                dispatch({ type: PURGE, key: 'root', result: () => null });
+                dispatch(setUser(null)); // clear Redux memory
+                await persistor.purge(); //clear localStorage
                 navigate('/');
                 toast.success(res.data.message);
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || 'Logout failed. Please try again.');
         }
     }
 
@@ -43,7 +43,7 @@ const Navbar = () => {
                     <Link to='/'> <h1 className='text-2xl font-bold'>Job<span className='text-[#F83002]'>Hunt</span> </h1></Link>
 
                 </div>
-                <div className='flex items-center gap-15'>
+                <div className='flex items-center gap-15'> 
                     <ul className='flex font-medium items-center gap-5 '>
                         {
                             user && user.role === 'recruiter' ? (
