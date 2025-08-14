@@ -32,7 +32,6 @@ const CompanyCreate = () => {
             }
         } catch (error) {
             console.log(error || "Registration failed. Please try again." );
-            
         }
     }
 

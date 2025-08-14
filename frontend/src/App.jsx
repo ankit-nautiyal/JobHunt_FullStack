@@ -1,5 +1,6 @@
 import Footer from '@/components/shared/Footer';
 import Navbar from '@/components/shared/Navbar';
+import CompanyCreate from '@/components/admin/CompanyCreate';
 import Login from '@/pages/auth/Login';
 import Signup from '@/pages/auth/Signup';
 import Home from '@/pages/Home';
@@ -8,9 +9,11 @@ import Browse from '@/pages/Browse';
 import Profile from '@/pages/Profile';
 import JobDescription from '@/pages/JobDescription';
 import Companies from '@/pages/admin/Companies';
+import CompanySetup from '@/pages/admin/CompanySetup';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
-import CompanyCreate from './components/admin/CompanyCreate';
+
+
 
 
 function App() {
@@ -35,6 +38,7 @@ function App() {
               //FOR ADMIN
               <Route path='admin/companies' element={<Companies/>}></Route>
               <Route path='admin/companies/create' element={<CompanyCreate/>}></Route>
+              <Route path='admin/companies/:id' element={<CompanySetup/>}></Route>
             </Routes>
           </main>
 
