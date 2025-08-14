@@ -10,6 +10,7 @@ import JobDescription from '@/pages/JobDescription';
 import Companies from '@/pages/admin/Companies';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
+import CompanyCreate from './components/admin/CompanyCreate';
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
 
               //FOR ADMIN
               <Route path='admin/companies' element={<Companies/>}></Route>
+              <Route path='admin/companies/create' element={<CompanyCreate/>}></Route>
             </Routes>
           </main>
 
