@@ -1,10 +1,14 @@
 import { Company } from "../models/company.model.js";
+import getDataUri from "../utils/dataUri.js";
+import cloudinary from "../utils/cloudinary.js"
 
 
 //REGISTER COMPANY
 export const registerCompany = async (req, res) => {
     try {
-        const { companyName, website } = req.body;
+        const { companyName } = req.body;
+
+        //to check if no companyName was provided from frontend 
         if (!companyName) {
             return res.status(400).json({
                 message: "Company name is required",
@@ -12,6 +16,7 @@ export const registerCompany = async (req, res) => {
             })
         };
 
+        //to check if such company already exists in DB/already registered
         let company = await Company.findOne({ name: companyName });
         if (company) {
             return res.status(400).json({
@@ -22,7 +27,6 @@ export const registerCompany = async (req, res) => {
 
         company = await Company.create({
             companyName,
-            website,
             userId: req.id,  //from isAuthenticated Middleware
         })
 
@@ -34,8 +38,7 @@ export const registerCompany = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            message: "Something went wrong during company registration",
-            error: error.message,
+            message: error.message || "Something went wrong during company registration",
             success: false
         });
     }
@@ -88,8 +91,7 @@ export const getCompanyById = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            message: "Error in getting company",
-            error: error.message,
+            message: error.message || "Error in getting company",
             success: false,
         });
     }
@@ -99,10 +101,35 @@ export const getCompanyById = async (req, res) => {
 export const updateCompany = async (req, res) => {
     try {
         const { companyName, description, website, location } = req.body;
-        const file = req.file;
-        //cloudinary aega idhar
+        const file = req.file;  //file received on the server/backend
+        let logo; //as "const" is block-scoped in JS
 
-        const company = await Company.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        if (req.file) {
+            // File type check
+            if (!file.mimetype.startsWith('image/')) {  
+                return res.status(400).json({ message: 'Only image files are allowed' });
+            }
+
+            // File size check (500 KB)
+            if (file.size > 0.5 * 1024 * 1024) { 
+                return res.status(400).json({ message: 'File size must be upto 500 KB only' });
+            }
+
+            // Upload to Cloudinary
+            const fileUri = getDataUri(file);
+            const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+                folder: 'jobhunt_project', // optional, all files will be uploaded to this folder in cloudinary
+                resource_type: 'auto', // auto-detect file type
+                type: 'upload', // THIS makes it public by default
+            });
+
+            logo = cloudResponse.secure_url; // save the cloudinary url
+        }
+
+        const updateData = { companyName, description, website, location }
+        if (logo) updateData.logo = logo; //just to make sure logo doesn't updates to undefined in DB in case user doesn't uploads it
+        
+        const company = await Company.findByIdAndUpdate(req.params.id, updateData, { new: true, runValidators: true });
 
         if (!company) {
             return res.status(404).json({
@@ -112,12 +139,16 @@ export const updateCompany = async (req, res) => {
         }
 
         return res.status(200).json({
-            message: "company information updated",
+            message: "Company information updated",
             success: true
         })
 
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: error.message || "Server error",
+            success: false
+        });
     }
 }
 

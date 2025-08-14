@@ -208,12 +208,12 @@ export const updateProfile = async (req, res) => {
 
             //server-side validation too, for extra security
             if (file.size > 0.5 * 1024 * 1024) { // 500 KB
-                return res.status(400).json({ message: 'File size should be less than 500 KB' });
+                return res.status(400).json({ message: 'File size must be upto 500 KB only' });
             }
 
             const fileUri = getDataUri(file);
             cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
-                folder: 'jobhunt_project', // optional, // all files will be uploaded to this folder in cloudinary
+                folder: 'jobhunt_project', // optional, all files will be uploaded to this folder in cloudinary
                 resource_type: 'auto', // auto-detect file type
                 type: 'upload', // THIS makes it public by default
             });

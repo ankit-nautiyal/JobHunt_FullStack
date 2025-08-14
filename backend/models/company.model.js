@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const companySchema= new mongoose.Schema({
     companyName: {
         type: String,
-        required: true,
+        required: true,  //only companyName mandatory for registering a company
         unique: true,
         trim: true
     },
@@ -13,18 +13,16 @@ const companySchema= new mongoose.Schema({
     },
     website: {
         type: String,
-        required: true,
         unique: true,
         trim: true
     },
     location: {
         type: String,
-        required: true,
         trim: true
     },
     logo: {
         type: String,  //for company's logo URl stored on cloudinarty
-        required: true,
+        trim: true
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
