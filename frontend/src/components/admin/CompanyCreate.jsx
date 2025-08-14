@@ -6,9 +6,12 @@ import axios from "axios"
 import { COMPANY_API_ENDPOINT } from "@/utils/constants"
 import { useState } from "react"
 import { toast } from "sonner"
+import { useDispatch } from "react-redux"
+import { setSingleCompany } from "@/redux/companySlice"
 
 
 const CompanyCreate = () => {
+    const dispatch= useDispatch();
     const navigate= useNavigate();
     const [companyName, setcompanyName] = useState();
 
@@ -22,6 +25,7 @@ const CompanyCreate = () => {
                 withCredentials: true  //This tells Axios to send cookies(token) along with the request to the server/backend
             })
             if (res?.data?.success) {
+                dispatch(setSingleCompany(res.data.company));
                 toast.success(res.data.message);
                 const companyId= res?.data?.company?._id;  //we get id from the register company controller
                 navigate(`/admin/companies/${companyId}`);
