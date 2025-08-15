@@ -4,10 +4,23 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Edit2, MoreHorizontal } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
 
 const CompaniesTable = () => {
-    const { companies } = useSelector(store => store.company);
+    const { companies, searchCompanyByText } = useSelector(store => store.company);
+    const [filterCompany, setFilterCompany] = useState(companies);
+
+    useEffect(() => {
+        const filteredCompany= companies.length >= 0 && companies.filter((company)=>{
+            if (!searchCompanyByText) {
+                return true;
+            }
+            return company?.companyName?.toLowerCase().includes(searchCompanyByText?.trim().toLowerCase());
+        });
+        setFilterCompany(filteredCompany);
+    }, [companies, searchCompanyByText])
+    
 
     const navigate= useNavigate();
     return (
@@ -24,20 +37,20 @@ const CompaniesTable = () => {
                 </TableHeader>
                 <TableBody>
                     {
-                        companies.map((company) => (
-                            <tr>
+                        filterCompany?.map((company) => (
+                            <tr key={company?._id}>
                                 <TableCell>
                                     <Avatar>
                                         <AvatarImage src={company?.logo  || "/company_placeholder_logo.svg" } alt="Company Logo" />
                                     </Avatar>
                                 </TableCell>
-                                <TableCell>{company.companyName}</TableCell>
-                                <TableCell>{company.createdAt.split('T')[0]}</TableCell>
+                                <TableCell>{company?.companyName}</TableCell>
+                                <TableCell>{company?.createdAt?.split('T')[0]}</TableCell>
                                 <TableCell className='text-right' >
                                     <Popover>
                                         <PopoverTrigger className='cursor-pointer'> <MoreHorizontal /></PopoverTrigger>
                                         <PopoverContent className='w-32'>
-                                            <div onClick={()=> navigate(`/admin/companies/${company._id}`)} className='flex items-center gap-2 w-fit cursor-pointer'>
+                                            <div onClick={()=> navigate(`/admin/companies/${company?._id}`)} className='flex items-center gap-2 w-fit cursor-pointer'>
                                                 <Edit2 className='w-4' />
                                                 <span>Edit</span>
                                             </div>

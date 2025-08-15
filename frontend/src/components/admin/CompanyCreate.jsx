@@ -15,9 +15,9 @@ import { Label } from "../ui/label"
 const CompanyCreate = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [companyName, setcompanyName] = useState("");
     const { loading } = useSelector(store => store.company);
     const [errors, setErrors] = useState({});
+    const [companyName, setcompanyName] = useState("");
 
     const handleRegisterNewCompany = async (e) => {
         e.preventDefault();
@@ -43,7 +43,8 @@ const CompanyCreate = () => {
             if (res?.data?.success) {
                 dispatch(setSingleCompany(res.data.company));
                 toast.success(res.data.message);
-                navigate(`/admin/companies/${res.data.company?._id}`);  //we get id from the register company controller
+                const companyId = res?.data?.company?._id;
+                navigate(`/admin/companies/${companyId}`);  //we get id from the register company controller
             }
         } catch (error) {
             console.log(error || "Registration failed. Please try again.");
