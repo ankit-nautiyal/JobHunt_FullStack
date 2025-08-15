@@ -1,19 +1,24 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import useGetCompanyById from '@/hooks/useGetCompanyById'
+import { setSingleCompany } from '@/redux/companySlice'
 import { COMPANY_API_ENDPOINT } from '@/utils/constants'
 import axios from 'axios'
 import { ArrowLeft, Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
 const CompanySetup = () => {
     const params = useParams();
+    const dispatch= useDispatch();
+    useGetCompanyById(params.id);
 
     const [input, setInput] = useState({
-        name: "",
+        companyName: "",
         description: "",
         website: "",
         location: "",
@@ -36,7 +41,7 @@ const CompanySetup = () => {
         e.preventDefault();
 
         const formData = new FormData();
-        formData.append("name", input.name);
+        formData.append("companyName", input.companyName);
         formData.append("description", input.description);
         formData.append("website", input.website);
         formData.append("location", input.location);
@@ -52,6 +57,7 @@ const CompanySetup = () => {
                 withCredentials: true
             });
             if (res.data.success) {
+                dispatch(setSingleCompany(res.data.company));
                 toast.success(res.data.message);
                 navigate("/admin/companies");
             }
@@ -65,39 +71,39 @@ const CompanySetup = () => {
 
     useEffect(() => {
         setInput({
-            name: singleCompany.companyName || "",
+            companyName: singleCompany.companyName || "",
             description: singleCompany.description || "",
             website: singleCompany.website || "",
             location: singleCompany.location || "",
-            file: singleCompany.file || null
+            file: null
         })
-    }, [singleCompany])
+    }, [singleCompany.companyName, singleCompany.description, singleCompany.location, singleCompany.website])
 
 
     return (
-        <div className='max-w-xl mx-auto my-10'>
+        <div className='max-w-3xl mx-auto my-10'>
             <form onSubmit={handleSubmit}>
-                <div className='flex items-center gap-5 p-8'>
-                    <Button onClick={() => navigate("/admin/companies")} className='flex items-center gap-2 text-gray-500 font-semibold cursor-pointer' variant='outline'>
+                <div className='flex gap-5 my-12'>
+                    <Button type='button' onClick={() => navigate("/admin/companies")} className='flex items-center gap-2 text-gray-500 font-semibold cursor-pointer' variant='outline'>
                         <ArrowLeft />
                         <span>Back</span>
                     </Button>
-                    <h1 className='font-bold text-xl'>Company Setup</h1>
+                    <h1 className='font-bold text-xl text-center items-center ml-50'>Company Setup</h1>
                 </div>
                 <div className='grid grid-cols-2 gap-4'>
                     <div>
                         <Label className="py-1.5" htmlFor='companyName'>Company Name</Label>
                         <Input
                             type="text"
-                            name="name"
+                            name="companyName"
                             id="companyName"
-                            value={input.name}
+                            value={input.companyName}
                             onChange={handleFormChange}
                         />
                     </div>
                     <div>
                         <Label className="py-1.5" htmlFor='desc'>Description</Label>
-                        <Input
+                        <Textarea
                             id='desc'
                             type="text"
                             name="description"
@@ -132,11 +138,12 @@ const CompanySetup = () => {
                             id="logo"
                             accept="image/*"
                             onChange={handleFormFileChange}
+                            className='cursor-pointer'
                         />
                     </div>
                 </div>
                 {
-                    loading ? <Button className="w-full my-4"> <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait... </Button> : <Button type="submit" className="w-full my-4 cursor-pointer">Update</Button>
+                    loading ? <Button disabled className="w-full my-4 "> <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait... </Button> : <Button type="submit" className="w-full my-4 cursor-pointer">Update</Button>
                 }
             </form>
         </div>
