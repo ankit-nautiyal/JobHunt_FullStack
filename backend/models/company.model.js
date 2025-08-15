@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const companySchema= new mongoose.Schema({
     companyName: {
         type: String,
-        required: true,  //only companyName mandatory for registering a company
+        required: true,  //only companyName mandatory for registering a company, it's primary key too for companies
         unique: true,
         trim: true
     },
