@@ -28,7 +28,7 @@ const CompaniesTable = () => {
                             <tr>
                                 <TableCell>
                                     <Avatar>
-                                        <AvatarImage src={company.logo  || "https://res.cloudinary.com/dpvytzmey/image/upload/v1755284626/jobhunt_project/qcp4ceo7azju6wbcbfu8.avif" || "/company_placeholder_logo.svg" } alt="Company Logo" />
+                                        <AvatarImage src={company?.logo  || "/company_placeholder_logo.svg" } alt="Company Logo" />
                                     </Avatar>
                                 </TableCell>
                                 <TableCell>{company.companyName}</TableCell>
