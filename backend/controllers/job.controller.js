@@ -1,7 +1,6 @@
 import { Job } from "../models/job.model.js";
 
-//POST JOB
-//admin/recruiter will post jobs
+//POST JOB (for admin/recruiter)
 export const postJob = async (req, res) => {
     try {
         const { title, description, requirements, salary, location, jobType, experience, vacancies, companyId } = req.body;
@@ -28,7 +27,7 @@ export const postJob = async (req, res) => {
         });
 
         return res.status(201).json({
-            message: "New job post created successfully",
+            message: "New job posted successfully",
             job,
             success: true
         })
@@ -37,8 +36,7 @@ export const postJob = async (req, res) => {
     }
 }
 
-//GET ALL JOBS
-//for applicants
+//GET ALL JOBS (for applicants)
 export const getAllJobs = async (req, res) => {
     try {
         const keyword = req.query.keyword || "";
@@ -69,8 +67,7 @@ export const getAllJobs = async (req, res) => {
     }
 }
 
-//GET A SINGLE JOB BY ID
-//for applicants
+//GET A SINGLE JOB BY ID (for applicants)
 export const getJobById = async (req, res) => {
     try {
         const jobId = req.params.id;
