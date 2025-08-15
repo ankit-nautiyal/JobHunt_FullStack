@@ -1,9 +1,12 @@
 import CompaniesTable from '@/components/admin/CompaniesTable'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import useGetAllCompanies from '@/hooks/useGetAllCompanies';
 import { useNavigate } from 'react-router-dom';
 
 const Companies = () => {
+    useGetAllCompanies();
+
     const navigate = useNavigate();
     return (
         <div className='max-w-6xl mx-auto my-10'>
