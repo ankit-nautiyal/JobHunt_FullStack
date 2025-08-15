@@ -50,6 +50,8 @@ const Signup = () => {
             return;
         }
 
+        setErrors({});  // to clear old validation messages
+
         const formData = new FormData();  //built-in special object provided by the browser, automatically builds your form submission with: key-value pairs and file blobs
         formData.append('fullName', input.fullName);
         formData.append('email', input.email);
@@ -78,7 +80,7 @@ const Signup = () => {
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Signup failed. Please try again.");
         } finally{
             dispatch(setLoading(false));
         }

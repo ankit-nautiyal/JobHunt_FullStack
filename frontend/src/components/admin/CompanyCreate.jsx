@@ -1,24 +1,40 @@
+import { setLoading, setSingleCompany } from "@/redux/companySlice"
+import { registerCompanySchema } from "@/schema/companySchema"
+import { COMPANY_API_ENDPOINT } from "@/utils/constants"
+import axios from "axios"
+import { Loader2 } from "lucide-react"
+import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { toast } from "sonner"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
-import axios from "axios"
-import { COMPANY_API_ENDPOINT } from "@/utils/constants"
-import { useState } from "react"
-import { toast } from "sonner"
-import { useDispatch } from "react-redux"
-import { setSingleCompany } from "@/redux/companySlice"
 
 
 const CompanyCreate = () => {
-    const dispatch= useDispatch();
-    const navigate= useNavigate();
-    const [companyName, setcompanyName] = useState();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [companyName, setcompanyName] = useState("");
+    const { loading } = useSelector(store => store.company);
+    const [errors, setErrors] = useState({});
 
-    const registerNewCompany= async () => {
+    const handleRegisterNewCompany = async (e) => {
+        e.preventDefault();
+
+        //for form-validation using zod
+        const result = registerCompanySchema.safeParse({ companyName });
+        if (!result.success) {
+            const { fieldErrors } = result.error.flatten();
+            setErrors(fieldErrors);
+            return;
+        }
+
+        setErrors({});  // to clear old validation messages
+
         try {
-            //axios.post(url, data, config);
-            const res= await axios.post(`${COMPANY_API_ENDPOINT}`, {companyName}, {
+            setLoading(true);
+            const res = await axios.post(`${COMPANY_API_ENDPOINT}`, { companyName }, {  //axios.post(url, data, config);
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -27,34 +43,46 @@ const CompanyCreate = () => {
             if (res?.data?.success) {
                 dispatch(setSingleCompany(res.data.company));
                 toast.success(res.data.message);
-                const companyId= res?.data?.company?._id;  //we get id from the register company controller
-                navigate(`/admin/companies/${companyId}`);
+                navigate(`/admin/companies/${res.data.company?._id}`);  //we get id from the register company controller
             }
         } catch (error) {
-            console.log(error || "Registration failed. Please try again." );
+            console.log(error || "Registration failed. Please try again.");
+            toast.error(error?.response?.data?.message);
+        } finally {
+            dispatch(setLoading(false));
         }
     }
 
     return (
         <div className="max-w-4xl mx-auto">
-            <div className="my-10">
-                <h1 className="font-bold text-2xl">Your Company Name</h1>
-                <p className="text-gray-500">What would you like to name your company? (you can change this later)</p>
-            </div>
+            <form onSubmit={handleRegisterNewCompany}>
+                <div className="my-10">
+                    <h1 className="font-bold text-2xl">Your Company Name</h1>
+                    <p className="text-gray-500">What would you like to name your company? (you can change this later)</p>
+                </div>
 
-            <Label htmlFor='companyName'>Company Name</Label>
-            <Input
-                id='companyName'
-                type='text'
-                className='my-2'
-                placeholder='Microsoft, Google, etc.'
-                onChange={(e)=> setcompanyName(e.target.value)}
-            />
+                <Label htmlFor='companyName'>Company Name</Label>
+                <Input
+                    id='companyName'
+                    type='text'
+                    className='my-2'
+                    placeholder='Microsoft, Google, etc.'
+                    onChange={(e) => setcompanyName(e.target.value)}
+                    value={companyName}
+                />
 
-            <div className="flex items-center gap-2 my-10">
-                <Button onClick={()=> navigate('/admin/companies')} className='cursor-pointer' variant='outline'>Cancel</Button>
-                <Button onClick={registerNewCompany} className='cursor-pointer'>Continue</Button>
-            </div>
+                {errors?.companyName?.map((err, i) => (
+                    <span key={i} className="text-sm text-red-500 block">{err}</span>
+                ))}
+
+                <div className="flex items-center gap-2 my-10">
+                    <Button type='button' onClick={() => navigate('/admin/companies')} className='cursor-pointer' variant='outline'>Cancel</Button>
+                    {
+                        loading ? <Button disabled className=" my-4 "> <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait... </Button> : <Button type="submit" className=" my-4 cursor-pointer">Continue</Button>
+                    }
+                </div>
+            </form>
+
         </div>
     )
 }

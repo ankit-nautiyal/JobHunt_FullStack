@@ -3,7 +3,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import useGetCompanyById from '@/hooks/useGetCompanyById'
-import { setSingleCompany } from '@/redux/companySlice'
+import { setLoading, setSingleCompany } from '@/redux/companySlice'
+import { updateCompanySchema } from '@/schema/companySchema'
 import { COMPANY_API_ENDPOINT } from '@/utils/constants'
 import axios from 'axios'
 import { ArrowLeft, Loader2 } from 'lucide-react'
@@ -14,7 +15,7 @@ import { toast } from 'sonner'
 
 const CompanySetup = () => {
     const params = useParams();
-    const dispatch= useDispatch();
+    const dispatch = useDispatch();
     useGetCompanyById(params.id);
 
     const [input, setInput] = useState({
@@ -24,8 +25,9 @@ const CompanySetup = () => {
         location: "",
         file: null
     });
+    const [errors, setErrors] = useState({});
     const { singleCompany } = useSelector(store => store.company);
-    const [loading, setLoading] = useState(false);
+    const { loading } = useSelector(store => store.company);
     const navigate = useNavigate();
 
     const handleFormChange = (e) => {
@@ -40,8 +42,17 @@ const CompanySetup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        //for form-validation using zod
+        const result = updateCompanySchema.safeParse(input);
+        if (!result.success) {
+            const { fieldErrors } = result.error.flatten();
+            setErrors(fieldErrors);
+            return;
+        }
+
+        setErrors({});  // to clear old validation messages
+
         const formData = new FormData();
-        formData.append("companyName", input.companyName);
         formData.append("companyName", input.companyName);
         formData.append("description", input.description);
         formData.append("website", input.website);
@@ -50,7 +61,7 @@ const CompanySetup = () => {
             formData.append("file", input.file);
         }
         try {
-            setLoading(true);
+            dispatch(setLoading(true));
             const res = await axios.patch(`${COMPANY_API_ENDPOINT}/${params.id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -65,9 +76,9 @@ const CompanySetup = () => {
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Registration failed. Please try again.");
         } finally {
-            setLoading(false);
+            dispatch(setLoading(false));
         }
     }
 
@@ -102,6 +113,10 @@ const CompanySetup = () => {
                             value={input.companyName}
                             onChange={handleFormChange}
                         />
+
+                        {errors?.companyName?.map((err, i) => (
+                            <span key={i} className="text-sm text-red-500 block">{err}</span>
+                        ))}
                     </div>
                     <div>
                         <Label className="py-1.5" htmlFor='desc'>Description</Label>
@@ -112,6 +127,8 @@ const CompanySetup = () => {
                             value={input.description}
                             onChange={handleFormChange}
                         />
+                        {errors && errors.description && <span className='text-sm text-red-500'> {errors.description}</span>}
+
                     </div>
                     <div>
                         <Label className="py-1.5" htmlFor='site'>Website</Label>
@@ -122,6 +139,10 @@ const CompanySetup = () => {
                             value={input.website}
                             onChange={handleFormChange}
                         />
+                        {errors?.website?.map((err, i) => (
+                            <span key={i} className="text-sm text-red-500 block">{err}</span>
+                        ))}
+
                     </div>
                     <div>
                         <Label className="py-1.5" htmlFor='location'>Location</Label>
@@ -132,6 +153,8 @@ const CompanySetup = () => {
                             value={input.location}
                             onChange={handleFormChange}
                         />
+                        {errors && errors.location && <span className='text-sm text-red-500'> {errors.location}</span>}
+
                     </div>
                     <div>
                         <Label className="py-1.5" htmlFor='logo'>Logo</Label>
@@ -142,6 +165,8 @@ const CompanySetup = () => {
                             onChange={handleFormFileChange}
                             className='cursor-pointer'
                         />
+                        {errors && errors.file && <span className='text-sm text-red-500'> {errors.file}</span>}
+
                     </div>
                 </div>
                 {

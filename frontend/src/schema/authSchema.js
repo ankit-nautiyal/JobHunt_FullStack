@@ -5,6 +5,7 @@ export const signupSchema = z.object({
     fullName: z
         .string({ required_error: "Full name is required" })
         .trim()
+        .nonempty("Full name is required") // ensures empty string triggers this message
         .regex(/^[A-Za-z\s]+$/, "Full name can contain only alphabets"),
 
     email: z.email("Invalid email address"),  //PRIMARY KEY FOR USERS
