@@ -4,10 +4,14 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import useGetCompanyById from '@/hooks/useGetCompanyById'
 import { setSingleCompany } from '@/redux/companySlice'
+import { Textarea } from '@/components/ui/textarea'
+import useGetCompanyById from '@/hooks/useGetCompanyById'
+import { setSingleCompany } from '@/redux/companySlice'
 import { COMPANY_API_ENDPOINT } from '@/utils/constants'
 import axios from 'axios'
 import { ArrowLeft, Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -16,8 +20,11 @@ const CompanySetup = () => {
     const params = useParams();
     const dispatch= useDispatch();
     useGetCompanyById(params.id);
+    const dispatch= useDispatch();
+    useGetCompanyById(params.id);
 
     const [input, setInput] = useState({
+        companyName: "",
         companyName: "",
         description: "",
         website: "",
@@ -42,6 +49,7 @@ const CompanySetup = () => {
 
         const formData = new FormData();
         formData.append("companyName", input.companyName);
+        formData.append("companyName", input.companyName);
         formData.append("description", input.description);
         formData.append("website", input.website);
         formData.append("location", input.location);
@@ -58,6 +66,7 @@ const CompanySetup = () => {
             });
             if (res.data.success) {
                 dispatch(setSingleCompany(res.data.company));
+                dispatch(setSingleCompany(res.data.company));
                 toast.success(res.data.message);
                 navigate("/admin/companies");
             }
@@ -72,15 +81,19 @@ const CompanySetup = () => {
     useEffect(() => {
         setInput({
             companyName: singleCompany.companyName || "",
+            companyName: singleCompany.companyName || "",
             description: singleCompany.description || "",
             website: singleCompany.website || "",
             location: singleCompany.location || "",
             file: null
+            file: null
         })
+    }, [singleCompany.companyName, singleCompany.description, singleCompany.location, singleCompany.website])
     }, [singleCompany.companyName, singleCompany.description, singleCompany.location, singleCompany.website])
 
 
     return (
+        <div className='max-w-3xl mx-auto my-10'>
         <div className='max-w-3xl mx-auto my-10'>
             <form onSubmit={handleSubmit}>
                 <div className='flex gap-5 my-12'>
@@ -96,13 +109,16 @@ const CompanySetup = () => {
                         <Input
                             type="text"
                             name="companyName"
+                            name="companyName"
                             id="companyName"
+                            value={input.companyName}
                             value={input.companyName}
                             onChange={handleFormChange}
                         />
                     </div>
                     <div>
                         <Label className="py-1.5" htmlFor='desc'>Description</Label>
+                        <Textarea
                         <Textarea
                             id='desc'
                             type="text"
@@ -139,10 +155,12 @@ const CompanySetup = () => {
                             accept="image/*"
                             onChange={handleFormFileChange}
                             className='cursor-pointer'
+                            className='cursor-pointer'
                         />
                     </div>
                 </div>
                 {
+                    loading ? <Button disabled className="w-full my-4 "> <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait... </Button> : <Button type="submit" className="w-full my-4 cursor-pointer">Update</Button>
                     loading ? <Button disabled className="w-full my-4 "> <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait... </Button> : <Button type="submit" className="w-full my-4 cursor-pointer">Update</Button>
                 }
             </form>
