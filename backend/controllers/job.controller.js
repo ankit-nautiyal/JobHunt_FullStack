@@ -3,10 +3,10 @@ import { Job } from "../models/job.model.js";
 //POST JOB (for admin/recruiter)
 export const postJob = async (req, res) => {
     try {
-        const { title, description, requirements, salary, location, jobType, experience, vacancies, companyId } = req.body;
+        const { title, description, requirements, salary, location, jobType, experience, positions, companyId } = req.body;
         const userId = req.id;  //from isLoggedIn middleware
 
-        if (!title || !description || !requirements || !salary || !location || !jobType || !experience || !vacancies || !companyId) {
+        if (!title || !description || !requirements || !salary || !location || !jobType || !experience || !positions || !companyId) {
             return res.status(400).json({
                 message: "Something is missing.",
                 success: false
@@ -21,7 +21,7 @@ export const postJob = async (req, res) => {
             location,
             jobType,
             experience,
-            vacancies,
+            positions,
             company: companyId,
             created_by: userId,
         });

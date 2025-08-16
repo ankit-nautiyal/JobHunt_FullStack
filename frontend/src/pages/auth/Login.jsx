@@ -125,7 +125,7 @@ const Login = () => {
                     </div>
 
                     {
-                        loading ? <Button className='w-full my-4'> <Loader2 className='mr-2 w-4 h-4 animate-spin'/> Please wait...</Button> :  <Button type='submit' className='w-full my-4 cursor-pointer'>Login</Button>
+                        loading ? <Button disabled className='w-full my-4'> <Loader2 className='mr-2 w-4 h-4 animate-spin'/> Please wait...</Button> :  <Button type='submit' className='w-full my-4 cursor-pointer'>Login</Button>
                     }
 
                     <span className='text-sm'>Don't have an account? <Link to='/signup' className='text-blue-600 hover:underline'>Signup</Link></span>

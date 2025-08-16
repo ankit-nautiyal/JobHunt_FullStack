@@ -76,7 +76,7 @@ const CompanySetup = () => {
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.response.data.message || "Registration failed. Please try again.");
+            toast.error(error.response.data.message ?? "Registration failed. Please try again.");
         } finally {
             dispatch(setLoading(false));
         }
@@ -84,13 +84,13 @@ const CompanySetup = () => {
 
     useEffect(() => {
         setInput({
-            companyName: singleCompany.companyName || "",
-            description: singleCompany.description || "",
-            website: singleCompany.website || "",
-            location: singleCompany.location || "",
+            companyName: singleCompany?.companyName ?? "",
+            description: singleCompany?.description ?? "",
+            website: singleCompany?.website ?? "",
+            location: singleCompany?.location ?? "",
             file: null
         })
-    }, [singleCompany.companyName, singleCompany.description, singleCompany.location, singleCompany.website])
+    }, [singleCompany])
 
 
     return (
@@ -118,18 +118,7 @@ const CompanySetup = () => {
                             <span key={i} className="text-sm text-red-500 block">{err}</span>
                         ))}
                     </div>
-                    <div>
-                        <Label className="py-1.5" htmlFor='desc'>Description</Label>
-                        <Textarea
-                            id='desc'
-                            type="text"
-                            name="description"
-                            value={input.description}
-                            onChange={handleFormChange}
-                        />
-                        {errors && errors.description && <span className='text-sm text-red-500'> {errors.description}</span>}
 
-                    </div>
                     <div>
                         <Label className="py-1.5" htmlFor='site'>Website</Label>
                         <Input
@@ -154,7 +143,17 @@ const CompanySetup = () => {
                             onChange={handleFormChange}
                         />
                         {errors && errors.location && <span className='text-sm text-red-500'> {errors.location}</span>}
-
+                    </div>
+                    <div>
+                        <Label className="py-1.5" htmlFor='desc'>Description</Label>
+                        <Textarea
+                            id='desc'
+                            type="text"
+                            name="description"
+                            value={input.description}
+                            onChange={handleFormChange}
+                        />
+                        {errors && errors.description && <span className='text-sm text-red-500'> {errors.description}</span>}
                     </div>
                     <div>
                         <Label className="py-1.5" htmlFor='logo'>Logo</Label>

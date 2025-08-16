@@ -13,6 +13,7 @@ const jobSchema = new mongoose.Schema({
     },
     requirements: [{   //skills (array of strings)
         type: String,
+        required: true,
     }],
     salary: {
         type: Number,
@@ -30,8 +31,9 @@ const jobSchema = new mongoose.Schema({
     jobType: {
         type: String,
         required: true,
+        trim: true
     },
-    vacancies: {
+    positions: {
         type: Number,
         required: true,
     },

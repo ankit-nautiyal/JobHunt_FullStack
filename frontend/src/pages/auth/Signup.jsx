@@ -65,8 +65,7 @@ const Signup = () => {
         try {
             dispatch(setLoading(true));
             //axios.post(url, data, config);
-            const res = await axios.post(`${USER_API_ENDPOINT}/auth/register`, formData, 
-                {    //config object:
+            const res = await axios.post(`${USER_API_ENDPOINT}/auth/register`, formData, { 
                     headers: {
                         "Content-Type": "multipart/form-data"   //Lets the backend know we're sending some file data (like png, jpeg, etc)
                     },
@@ -198,7 +197,7 @@ const Signup = () => {
                     {errors && errors.role && <span className='text-sm text-red-500 text-left block'> {errors.role}</span>}
 
                     {
-                        loading ? <Button className='w-full my-4'> <Loader2 className='mr-2 w-4 h-4 animate-spin' /> Please wait...</Button> : <Button type='submit' className='w-full my-4 cursor-pointer'>Sign up</Button>
+                        loading ? <Button disabled className='w-full my-4'> <Loader2 className='mr-2 w-4 h-4 animate-spin' /> Please wait...</Button> : <Button type='submit' className='w-full my-4 cursor-pointer'>Sign up</Button>
                     }
 
                     <span className='text-sm cursor-pointer'>Already have an account? <Link to='/login' className='text-blue-600 hover:underline'>Login</Link></span>
