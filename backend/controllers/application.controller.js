@@ -72,7 +72,7 @@ export const getAppliedJobs = async (req, res) => {
 
         if (!applications) {
             return res.status(404).json({
-                message: "No applciations",
+                message: "No applications",
                 success: false
             })
         }
@@ -129,8 +129,8 @@ export const getApplicants = async (req, res) => {
     }
 }
 
-//UPDATE THE  JOB STATUS (admin/recruiter will do this)
-export const updateJobStatus = async (req, res) => {
+//UPDATE THE  APPLICATION STATUS (admin/recruiter will do this)
+export const updateApplicationStatus = async (req, res) => {
     try {
         const { status } = req.body;   // admin/recruiter will do this on his admin/recruiter panel via frontend
         const applicationId = req.params.id;
@@ -142,7 +142,8 @@ export const updateJobStatus = async (req, res) => {
             })
         }
 
-        const validStatuses = ["pending", "accepted", "rejected"];
+        //just for backend validation
+        const validStatuses = ["⌛pending", "✅accepted", "❌rejected"];
         const lowercaseStatuses = req.body.status?.toLowerCase();  //convert status value to lowercase... 
 
         if (!validStatuses.includes(lowercaseStatuses)) {  //...then match with validStatuses value
@@ -162,14 +163,14 @@ export const updateJobStatus = async (req, res) => {
         }
 
         //update the status
-        application.status = status.toLowerCase();
+        application.status = status;
         await application.save();
 
         return res.status(200).json({
             message: "Job status updated successfully",
-            success: true
+            success: true,
+            application
         });
-
 
     } catch (error) {
         console.log(error);

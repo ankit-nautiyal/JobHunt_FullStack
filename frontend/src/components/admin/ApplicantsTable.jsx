@@ -1,11 +1,31 @@
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { MoreHorizontal } from "lucide-react"
+import axios from "axios";
+import { APPLICATION_API_ENDPOINT } from "@/utils/constants";
+import { toast } from "sonner";
+// import { setAllApplicants } from "@/redux/applicationSlice";
 
+const shortlistingStatus = ["✅Accepted", "❌Rejected"];
 
 const ApplicantsTable = () => {
-    const { allApplicants } = useSelector(store => store.application)
+    const { allApplicants } = useSelector(store => store.application);
+    // const dispatch= useDispatch();
+
+    const handleStatus = async (status, id) => {
+        try {
+            axios.defaults.withCredentials = true;
+            const res = await axios.patch(`${APPLICATION_API_ENDPOINT}/${id}/status`, { status });
+            if (res.data.success) {
+                toast.success(res.data.message);
+                // dispatch(setAllApplicants(res?.data?.application));
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.data.message);
+        }
+    }
 
     return (
         <div>
@@ -17,13 +37,14 @@ const ApplicantsTable = () => {
                         <TableHead>Email</TableHead>
                         <TableHead>Contact</TableHead>
                         <TableHead>Resume</TableHead>
-                        <TableHead>Application Received On</TableHead>
+                        <TableHead>Received On</TableHead>
+                        <TableHead>Status</TableHead>
                         <TableHead className='text-right'>Action</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {
-                        allApplicants && allApplicants?.applications?.map((application) => (
+                        allApplicants && allApplicants?.applications?.map((application) => (  // 'allApplicants' is basically the job objectin actual
                             <tr key={application?._id}>
                                 <TableCell>{application?.applicant?.fullName}</TableCell>
                                 <TableCell>{application?.applicant?.email}</TableCell>
@@ -31,42 +52,37 @@ const ApplicantsTable = () => {
                                 <TableCell>
                                     {
                                         application?.applicant?.profile?.resume ? (
-                                            <a href={application?.applicant?.profile?.resume} className="text-blue-600 " target="_blank" rel="noreferrer" >{application?.applicant?.profile?.resumeOriginalName}</a> 
+                                            <a href={application?.applicant?.profile?.resume} className="text-blue-600 " target="_blank" rel="noreferrer" >{application?.applicant?.profile?.resumeOriginalName}</a>
                                         ) : (
                                             <span>NA</span>
                                         )
                                     }
-                                        
+
                                 </TableCell>
                                 <TableCell>
                                     {new Date(application?.createdAt).toLocaleDateString("en-IN", {
                                         day: "2-digit",
                                         month: "2-digit",
-                                        year: "numeric", 
+                                        year: "numeric",
                                         hour: "2-digit",
                                         minute: "2-digit",
                                         timeZone: "Asia/Kolkata",
                                     })}
                                 </TableCell>
+                                <TableCell> {application?.status}</TableCell>
                                 <TableCell className='text-right' >
                                     <Popover>
                                         <PopoverTrigger className='cursor-pointer'> <MoreHorizontal /></PopoverTrigger>
                                         <PopoverContent className='w-32'>
                                             {
-                                                [1,2].map((status, index)=>{
-                                                    return(
-                                                        <div key={index} className="flex w-fit items-center my-2 cursor-pointer">
+                                                shortlistingStatus.map((status, index) => {
+                                                    return (
+                                                        <div onClick={() => handleStatus(status, application?._id)} key={index} className="flex w-fit items-center my-2 cursor-pointer">
                                                             <span>{status}</span>
                                                         </div>
                                                     )
                                                 })
                                             }
-                                            {/* <div className='flex items-center gap-2 w-fit cursor-pointer'>
-                                                <span>✅ Accept</span>
-                                            </div>
-                                            <div className='flex items-center gap-2 w-fit cursor-pointer'>
-                                                <span>❌ Reject</span>
-                                            </div> */}
                                         </PopoverContent>
                                     </Popover>
                                 </TableCell>
