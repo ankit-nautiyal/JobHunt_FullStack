@@ -8,11 +8,12 @@ import { Contact, Mail, Pen } from 'lucide-react'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
-const haveResume = true;
+
 
 const Profile = () => {
     const [open, setOpen] = useState(false);
-    const {user} = useSelector(store=> store.auth);
+    const { user } = useSelector(store => store.auth);
+    const haveResume = user?.profile?.resume;
 
     return (
         <div>
@@ -20,7 +21,7 @@ const Profile = () => {
                 <div className='flex justify-between'>
                     <div className='flex items-center gap-4'>
                         <Avatar className='h-24 w-24'>
-                            <AvatarImage src={user?.profile?.profilePhoto?.trim() || "user_placeholder_pic.jpg"}/>
+                            <AvatarImage src={user?.profile?.profilePhoto?.trim() || "user_placeholder_pic.jpg"} />
                         </Avatar>
 
                         <div>
@@ -28,7 +29,7 @@ const Profile = () => {
                             <p>{user?.profile?.bio}</p>
                         </div>
                     </div>
-                    <Button onClick={()=> setOpen(true)} className="text-right cursor-pointer" variant="outline"> <Pen /> </Button>
+                    <Button onClick={() => setOpen(true)} className="text-right cursor-pointer" variant="outline"> <Pen /> </Button>
                 </div>
                 <div className='my-5'>
                     <div className='flex items-center gap-3 my-2'>
@@ -66,7 +67,7 @@ const Profile = () => {
                 <h1 className='font-bold text-lg my-5'>Applied Jobs</h1>
                 <AppliedJobsTable />
             </div>
-            <UpdateProfileDialog open={open} setOpen={setOpen}/>
+            <UpdateProfileDialog open={open} setOpen={setOpen} />
         </div>
     )
 }

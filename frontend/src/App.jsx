@@ -12,8 +12,10 @@ import Companies from '@/pages/admin/Companies';
 import CompanySetup from '@/pages/admin/CompanySetup';
 import AdminJobs from '@/pages/admin/AdminJobs';
 import PostJob from '@/pages/admin/PostJob';
+import Applicants from '@/pages/admin/Applicants';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
+
 
 
 
@@ -33,15 +35,16 @@ function App() {
               <Route path='/login' element={<Login />}></Route>
               <Route path='/signup' element={<Signup />}></Route>
               <Route path='/profile' element={<Profile />}></Route>
-              <Route path='jobs/:id/description' element={<JobDescription />}></Route>
-              <Route path='browse/:id/description' element={<JobDescription />}></Route>
+              <Route path='/jobs/:id/description' element={<JobDescription />}></Route>
+              <Route path='/browse/:id/description' element={<JobDescription />}></Route>
 
               //FOR ADMIN/RECRUITER
-              <Route path='admin/companies' element={<Companies />}></Route>
-              <Route path='admin/companies/create' element={<CompanyCreate />}></Route>
-              <Route path='admin/companies/:id' element={<CompanySetup />}></Route>
-              <Route path='admin/jobs' element={<AdminJobs />}></Route>
-              <Route path='admin/jobs/create' element={<PostJob />}></Route>
+              <Route path='/admin/companies' element={<Companies />}></Route>
+              <Route path='/admin/companies/create' element={<CompanyCreate />}></Route>
+              <Route path='/admin/companies/:id' element={<CompanySetup />}></Route>
+              <Route path='/admin/jobs' element={<AdminJobs />}></Route>
+              <Route path='/admin/jobs/create' element={<PostJob />}></Route>
+              <Route path='/admin/jobs/:id/applicants' element={<Applicants />}></Route>
             </Routes>
           </main>
 
