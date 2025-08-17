@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom'
 const Job = ({ job }) => {
     const navigate = useNavigate();
 
-
     //calculate how many days ago the job was created/posted
     const daysAgoFunction = (mongodbTime) => {
         const createdAt = new Date(mongodbTime);  //time at which job was created
@@ -31,7 +30,7 @@ const Job = ({ job }) => {
             <div className='flex items-center gap-2 my-2'>
                 <Button className='p-6' variant='outline' size='icon'>
                     <Avatar>
-                        <AvatarImage src="https://static.vecteezy.com/system/resources/previews/047/656/219/non_2x/abstract-logo-design-for-any-corporate-brand-business-company-vector.jpg" />
+                        <AvatarImage src={job?.company?.logo || "company_placeholder_logo.svg"}  alt='company_logo' />
                     </Avatar>
                 </Button>
                 <div>
@@ -46,7 +45,7 @@ const Job = ({ job }) => {
             </div>
 
             <div className='flex items-center gap-2 mt-4'>
-                <Badge className={'text-green-600 font-bold'} variant={'ghost'}>{job?.vacancies} Positions</Badge>
+                <Badge className={'text-green-600 font-bold'} variant={'ghost'}>{job?.positions} Positions</Badge>
                 <Badge className={'text-[#F83002] font-bold'} variant={'ghost'}>{job?.jobType}</Badge>
                 <Badge className={'text-[#6A38C2]  font-bold'} variant={'ghost'}>{job?.salary} LPA</Badge>
             </div>
