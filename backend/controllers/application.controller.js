@@ -5,7 +5,7 @@ import { Job } from "../models/job.model.js";
 export const applyJob = async (req, res) => {
     try {
         const userId = req.id; //from isLoggedIn middleware
-        const jobId = req.params.id;
+        const jobId = req.params.id; //or const { jobId } = req.params; 
 
         if (!jobId) {
             return res.status(400).json({
@@ -98,7 +98,7 @@ export const getApplicants = async (req, res) => {
     try {
         const jobId = req.params.id;
 
-        const jobs = await Job.findById(jobId).populate({
+        const job = await Job.findById(jobId).populate({
             path: "applications",
             options: { sort: { createdAt: -1 } },
             populate: {
@@ -106,7 +106,7 @@ export const getApplicants = async (req, res) => {
             }
         });
 
-        if (!jobs) {
+        if (!job) {
             return res.status(404).json({
                 message: "Job not found",
                 success: false
@@ -114,7 +114,7 @@ export const getApplicants = async (req, res) => {
         }
 
         return res.status(200).json({
-            jobs,
+            job,
             success: true
         });
 
