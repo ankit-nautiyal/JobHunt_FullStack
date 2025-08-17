@@ -63,13 +63,13 @@ const JobDescription = () => {
                 <div>
                     <h1 className='font-bold text-xl'>{singleJob?.title}</h1>
                     <div className='flex items-center gap-2 mt-4'>
-                        <Badge className={'text-green-600 font-bold'} variant={'ghost'}>{singleJob?.vacancies} Positions</Badge>
+                        <Badge className={'text-green-600 font-bold'} variant={'ghost'}>{singleJob?.positions} Positions</Badge>
                         <Badge className={'text-[#F83002] font-bold'} variant={'ghost'}>{singleJob?.jobType}</Badge>
                         <Badge className={'text-[#6A38C2]  font-bold'} variant={'ghost'}>{singleJob?.salary} LPA</Badge>
                     </div>
                 </div>
                 <Button
-                    onClick={isApplied ? null : handleApplyJob}
+                    onClick={handleApplyJob}
                     disabled={isApplied}
                     className={`rounded-lg ${isApplied ? 'cursor-not-allowed' : 'bg-[#7e5db7] cursor-pointer hover:bg-[#9983bc]'}`}
                 >
