@@ -7,11 +7,11 @@ import { useEffect, useState } from 'react'
 
 
 const AdminJobsTable = () => {
-    const {allAdminJobs, searchJobsByText}= useSelector(store=> store.job)
+    const { allAdminJobs, searchJobsByText } = useSelector(store => store.job)
     const [filterJobs, setFilterJobs] = useState(allAdminJobs);
 
     useEffect(() => {
-        const filteredJobs= allAdminJobs.length >= 0 && allAdminJobs.filter((job)=>{
+        const filteredJobs = allAdminJobs.length >= 0 && allAdminJobs.filter((job) => {
             if (!searchJobsByText) {
                 return true;  //return existing all companies if no fiter search text
             }
@@ -19,9 +19,9 @@ const AdminJobsTable = () => {
         });
         setFilterJobs(filteredJobs);
     }, [allAdminJobs, searchJobsByText])
-    
 
-    const navigate= useNavigate();
+
+    const navigate = useNavigate();
     return (
         <div>
             <Table>
@@ -40,16 +40,23 @@ const AdminJobsTable = () => {
                             <tr key={job?._id}>
                                 <TableCell>{job?.company?.companyName}</TableCell>
                                 <TableCell>{job?.title}</TableCell>
-                                <TableCell>{job?.createdAt?.split('T')[0]}</TableCell>
+                                <TableCell>
+                                    {new Date(job?.createdAt).toLocaleDateString("en-IN", {
+                                        day: "2-digit",
+                                        month: "2-digit",
+                                        year: "numeric",
+                                        timeZone: "Asia/Kolkata",
+                                    })}
+                                </TableCell>
                                 <TableCell className='text-right' >
                                     <Popover>
                                         <PopoverTrigger className='cursor-pointer'> <MoreHorizontal /></PopoverTrigger>
                                         <PopoverContent className='w-32'>
-                                            <div onClick={()=> navigate(`/admin/jobs/${job._id}`)} className='flex items-center gap-2 w-fit cursor-pointer'>
+                                            <div onClick={() => navigate(`/admin/jobs/${job._id}`)} className='flex items-center gap-2 w-fit cursor-pointer'>
                                                 <Edit2 className='w-4' />
                                                 <span>Edit</span>
                                             </div>
-                                            <div onClick={()=> navigate(`/admin/jobs/${job._id}/applicants`)} className='flex items-center gap-2 w-fit cursor-pointer'>
+                                            <div onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)} className='flex items-center gap-2 w-fit cursor-pointer'>
                                                 <Eye className='w-4' />
                                                 <span>Applicants</span>
                                             </div>
