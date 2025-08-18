@@ -22,7 +22,7 @@ const Applicants = () => {
                 console.log(res.data);
                 
                 if (res.data.success) {
-                    dispatch(setAllApplicants(res?.data?.job));
+                    dispatch(setAllApplicants(res.data.job));
                 }
             } catch (error) {
                 console.log(error);
