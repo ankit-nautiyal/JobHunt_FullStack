@@ -5,12 +5,6 @@ import { useSelector } from 'react-redux'
 const AppliedJobsTable = () => {
     const { allAppliedJobs } = useSelector(store => store.job);
 
-    const getStatusWithEmoji = (status) => {
-        if (status === "Accepted") return `✅ ${status}`;
-        if (status === "Rejected") return `❌ ${status}`;
-        if (status === "Pending") return `⌛ ${status}`;
-        return status;
-    };
 
     return (
         <div>
@@ -41,7 +35,11 @@ const AppliedJobsTable = () => {
                                     </TableCell>
                                     <TableCell>{appliedJob?.job?.title}</TableCell>
                                     <TableCell>{appliedJob?.job?.company?.companyName}</TableCell>
-                                    <TableCell > <Badge className={  `${appliedJob?.status === "Rejected" ? 'bg-red-600' : appliedJob?.status === 'Pending' ? 'bg-gray-600' : 'bg-green-600'}`} > {getStatusWithEmoji(appliedJob?.status)}</Badge></TableCell>
+                                    <TableCell >
+                                        <Badge className={`${appliedJob?.status === "Rejected" ? 'bg-red-600' : appliedJob?.status === 'Pending' ? 'bg-gray-600' : 'bg-green-600'}`} >
+                                            {appliedJob?.status?.toUpperCase()}
+                                        </Badge>
+                                    </TableCell>
                                 </TableRow>
                             ))
                         )

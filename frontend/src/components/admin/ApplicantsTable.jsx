@@ -6,13 +6,20 @@ import axios from "axios";
 import { APPLICATION_API_ENDPOINT } from "@/utils/constants";
 import { toast } from "sonner";
 import { setAllApplicants } from "@/redux/applicationSlice";
+import { Badge } from "../ui/badge";
 
 
-const shortlistingStatus = ["Accepted", "Rejected"];
+const shortlistingStatus = ["Accepted", "Rejected", "Pending"];
 
 const ApplicantsTable = () => {
     const { allApplicants } = useSelector(store => store.application);
-    const dispatch= useDispatch();
+    const dispatch = useDispatch();
+    const getStatusWithEmoji = (status) => {
+        if (status === "Accepted") return `✅ ${status}`;
+        if (status === "Rejected") return `❌ ${status}`;
+        if (status === "Pending") return `⌛ ${status}`;
+        return status;
+    };
 
     const handleStatus = async (status, id) => {
         try {
@@ -38,14 +45,6 @@ const ApplicantsTable = () => {
             toast.error(error.response?.data?.message || "Something went wrong");
         }
     }
-
-    const getStatusWithEmoji = (status) => {
-        if (status === "Accepted") return `✅ ${status}`;
-        if (status === "Rejected") return `❌ ${status}`;
-        if (status === "Pending") return `⌛ ${status}`;
-        return status;
-    };
-
 
     return (
         <div>
@@ -89,16 +88,20 @@ const ApplicantsTable = () => {
                                         timeZone: "Asia/Kolkata",
                                     })}
                                 </TableCell>
-                                <TableCell> {getStatusWithEmoji(application?.status)}</TableCell>
+                                <TableCell>
+                                    <Badge className={`${application?.status === "Rejected" ? 'bg-red-600' : application?.status === 'Pending' ? 'bg-gray-600' : 'bg-green-600'}`} >
+                                        {application?.status?.toUpperCase()}
+                                    </Badge>
+                                </TableCell>
                                 <TableCell className='text-right' >
                                     <Popover>
                                         <PopoverTrigger className='cursor-pointer'> <MoreHorizontal /></PopoverTrigger>
                                         <PopoverContent className='w-32'>
                                             {
-                                                shortlistingStatus.map((rawStatus, index) => {
+                                                shortlistingStatus.map((status, index) => {
                                                     return (
-                                                        <div onClick={() => handleStatus(rawStatus, application?._id)} key={index} className="flex w-fit items-center my-2 cursor-pointer">
-                                                             <span> {getStatusWithEmoji(rawStatus)}</span>  {/* Only UI gets emoji, it's not being passed in the DB using handleStatus fn  */}
+                                                        <div onClick={() => handleStatus(status, application?._id)} key={index} className="flex w-fit items-center my-2 cursor-pointer">
+                                                            <span> {getStatusWithEmoji(status)}</span>
                                                         </div>
                                                     )
                                                 })
