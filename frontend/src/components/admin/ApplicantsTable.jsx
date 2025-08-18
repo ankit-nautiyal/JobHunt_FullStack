@@ -89,7 +89,7 @@ const ApplicantsTable = () => {
                                     })}
                                 </TableCell>
                                 <TableCell>
-                                    <Badge className={`${application?.status === "Rejected" ? 'bg-red-600' : application?.status === 'Pending' ? 'bg-gray-600' : 'bg-green-600'}`} >
+                                    <Badge className={`rounded-full ${application?.status === "Rejected" ? 'bg-red-600' : application?.status === 'Pending' ? 'bg-gray-600' : 'bg-green-600'}`} >
                                         {application?.status?.toUpperCase()}
                                     </Badge>
                                 </TableCell>
