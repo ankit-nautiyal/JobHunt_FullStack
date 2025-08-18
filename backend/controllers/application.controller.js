@@ -142,11 +142,15 @@ export const updateApplicationStatus = async (req, res) => {
             })
         }
 
-        //just for backend validation
-        const validStatuses = ["⌛pending", "✅accepted", "❌rejected"];
-        const lowercaseStatuses = req.body.status?.toLowerCase();  //convert status value to lowercase... 
+        // normalize incoming status to match schema enum ('Pending','Accepted','Rejected')
+        const mapping = {
+            pending: "Pending",
+            accepted: "Accepted",
+            rejected: "Rejected"
+        };
+        const normalized = mapping[String(status).toLowerCase()];
 
-        if (!validStatuses.includes(lowercaseStatuses)) {  //...then match with validStatuses value
+        if (!normalized) {  //...then match with validStatuses value
             return res.status(400).json({
                 message: "Invalid status value",
                 success: false
@@ -154,7 +158,15 @@ export const updateApplicationStatus = async (req, res) => {
         }
 
         // find the application by application id
-        const application = await Application.findOne({ _id: applicationId });
+        const application = await Application.findByIdAndUpdate(
+            applicationId,
+            {status: normalized},
+            {new: true, runValidators: true}
+        ).populate({
+            path: "applicant",
+            select: "-password"
+        });
+
         if (!application) {
             return res.status(404).json({
                 message: "Application not found.",
