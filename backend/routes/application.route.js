@@ -5,7 +5,7 @@ import { applyJob, getApplicants, getAppliedJobs, updateApplicationStatus } from
 const router = express.Router();
 
 router.route("/:id").post(isAuthenticated, applyJob)  // Apply for a new job
-router.route("/").get(isAuthenticated, getAppliedJobs);     // Get all applied jobs
+router.route("/").get(isAuthenticated, getAppliedJobs);     // Get all applied jobs for the applicant
 router.route("/:id/applicants").get(isAuthenticated, getApplicants);   // Get all applicants of a job
 router.route("/:id/status").patch(isAuthenticated, updateApplicationStatus);  // Update application status
 
