@@ -28,8 +28,8 @@ const AdminJobsTable = () => {
                 <TableCaption>List of your posted jobs</TableCaption>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Company Name</TableHead>
-                        <TableHead>Role</TableHead>
+                        <TableHead>Company</TableHead>
+                        <TableHead>Job Role</TableHead>
                         <TableHead>Posted On</TableHead>
                         <TableHead className='text-right'>Action</TableHead>
                     </TableRow>
@@ -38,7 +38,10 @@ const AdminJobsTable = () => {
                     {
                         filterJobs?.map((job) => (
                             <tr key={job?._id}>
-                                <TableCell>{job?.company?.companyName}</TableCell>
+                                <TableCell className='flex gap-2'> 
+                                    <img src={job?.company?.logo}  className="w-5.5 h-5.5 rounded-full object-cover" alt="logo" /> 
+                                    <span>{job?.company?.companyName}</span>
+                                </TableCell>
                                 <TableCell>{job?.title}</TableCell>
                                 <TableCell>
                                     {new Date(job?.createdAt).toLocaleDateString("en-IN", {
