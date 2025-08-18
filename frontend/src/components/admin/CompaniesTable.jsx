@@ -45,7 +45,14 @@ const CompaniesTable = () => {
                                     </Avatar>
                                 </TableCell>
                                 <TableCell>{company?.companyName}</TableCell>
-                                <TableCell>{company?.createdAt?.split('T')[0]}</TableCell>
+                                <TableCell>
+                                    {new Date(company?.createdAt).toLocaleDateString("en-IN", {
+                                        day: "2-digit",
+                                        month: "2-digit",
+                                        year: "numeric",
+                                        timeZone: "Asia/Kolkata",
+                                    })}
+                                </TableCell>
                                 <TableCell className='text-right' >
                                     <Popover>
                                         <PopoverTrigger className='cursor-pointer'> <MoreHorizontal /></PopoverTrigger>
