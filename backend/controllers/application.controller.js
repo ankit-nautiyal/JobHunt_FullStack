@@ -57,7 +57,7 @@ export const applyJob = async (req, res) => {
     }
 }
 
-//GET ALL APPLIED JOBS (for the student/applicant)
+//GET ALL (APPLICATIONS OF) THE APPLIED JOBS (for the applicant)
 export const getAppliedJobs = async (req, res) => {
     try {
         const userId = req.id; //from isAuthenticated middleware
@@ -72,7 +72,7 @@ export const getAppliedJobs = async (req, res) => {
 
         if (!applications) {
             return res.status(404).json({
-                message: "No applications",
+                message: "No applications found",
                 success: false
             })
         }
@@ -87,7 +87,7 @@ export const getAppliedJobs = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             message: "Error fetching applied jobs",
-            success: true,
+            success: false,
             error: error.message,
         });
     }
