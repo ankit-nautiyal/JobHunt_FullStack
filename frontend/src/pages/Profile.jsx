@@ -4,17 +4,18 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import UpdateProfileDialog from '@/components/UpdateProfileDialog'
+import useGetAppliedJobs from '@/hooks/useGetAppliedJobs'
 import { Contact, Mail, Pen } from 'lucide-react'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 
-
 const Profile = () => {
+    useGetAppliedJobs();
     const [open, setOpen] = useState(false);
     const { user } = useSelector(store => store.auth);
     const haveResume = user?.profile?.resume;
-
+    
     return (
         <div>
             <div className='max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8'>
