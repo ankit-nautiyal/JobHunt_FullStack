@@ -4,10 +4,10 @@ import { getAdminJobs, getAllJobs, getJobById, postJob } from "../controllers/jo
 
 const router = express.Router();
 
-router.route("/").get(isAuthenticated, getAllJobs)  // Get all jobs
-                 .post(isAuthenticated, postJob)  // Post a new job
-router.route("/admin/jobs").get(isAuthenticated, getAdminJobs);  // GET ALL JOBS CREATED BY ADMIN/RECRUITER
-router.route("/:id").get(isAuthenticated, getJobById)   // Get a single job by ID
+router.route("/").get( getAllJobs)  // Get all jobs (anyone can see all jobs posted on the platform)
+                 .post(isAuthenticated, postJob)  // Post a new job (for admin)
+router.route("/admin/jobs").get(isAuthenticated, getAdminJobs);  // GET ALL JOBS CREATED BY ADMIN/RECRUITER (for admin)
+router.route("/:id").get( getJobById)   // Get a single job by ID
 
 export default router;
 
