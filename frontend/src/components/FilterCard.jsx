@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setSearchedQuery } from '@/redux/jobSlice';
 import { RefreshCw } from 'lucide-react';
-import { validators } from 'tailwind-merge';
 
 const filterData = [
     {

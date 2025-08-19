@@ -218,7 +218,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                         </div> */}
                         <DialogFooter>
                             {
-                                loading ? <Button className='w-full my-4'> <Loader2 className='mr-2 w-4 h-4 animate-spin' /> Please wait...</Button> : <Button type='submit' className='w-full my-4 cursor-pointer'>Save</Button>
+                                loading ? <Button disabled className='w-full my-4'> <Loader2 className='mr-2 w-4 h-4 animate-spin' /> Please wait...</Button> : <Button type='submit' className='w-full my-4 cursor-pointer'>Save</Button>
                             }
                         </DialogFooter>
                     </form>
