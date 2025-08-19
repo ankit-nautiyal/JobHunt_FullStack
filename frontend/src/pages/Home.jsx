@@ -5,6 +5,7 @@ import LatestJobs from '../components/LatestJobs'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import { setSearchedQuery } from '@/redux/jobSlice'
 
 const Home = () => {
     useGetAllJobs();
@@ -15,6 +16,7 @@ const Home = () => {
         if (user?.role === "recruiter") {
             navigate('/admin/companies')
         }
+        setSearchedQuery("");
     }, [navigate, user?.role])  //just to avoid ESLint error o/w [] would also work
     
     return (

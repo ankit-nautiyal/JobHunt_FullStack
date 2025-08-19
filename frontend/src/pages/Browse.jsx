@@ -3,15 +3,15 @@ import useGetAllJobs from '@/hooks/useGetAllJobs';
 import { setSearchedQuery } from '@/redux/jobSlice';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { motion } from 'framer-motion';
 
 const Browse = () => {
     useGetAllJobs();
-    const dispatch= useDispatch();
+    const dispatch = useDispatch();
     const { allJobs } = useSelector(store => store.job);  //fetch the latest availabel jobs from the redux store
-    
-    useEffect(()=>{
-        return ()=>{
+
+    useEffect(() => {
+        return () => {
             dispatch(setSearchedQuery(""));
         }
     })
@@ -24,7 +24,15 @@ const Browse = () => {
                     {
                         allJobs.map((job) => {
                             return (
-                                <Job key={job._id} job={job} />
+                                <motion.div
+                                    key={job._id}
+                                    initial={{ opacity: 0, x: 100 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -100 }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    <Job job={job} />
+                                </motion.div>
                             )
                         })
                     }
