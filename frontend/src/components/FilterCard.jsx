@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setSearchedQuery } from '@/redux/jobSlice';
 import { RefreshCw } from 'lucide-react';
+import { validators } from 'tailwind-merge';
 
 const filterData = [
     {
@@ -20,28 +21,32 @@ const filterData = [
     // },
 ]
 
-const FilterCard = () => {
+const FilterCard = ({ useGlobal = true, onChange }) => {
     const [selectedValue, setSelectedValue] = useState("");
     const dispatch = useDispatch();
 
-    const handleChange=(value)=>{
+
+    useEffect(() => {
+        if (useGlobal) {
+            dispatch(setSearchedQuery(selectedValue));
+        } else if (typeof onChange === "function") {
+            onChange(selectedValue);
+        }
+    }, [dispatch, selectedValue, useGlobal, onChange]);
+
+    const handleChange = (value) => {
         setSelectedValue(value);
     }
 
     const handleResetFilter = () => {
         setSelectedValue("");
-        dispatch(setSearchedQuery(""));   // clear global search used by JobsPage
     }
-
-    useEffect(()=>{
-        dispatch(setSearchedQuery(selectedValue));
-    },[dispatch, selectedValue]);
 
     return (
         <div className='w-full bg-white p-3 rounded-md'>
             <h1 className='flex font-bold text-lg gap-2 items-center'>
                 <span>Filter Jobs</span>
-                <span onClick={handleResetFilter} className='cursor-pointer w-5 h-5'> <RefreshCw/></span>    
+                <span onClick={handleResetFilter} className='cursor-pointer w-5 h-5'> <RefreshCw /></span>
             </h1>
             <hr className='mt-3' />
             <RadioGroup value={selectedValue} onValueChange={handleChange}>
@@ -51,7 +56,7 @@ const FilterCard = () => {
                             <h1 className='font-bold text-lg'>{data.fitlerType}</h1>
                             {
                                 data.array.map((item, idx) => {
-                                    const itemId = `id${index}-${idx}`; 
+                                    const itemId = `id${index}-${idx}`;
                                     return (
                                         <div className='flex space-x-2 my-2 items-center'>
                                             <RadioGroupItem className={'cursor-pointer'} value={item} id={itemId} />
@@ -68,4 +73,4 @@ const FilterCard = () => {
     )
 }
 
-export default FilterCard
+export default FilterCard;

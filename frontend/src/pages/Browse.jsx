@@ -14,7 +14,7 @@ const Browse = () => {
         return () => {
             dispatch(setSearchedQuery(""));
         }
-    })
+    },[dispatch])
 
     return (
         <div>
