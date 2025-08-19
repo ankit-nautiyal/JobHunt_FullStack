@@ -3,7 +3,7 @@ import { loginSchema } from '@/schema/authSchema'
 import { USER_API_ENDPOINT } from '@/utils/constants'
 import axios from 'axios'
 import { Loader2 } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -22,10 +22,15 @@ const Login = () => {
     })
 
     const [errors, setErrors] = useState({});
-
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {loading} = useSelector(store=> store.auth);
+    const { loading, user } = useSelector(store => store.auth);
+
+    useEffect(() => {
+        if (user) {
+            navigate('/');
+        }
+    }, [navigate, user])
 
     const handleFormChange = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
@@ -33,7 +38,7 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         //for form-validation using zod
         const result = loginSchema.safeParse(input);
         if (!result.success) {
@@ -54,13 +59,14 @@ const Login = () => {
 
             if (res.data.success) {
                 dispatch(setUser(res.data.user));
-                navigate('/');
+                const dest = res.data.user?.role === 'recruiter' ? '/admin/companies' : '/';
+                navigate(dest);
                 toast.success(res.data.message);
             }
         } catch (error) {
             console.log(error);
             toast.error(error?.response?.data?.message || "Login failed. Please try again.");
-        } finally{
+        } finally {
             dispatch(setLoading(false));
         }
     }
@@ -125,7 +131,7 @@ const Login = () => {
                     </div>
 
                     {
-                        loading ? <Button disabled className='w-full my-4'> <Loader2 className='mr-2 w-4 h-4 animate-spin'/> Please wait...</Button> :  <Button type='submit' className='w-full my-4 cursor-pointer'>Login</Button>
+                        loading ? <Button disabled className='w-full my-4'> <Loader2 className='mr-2 w-4 h-4 animate-spin' /> Please wait...</Button> : <Button type='submit' className='w-full my-4 cursor-pointer'>Login</Button>
                     }
 
                     <span className='text-sm'>Don't have an account? <Link to='/signup' className='text-blue-600 hover:underline'>Signup</Link></span>

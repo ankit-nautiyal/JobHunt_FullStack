@@ -6,8 +6,9 @@ import { Label } from '@/components/ui/label'
 import UpdateProfileDialog from '@/components/UpdateProfileDialog'
 import useGetAppliedJobs from '@/hooks/useGetAppliedJobs'
 import { Contact, Mail, Pen } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 
 const Profile = () => {
@@ -15,6 +16,13 @@ const Profile = () => {
     const [open, setOpen] = useState(false);
     const { user } = useSelector(store => store.auth);
     const haveResume = user?.profile?.resume;
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user || user?.role === 'recruiter') {
+            navigate('/')
+        }
+    }, [navigate, user])
     
     return (
         <div>

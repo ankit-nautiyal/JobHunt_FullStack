@@ -1,6 +1,7 @@
 import Footer from '@/components/shared/Footer';
 import Navbar from '@/components/shared/Navbar';
 import CompanyCreate from '@/components/admin/CompanyCreate';
+import ProtectedRoute from '@/components/admin/ProtectedRoute';
 import Login from '@/pages/auth/Login';
 import Signup from '@/pages/auth/Signup';
 import Home from '@/pages/Home';
@@ -15,6 +16,7 @@ import PostJob from '@/pages/admin/PostJob';
 import Applicants from '@/pages/admin/Applicants';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
+
 
 
 
@@ -39,12 +41,12 @@ function App() {
               <Route path='/browse/:id/description' element={<JobDescription />}></Route>
 
               //FOR ADMIN/RECRUITER
-              <Route path='/admin/companies' element={<Companies />}></Route>
-              <Route path='/admin/companies/create' element={<CompanyCreate />}></Route>
-              <Route path='/admin/companies/:id' element={<CompanySetup />}></Route>
-              <Route path='/admin/jobs' element={<AdminJobs />}></Route>
-              <Route path='/admin/jobs/create' element={<PostJob />}></Route>
-              <Route path='/admin/jobs/:id/applicants' element={<Applicants />}></Route>
+              <Route path='/admin/companies' element={<ProtectedRoute> <Companies /> </ProtectedRoute> }> </Route>
+              <Route path='/admin/companies/create' element={<ProtectedRoute> <CompanyCreate /> </ProtectedRoute> }> </Route>
+              <Route path='/admin/companies/:id' element={ <ProtectedRoute> <CompanySetup /> </ProtectedRoute>}> </Route>
+              <Route path='/admin/jobs' element={<ProtectedRoute> <AdminJobs /> </ProtectedRoute>}> </Route>
+              <Route path='/admin/jobs/create' element={<ProtectedRoute> <PostJob /> </ProtectedRoute>}> </Route>
+              <Route path='/admin/jobs/:id/applicants' element={<ProtectedRoute> <Applicants /> </ProtectedRoute>}> </Route>
             </Routes>
           </main>
 

@@ -3,7 +3,7 @@ import { signupSchema } from '@/schema/authSchema'
 import { USER_API_ENDPOINT } from '@/utils/constants'
 import axios from 'axios'
 import { Loader2 } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -27,13 +27,19 @@ const Signup = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { loading } = useSelector(store => store.auth);
+    const { loading, user } = useSelector(store => store.auth);
+    
+    useEffect(() => {
+        if (user) {
+            navigate('/');
+        }
+    }, [navigate, user])
 
     //for handling form input data
     const handleFormChange = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     }
-    
+
     //for handling profile pic 
     const handleFormFileChange = (e) => {
         setInput({ ...input, file: e.target.files?.[0] });
@@ -65,12 +71,12 @@ const Signup = () => {
         try {
             dispatch(setLoading(true));
             //axios.post(url, data, config);
-            const res = await axios.post(`${USER_API_ENDPOINT}/auth/register`, formData, { 
-                    headers: {
-                        "Content-Type": "multipart/form-data"   //Lets the backend know we're sending some file data (like png, jpeg, etc)
-                    },
-                    withCredentials: true  //to include cookies (like token) from backend in the request
-                }
+            const res = await axios.post(`${USER_API_ENDPOINT}/auth/register`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"   //Lets the backend know we're sending some file data (like png, jpeg, etc)
+                },
+                withCredentials: true  //to include cookies (like token) from backend in the request
+            }
             );
 
             if (res.data.success) {
@@ -80,7 +86,7 @@ const Signup = () => {
         } catch (error) {
             console.log(error);
             toast.error(error.response.data.message || "Signup failed. Please try again.");
-        } finally{
+        } finally {
             dispatch(setLoading(false));
         }
     }
