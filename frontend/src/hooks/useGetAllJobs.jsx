@@ -2,16 +2,17 @@ import { setAllJobs } from '@/redux/jobSlice'
 import { JOB_API_ENDPOINT } from '@/utils/constants'
 import axios from 'axios'
 import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const useGetAllJobs = () => {
     const dispatch= useDispatch();
+    const { searchedQuery } = useSelector(store => store.job);
 
     useEffect(()=>{
         const fetchAllJobs= async ()=>{
             try {
                 //axios.get(url, config);
-                const res= await axios.get(`${JOB_API_ENDPOINT}`, {withCredentials: true} );
+                const res= await axios.get(`${JOB_API_ENDPOINT}?keyword=${searchedQuery}`, {withCredentials: true} );
                 if (res.data.success) {
                     dispatch(setAllJobs(res.data.jobs));
                 }
@@ -20,7 +21,7 @@ const useGetAllJobs = () => {
             }
         }
         fetchAllJobs();
-    },[dispatch])  //*just to align with  to align with common ESLint practice, o/w [] would also work the same
+    },[dispatch, searchedQuery])  //*just to align with  to align with common ESLint practice, o/w [] would also work the same
 }
 
 export default useGetAllJobs
