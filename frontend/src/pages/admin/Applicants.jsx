@@ -19,8 +19,6 @@ const Applicants = () => {
         const fetchAllApplicants = async () => {
             try {
                 const res = await axios.get(`${APPLICATION_API_ENDPOINT}/${params.id}/applicants`, { withCredentials: true });
-                console.log(res.data);
-                
                 if (res.data.success) {
                     dispatch(setAllApplicants(res.data.job));
                 }
