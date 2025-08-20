@@ -166,7 +166,7 @@ export const logout = async (req, res) => {
             maxAge: 0,
             httpOnly: true,
             sameSite: 'strict',
-            secure: isProduction
+            secure: isProduction //auto-false in dev-mode where https isn't present. cookies(token) won't be trasnmitted if it's http in production
         }).json({
             message: "Logged out successfully",
             success: true

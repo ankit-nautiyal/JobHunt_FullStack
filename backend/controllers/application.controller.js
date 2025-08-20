@@ -174,10 +174,6 @@ export const updateApplicationStatus = async (req, res) => {
             })
         }
 
-        //update the status
-        application.status = status;
-        await application.save();
-
         return res.status(200).json({
             message: "Job status updated successfully",
             success: true,
@@ -189,7 +185,7 @@ export const updateApplicationStatus = async (req, res) => {
 
         return res.status(500).json({
             message: "Error updating job status",
-            success: true,
+            success: false,
             error: error.message,
         });
     }
