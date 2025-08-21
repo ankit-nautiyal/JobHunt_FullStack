@@ -82,6 +82,10 @@ Start frontend:
 ```bash
 npm run dev
 ```
+### ⚙️ Project Structure
+
+<img width="219" height="950" alt="image" src="https://github.com/user-attachments/assets/a2963908-7dcb-4a34-abb4-ce7257cb724b" />
+
 
 ---
 
@@ -122,11 +126,29 @@ npm run dev
 <img width="1919" height="1021" alt="image" src="https://github.com/user-attachments/assets/229de94f-4502-4d26-accf-e6bbd7b797fb" />
 
 
+<img width="1919" height="1013" alt="image" src="https://github.com/user-attachments/assets/2bb0f56b-459a-46d9-b695-8866734498c0" />
 
+<img width="1919" height="1019" alt="image" src="https://github.com/user-attachments/assets/2f1d7ab4-fdad-4b2f-849d-14c1160234e3" />
 
+<img width="1919" height="1025" alt="image" src="https://github.com/user-attachments/assets/4db13182-e813-4b14-aaeb-3884f8944c84" />
 
+<img width="1917" height="1021" alt="image" src="https://github.com/user-attachments/assets/406812a1-680a-4c27-8ef8-0f1ea954d1c1" />
 
+<img width="1919" height="1020" alt="image" src="https://github.com/user-attachments/assets/63be2257-9399-472d-92b2-2a7713780381" />
 
+<img width="1919" height="1018" alt="image" src="https://github.com/user-attachments/assets/5440e55c-615a-4d12-b5ed-9bd289f4fff4" />
+
+<img width="1919" height="1018" alt="image" src="https://github.com/user-attachments/assets/27a33061-99a6-4ceb-8212-0ee497eb0aae" />
+
+<img width="1919" height="1017" alt="image" src="https://github.com/user-attachments/assets/4ba957e8-5184-4ca0-a333-1d3635abe2e7" />
+
+<img width="1919" height="1023" alt="image" src="https://github.com/user-attachments/assets/df2fa633-706d-44bf-bcab-667266fc6da5" />
+
+<img width="1919" height="1020" alt="image" src="https://github.com/user-attachments/assets/b1e9d68d-b126-4b33-95ca-8b145b36305d" />
+
+<img width="1919" height="1021" alt="image" src="https://github.com/user-attachments/assets/4d0d46a4-752b-4597-b5b7-6de605859574" />
+
+<img width="1914" height="1018" alt="image" src="https://github.com/user-attachments/assets/1efa78c9-14fd-45ac-8b08-dbfbbf25708d" />
 
 
 ---
