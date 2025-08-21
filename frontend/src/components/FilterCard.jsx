@@ -8,11 +8,11 @@ import { RefreshCw } from 'lucide-react';
 const filterData = [
     {
         fitlerType: "Location",
-        array: ["Delhi", "Gurugram", "Noida", "Bengaluru", "Hyderabad"]
+        array: ["Delhi", "Gurugram", "Noida", "Bengaluru", "Hyderabad", "Remote"]
     },
     {
         fitlerType: "Role",
-        array: ["Frontend Developer", "Backend Developer", "Fullstack Developer", "SDE-1", "SDE - Intern"]
+        array: ["Frontend Developer", "Backend Developer", "Full Stack Developer", "SDE-1", "Intern"]
     },
     // {
     //     fitlerType: "Salary",
