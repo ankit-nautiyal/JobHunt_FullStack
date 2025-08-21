@@ -29,7 +29,7 @@ const JobsPage = () => {
                 - On small screens: single column, FilterCard appears above job list.
                 - On md and up: two-column layout with 300px sidebar (FilterCard) and job grid on right.
             */}
-            <div className='grid grid-cols-1 md:grid-cols-[300px_1fr] gap-4'>
+            <div className='grid grid-cols-1 md:grid-cols-[200px_1fr] gap-4'>
                 <div>
                     {/* keep FilterCard visible on all screen sizes (not hidden) */}
                     <FilterCard useGlobal={false} onChange={setFilterValue} />

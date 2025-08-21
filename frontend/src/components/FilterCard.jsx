@@ -45,7 +45,7 @@ const FilterCard = ({ useGlobal = true, onChange }) => {
         <div className='w-full bg-white p-3 rounded-md'>
             <h1 className='flex font-bold text-lg gap-2 items-center'>
                 <span>Filter Jobs</span>
-                <span onClick={handleResetFilter} className='cursor-pointer w-5 h-5'> <RefreshCw /></span>
+                <span onClick={handleResetFilter} className='cursor-pointer w-5 h-5'> <RefreshCw className='hover:opacity-70' /></span>
             </h1>
             <hr className='mt-3' />
             <RadioGroup value={selectedValue} onValueChange={handleChange}>

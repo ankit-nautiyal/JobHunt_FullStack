@@ -1,5 +1,5 @@
 import { Button } from './ui/button'
-import { Bookmark } from 'lucide-react'
+import { Bookmark, Clock9, MapPin } from 'lucide-react'
 import { Avatar, AvatarImage } from './ui/avatar'
 import { Badge } from './ui/badge'
 import { useNavigate } from 'react-router-dom'
@@ -23,7 +23,10 @@ const Job = ({ job }) => {
     return (
         <div className='w-full p-4 sm:p-5 rounded-md shadow-xl bg-white border border-gray-100 break-words'>
             <div className='flex items-center justify-between'>
-                <p className='text-sm text-gray-500'> {formatDaysAgo(job?.createdAt)}</p>
+                <p className='flex text-center items-center gap-1 text-xs text-gray-500'>
+                    <Clock9 size={12}/>
+                    <span>{formatDaysAgo(job?.createdAt)}</span>
+                </p>
                 <Button variant='outline' className='rounded-full cursor-pointer' size='icon'> <Bookmark /></Button>
             </div>
 
@@ -32,8 +35,11 @@ const Job = ({ job }) => {
                     <img src={job?.company?.logo || "/company_placeholder_logo.svg"} alt='company_logo' className='w-full h-full object-cover rounded-full' />
                 </div>
                 <div className='min-w-0'>
-                    <h1 className='font-medium truncate'>{job?.company?.companyName}</h1>
-                    <p className='text-sm text-gray-500 truncate'>{job?.location}</p>
+                    <h1 className='font-medium py-0.5 mx-1'>{job?.company?.companyName}</h1>
+                    <p className='flex text-center items-center text-sm text-gray-500 truncate'>
+                        <MapPin size={18}/>
+                        <span>{job?.location}</span>
+                    </p>
                 </div>
             </div>
 

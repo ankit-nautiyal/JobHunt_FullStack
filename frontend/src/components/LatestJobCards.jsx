@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Badge } from './ui/badge'
 import { motion } from 'framer-motion';
+import { MapPin } from 'lucide-react';
 
 const LatestJobCards = ({ job }) => {
     const navigate = useNavigate();
@@ -15,13 +16,16 @@ const LatestJobCards = ({ job }) => {
             transition={{ duration: 0.3 }}
         >
             <div className="min-w-0">
-                <h1 className='font-medium text-lg truncate'>{job?.company?.companyName}</h1>
-                <p className='text-sm text-gray-500 truncate'>{job?.location}</p>
+                <h1 className='font-medium text-lg ml-1 truncate'>{job?.company?.companyName}</h1>
+                <p className='flex text-center items-center text-sm text-gray-500 truncate'>
+                    <MapPin size={18} className='ml-0 pl-0' />
+                    <span>{job?.location}</span>
+                </p>
             </div>
 
             <div className="mt-2">
-                <h1 className='font-bold text-lg my-2 break-normal truncate'>{job?.title}</h1>
-                <p className='text-sm text-gray-600 break-words whitespace-normal max-w-full line-clamp-3'>{job?.description}</p>
+                <h1 className='font-bold text-lg my-2 break-normal ml-1 truncate'>{job?.title}</h1>
+                <p className='text-sm ml-1 text-gray-600 break-words whitespace-normal max-w-full line-clamp-3'>{job?.description}</p>
             </div>
 
             <div className='flex flex-wrap items-center gap-2 mt-4'>
