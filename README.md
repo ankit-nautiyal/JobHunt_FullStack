@@ -84,7 +84,9 @@ npm run dev
 ```
 ### ⚙️ Project Structure
 
-<img width="219" height="950" alt="image" src="https://github.com/user-attachments/assets/a2963908-7dcb-4a34-abb4-ce7257cb724b" />
+
+<img width="220" height="967" alt="image" src="https://github.com/user-attachments/assets/2d395c58-df7e-4767-a420-0819da9f233b" />
+
 
 
 ---
