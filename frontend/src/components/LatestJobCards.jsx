@@ -8,7 +8,7 @@ const LatestJobCards = ({ job }) => {
     return (
         <motion.div
             onClick={() => navigate(`/jobs/${job._id}/description`)}
-            className='hover:scale-110 transition-transform ease-in-out duration-200 text-left p-5 rounded-md shadow-lg  bg-white border border-gray-100 cursor-pointer'
+            className='hover:scale-110 transition-transform ease-in-out duration-200 cursor-pointer text-left p-5 rounded-md shadow-lg  bg-white border border-gray-100 '
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -100 }}
