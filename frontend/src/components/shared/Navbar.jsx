@@ -103,7 +103,9 @@ const Navbar = () => {
                                             </div>
                                         </div>
                                         <div className='flex justify-end gap-2 mt-2'>
-                                            <Button variant='outline' onClick={() => navigate('/profile')} className="cursor-pointer">Profile</Button>
+                                            {
+                                                user && user.role === 'applicant' && <Button variant='outline' onClick={() => navigate('/profile')} className="cursor-pointer">Profile</Button>
+                                            }
                                             <Button onClick={handleLogout} className='bg-[#F83002] text-white cursor-pointer'>Logout</Button>
                                         </div>
                                     </div>
