@@ -134,7 +134,7 @@ const Navbar = () => {
                                 </div>
                             ) : (
                                 <div className='flex items-center gap-3'>
-                                    <Avatar><AvatarImage src={user?.profile?.profilePhoto || "user_placeholder_pic.jpg"} /></Avatar>
+                                    <Avatar className="cursor-pointer" onClick={()=>navigate('/profile')} ><AvatarImage src={user?.profile?.profilePhoto || "user_placeholder_pic.jpg"} /></Avatar>
                                     <div className='flex-1'>
                                         <div className='font-medium'>{user?.fullName}</div>
                                         <div className='text-sm text-gray-500'>{user?.email}</div>
