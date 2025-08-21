@@ -1,7 +1,7 @@
 import { Application } from "../models/application.model.js";
 import { Job } from "../models/job.model.js";
 
-//APPLY JOB
+//APPLY FOR A JOB
 export const applyJob = async (req, res) => {
     try {
         const userId = req.id; //from isLoggedIn middleware
