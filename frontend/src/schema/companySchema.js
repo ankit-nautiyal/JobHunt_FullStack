@@ -28,7 +28,7 @@ export const updateCompanySchema = z.object({
     description: z
         .string()
         .trim()
-        .max(500, "Description cannot exceed 500 characters")
+        .max(2000, "Description cannot exceed 2000 characters")
         .optional(),
 
     website: z

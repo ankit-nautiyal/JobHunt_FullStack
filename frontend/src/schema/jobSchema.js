@@ -60,6 +60,6 @@ export const jobPostSchema = z.object({
         .trim()
         .nonempty("Description is required")
         .min(15, "Description must have atleast 15 characters")
-        .max(600, "Description cannot exceed 600 characters"),
+        .max(5000, "Description cannot exceed 5000 characters"),
 
 })

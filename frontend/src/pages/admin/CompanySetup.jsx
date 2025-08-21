@@ -134,7 +134,7 @@ const CompanySetup = () => {
 
                     </div>
                     <div>
-                        <Label className="py-1.5" htmlFor='location'>Location</Label>
+                        <Label className="py-1.5" htmlFor='location'>Registered Address </Label>
                         <Input
                             type="text"
                             id="location"
