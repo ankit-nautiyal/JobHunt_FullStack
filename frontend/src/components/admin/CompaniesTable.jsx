@@ -29,6 +29,7 @@ const CompaniesTable = () => {
                 <TableCaption>List of your registered companies</TableCaption>
                 <TableHeader>
                     <TableRow>
+                        <TableHead>S.No.</TableHead>
                         <TableHead>Logo</TableHead>
                         <TableHead>Company Name</TableHead>
                         <TableHead>Registration Date</TableHead>
@@ -37,8 +38,9 @@ const CompaniesTable = () => {
                 </TableHeader>
                 <TableBody>
                     {
-                        filterCompany?.map((company) => (
-                            <tr key={company?._id}>
+                        filterCompany?.map((company, index) => (
+                            <TableRow key={company?._id}>
+                                <TableCell>{index + 1}</TableCell>
                                 <TableCell>
                                     <Avatar>
                                         <AvatarImage src={company?.logo  || "/company_placeholder_logo.svg" } alt="Company Logo" />
@@ -64,7 +66,7 @@ const CompaniesTable = () => {
                                         </PopoverContent>
                                     </Popover>
                                 </TableCell>
-                            </tr>
+                            </TableRow>
                         ))
                     }
                 </TableBody>

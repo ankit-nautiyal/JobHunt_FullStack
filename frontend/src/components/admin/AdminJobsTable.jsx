@@ -28,6 +28,8 @@ const AdminJobsTable = () => {
                 <TableCaption>List of your posted jobs</TableCaption>
                 <TableHeader>
                     <TableRow>
+                        <TableHead>S.No.</TableHead>
+                        {/* <TableHead className='text-white'>----</TableHead> */}
                         <TableHead>Company</TableHead>
                         <TableHead>Job Role</TableHead>
                         <TableHead>Posted On</TableHead>
@@ -36,12 +38,18 @@ const AdminJobsTable = () => {
                 </TableHeader>
                 <TableBody>
                     {
-                        filterJobs?.map((job) => (
-                            <tr key={job?._id}>
-                                <TableCell className='flex gap-2'> 
-                                    <img src={job?.company?.logo}  className="w-5.5 h-5.5 rounded-full object-cover" alt="logo" /> 
-                                    <span>{job?.company?.companyName}</span>
+                        filterJobs?.map((job, index) => (
+                            <TableRow key={job?._id}>
+                                <TableCell>{index + 1}</TableCell>
+                                <TableCell className="flex flex-col sm:flex-row items-start sm:items-center gap-1">
+                                    <img
+                                        src={job?.company?.logo}
+                                        className="w-6 h-6 rounded-full object-cover"
+                                        alt="logo"
+                                    />
+                                    <span className='font-medium text-sm'>{job?.company?.companyName}</span>
                                 </TableCell>
+                                {/* <TableCell>{job?.company?.companyName}</TableCell> */}
                                 <TableCell>{job?.title}</TableCell>
                                 <TableCell>
                                     {new Date(job?.createdAt).toLocaleDateString("en-IN", {
@@ -66,7 +74,7 @@ const AdminJobsTable = () => {
                                         </PopoverContent>
                                     </Popover>
                                 </TableCell>
-                            </tr>
+                            </TableRow>
                         ))
                     }
                 </TableBody>

@@ -12,6 +12,7 @@ const AppliedJobsTable = () => {
                 <TableCaption>List of your applied jobs</TableCaption>
                 <TableHeader>
                     <TableRow>
+                        <TableHead>S.No.</TableHead>
                         <TableHead>Applied On</TableHead>
                         <TableHead>Job Role</TableHead>
                         <TableHead>Company</TableHead>
@@ -23,8 +24,9 @@ const AppliedJobsTable = () => {
                         allAppliedJobs.length <= 0 ? (
                             <span>You haven't applied for any job yet.</span>
                         ) : (
-                            allAppliedJobs.map((appliedJob) => (
+                            allAppliedJobs.map((appliedJob, index) => (
                                 <TableRow key={appliedJob._id}>
+                                    <TableCell>{index + 1}</TableCell>
                                     <TableCell>
                                         {new Date(appliedJob.createdAt).toLocaleDateString("en-IN", {  //converting default MongoDB UTC to IST time
                                             day: "2-digit",

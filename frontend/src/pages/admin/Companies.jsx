@@ -21,8 +21,8 @@ const Companies = () => {
         <div className='max-w-6xl mx-auto my-10'>
             <div className='flex items-center justify-between my-5'>
                 <Input
-                    className='w-55'
-                    placeholder='Filter by company name'
+                    className='w-40'
+                    placeholder='Filter by company'
                     onChange={(e)=> setInput(e.target.value)}
                 />
                 <Button onClick={()=> navigate("/admin/companies/create")} className='cursor-pointer'>New Company</Button>

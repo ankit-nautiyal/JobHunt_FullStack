@@ -101,8 +101,8 @@ const Login = () => {
                         {errors && errors.password && <span className='text-sm text-red-500'> {errors.password}</span>}
                     </div>
 
-                    <div className='flex items-center justify-between'>
-                        <RadioGroup className='flex items-center gap-4 my-5'>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between my-5 gap-4">
+                        <RadioGroup className="flex flex-col sm:flex-row sm:items-center gap-4">
                             <div className="flex items-center space-x-2">
                                 <input type="radio"
                                     name='role'
@@ -126,8 +126,9 @@ const Login = () => {
                                 />
                                 <Label htmlFor="recruiter">Recruiter</Label>
                             </div>
-                            {errors && errors.role && <span className='text-sm text-red-500 text-left block'> {errors.role}</span>}
                         </RadioGroup>
+                        {errors && errors.role && <span className='text-sm text-red-500 text-left block'> {errors.role}</span>}
+
                     </div>
 
                     {

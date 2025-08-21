@@ -14,6 +14,7 @@ dotenv.config({});
 
 const app= express();
 const _dirname = path.resolve();
+const isProduction = process.env.NODE_ENV === 'production';
 
 // ---  MIDDLEWARES ---
 app.use(express.json());
@@ -21,7 +22,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 
 const corsOptions = {
-    origin: "https://jobhunt-ankit-nautiyal.onrender.com/",
+    origin: isProduction ? process.env.PROD_API_BASE_URL : process.env.DEV_API_BASE_URL,
     credentials: true,  //so that frontend can send cookie (token) with the requests
 }
 app.use(cors(corsOptions));

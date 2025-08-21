@@ -1,7 +1,7 @@
 import { Avatar, AvatarImage } from '../ui/avatar.jsx'
 import { Button } from '../ui/button.jsx'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover.jsx'
-import { User2, LogOut } from 'lucide-react';
+import { User2, LogOut, Menu, X } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,12 +10,14 @@ import { USER_API_ENDPOINT } from '@/utils/constants.js';
 import { setUser } from '@/redux/authSlice.js';
 import { toast } from 'sonner';
 import { persistor } from '@/main.jsx';
+import { useState } from 'react';
 
 
 const Navbar = () => {
     const { user } = useSelector(store => store.auth); // w/o Redux we need to have use prop-drilling to have user object
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     const handleLogout = async () => {
         try {
@@ -36,61 +38,55 @@ const Navbar = () => {
         }
     }
 
+    const commonLinks = (
+        <>
+            <li className='cursor-pointer'>
+                <NavLink to='/' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>Home</NavLink>
+            </li>
+            <li className='cursor-pointer'>
+                <NavLink to='/jobs' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>Jobs</NavLink>
+            </li>
+            <li className='cursor-pointer'>
+                <NavLink to='/browse' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>Browse</NavLink>
+            </li>
+        </>
+    );
+
+    const recruiterLinks = (
+        <>
+            <li className='cursor-pointer'>
+                <NavLink to='/admin/companies' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>Companies</NavLink>
+            </li>
+            <li className='cursor-pointer'>
+                <NavLink to='/admin/jobs' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>Jobs</NavLink>
+            </li>
+        </>
+    );
+
     return (
-        <div className='bg-white'>
-            <div className='flex items-center justify-between mx-auto max-w-7xl mb-3'>
-                <div className='cursor-pointer'>
-                    <Link to='/'> <h1 className='text-2xl font-bold'>Job<span className='text-[#F83002]'>Hunt</span> </h1></Link>
+        <header className="bg-white border-b border-gray-100">
+            <div className="max-w-7xl mx-auto px-4">
+                <div className="flex items-center justify-between h-16">
+                    <div className="flex items-center gap-4">
+                        <Link to='/' className="text-2xl font-bold">Job<span className='text-[#F83002]'>Hunt</span></Link>
+                    </div>
 
-                </div>
-                <div className='flex items-center gap-15'> 
-                    <ul className='flex font-medium items-center gap-5 '>
-                        {
-                            user && user.role === 'recruiter' ? (
-                                <>
-                                    <li className='cursor-pointer'>
-                                        <NavLink to='/admin/companies' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>
-                                            Companies
-                                        </NavLink>
-                                    </li>
-                                    <li className='cursor-pointer'>
-                                        <NavLink to='/admin/jobs' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>
-                                            Jobs
-                                        </NavLink>
-                                    </li>
-                                </>
+                    {/* Desktop/nav */}
+                    <nav className="hidden md:flex items-center space-x-6">
+                        <ul className='flex items-center gap-5 font-medium'>
+                            {user && user.role === 'recruiter' ? recruiterLinks : commonLinks}
+                        </ul>
+                    </nav>
 
-                            ) : (
-                                <>
-
-                                    <li className='cursor-pointer'>
-                                        <NavLink to='/' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>
-                                            Home
-                                        </NavLink>
-                                    </li>
-                                    <li className='cursor-pointer'>
-                                        <NavLink to='/jobs' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>
-                                            Jobs
-                                        </NavLink>
-                                    </li>
-                                    <li className='cursor-pointer'>
-                                        <NavLink to='/browse' className={({ isActive }) => isActive ? 'text-[#F83002]' : ''}>
-                                            Browse
-                                        </NavLink>
-                                    </li>
-                                </>
-                            )
-                        }
-                    </ul>
-
-                    {
-                        !user ? (
+                    {/* Right side user actions */}
+                    <div className="hidden md:flex items-center gap-4">
+                        {!user ? (
                             <div className='flex items-center gap-2'>
-                                <Link to="/login"> <Button variant='outline' className='cursor-pointer'>Login</Button></Link>
-                                <Link to="/signup"> <Button className='bg-[#6A38C2] hover:bg-[#5b30a6] cursor-pointer'>Signup</Button></Link>
+                                <Link to="/login"><Button variant='outline' className="cursor-pointer">Login</Button></Link>
+                                <Link to="/signup"><Button className='bg-[#6A38C2] text-white cursor-pointer'>Signup</Button></Link>
                             </div>
                         ) : (
-                            <Popover >
+                            <Popover>
                                 <PopoverTrigger asChild>
                                     <Avatar className='cursor-pointer'>
                                         <AvatarImage src={user?.profile?.profilePhoto?.trim() || "user_placeholder_pic.jpg"} alt="profilePhoto" />
@@ -98,38 +94,57 @@ const Navbar = () => {
                                 </PopoverTrigger>
 
                                 <PopoverContent className="w-80">
-                                    <div className='flex gap-4 space-y-2'>
-                                        <Avatar className='cursor-pointer'>
-                                            <AvatarImage src={user?.profile?.profilePhoto?.trim() || "user_placeholder_pic.jpg"} alt="profilePhoto" />
-                                        </Avatar>
-                                        <div>
-                                            <h4 className='font-medium'>{user?.fullName}</h4>
-                                            <p className='text-sm text-muted-foreground'>{user?.profile?.bio}</p>
+                                    <div className='flex flex-col gap-2'>
+                                        <div className='flex items-center gap-3'>
+                                            <Avatar><AvatarImage src={user?.profile?.profilePhoto || "user_placeholder_pic.jpg"} /></Avatar>
+                                            <div>
+                                                <div className='font-medium'>{user?.fullName}</div>
+                                                <div className='text-sm text-gray-500'>{user?.email}</div>
+                                            </div>
+                                        </div>
+                                        <div className='flex justify-end gap-2 mt-2'>
+                                            <Button variant='outline' onClick={() => navigate('/profile')} className="cursor-pointer">Profile</Button>
+                                            <Button onClick={handleLogout} className='bg-[#F83002] text-white cursor-pointer'>Logout</Button>
                                         </div>
                                     </div>
-
-                                    <div className='flex flex-col my-2 text-gray-600'>
-                                        {
-                                            user && user.role === 'applicant' && (
-                                                <div className='flex w-fit items-center gap-1.5  '>
-                                                    <User2 />
-                                                    <Button className='cursor-pointer' variant='link'> <Link to='/profile'>View Profile</Link></Button>
-                                                </div>
-                                            )
-                                        }
-                                        <div className='flex w-fit items-center gap-1.5'>
-                                            <LogOut />
-                                            <Button onClick={handleLogout} className='cursor-pointer' variant='link'>  Logout </Button>
-                                        </div>
-                                    </div>
-
                                 </PopoverContent>
                             </Popover>
-                        )
-                    }
+                        )}
+                    </div>
+
+                    {/* Mobile menu button */}
+                    <div className="md:hidden flex items-center">
+                        <button onClick={() => setMobileOpen(v => !v)} aria-label="Toggle menu" className="p-2 rounded-md cursor-pointer">
+                            {mobileOpen ? <X /> : <Menu />}
+                        </button>
+                    </div>
+                </div>
+
+                {/* Mobile menu */}
+                <div className={`${mobileOpen ? 'block' : 'hidden'} md:hidden pb-4`}>
+                    <ul className='flex flex-col gap-3 font-medium'>
+                        {user && user.role === 'recruiter' ? recruiterLinks : commonLinks}
+                        <li>
+                            {!user ? (
+                                <div className='flex flex-col gap-2'>
+                                    <Link to="/login"><Button variant='outline' onClick={() => setMobileOpen(false)}>Login</Button></Link>
+                                    <Link to="/signup"><Button className='bg-[#6A38C2] text-white cursor-pointer' onClick={() => setMobileOpen(false)}>Signup</Button></Link>
+                                </div>
+                            ) : (
+                                <div className='flex items-center gap-3'>
+                                    <Avatar><AvatarImage src={user?.profile?.profilePhoto || "user_placeholder_pic.jpg"} /></Avatar>
+                                    <div className='flex-1'>
+                                        <div className='font-medium'>{user?.fullName}</div>
+                                        <div className='text-sm text-gray-500'>{user?.email}</div>
+                                    </div>
+                                    <button onClick={handleLogout} className='text-sm text-[#F83002] cursor-pointer'>Logout</button>
+                                </div>
+                            )}
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </div>
+        </header>
     )
 }
 

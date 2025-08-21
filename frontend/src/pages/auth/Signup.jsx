@@ -29,7 +29,7 @@ const Signup = () => {
     const dispatch = useDispatch();
     const { loading, user } = useSelector(store => store.auth);
     
-    useEffect(() => {
+    useEffect(() => {   
         if (user) {
             navigate('/');
         }
@@ -158,8 +158,8 @@ const Signup = () => {
                         {errors && errors.confirmPassword && <span className='text-sm text-red-500'> {errors.confirmPassword}</span>}
                     </div>
 
-                    <div className='flex items-center justify-between gap-10'>
-                        <RadioGroup className='flex items-center gap-4 my-5' required>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 my-5">
+                        <RadioGroup className="flex flex-col sm:flex-row sm:items-center gap-4" >
                             <div className="flex items-center space-x-2">
                                 <input type="radio"
                                     name='role'
@@ -185,8 +185,7 @@ const Signup = () => {
                         </RadioGroup>
 
 
-
-                        <div className='flex items-center gap-2'>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                             <Label>Profile Photo </Label>
                             <Input
                                 accept='image/*'

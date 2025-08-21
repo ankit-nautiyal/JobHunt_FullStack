@@ -31,7 +31,7 @@ const Applicants = () => {
 
     return (
         <div className="max-w-7xl mx-auto">
-            <h1 className="font-bold text-xl my-5"> <span className="text-blue-700"> {allApplicants?.applications?.length} Applicants</span> for {singleCompany?.companyName} {allApplicants?.title}</h1>
+            <h1 className="font-bold text-xl my-5"> <span className="text-blue-700"> {allApplicants?.applications?.length} Applicants</span> | {singleCompany?.companyName} {allApplicants?.title}</h1>
             <ApplicantsTable />
         </div>
     )

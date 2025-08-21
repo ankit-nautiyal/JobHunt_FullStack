@@ -10,32 +10,6 @@ const JobsPage = () => {
     const [localFilteredJobs, setLocalFilteredJobs] = useState(allJobs);
     const [filterValue, setFilterValue] = useState(""); // local filter controlled by FilterCard on Jobs page
 
-    // useEffect(()=>{
-    //     if (searchedQuery) {
-    //         const filteredJobs= allJobs.filter((job)=>{
-    //             return (
-    //                 job.title.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-    //                 job.description.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-    //                 job.location.toLowerCase().includes(searchedQuery.toLowerCase()) 
-    //             )
-    //         })
-    //         setFilterJobs(filteredJobs);
-    //     } else {
-    //         setFilterJobs(allJobs);
-    //     }
-    // }, [searchedQuery, allJobs])
-
-    // useEffect(() => {
-    //     // Filter jobs based on search query or radio selection
-    //     const filtered = allJobs.filter((job) => {
-    //         if (!searchedQuery) return true;
-    //         return job.title.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-    //             job.description.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-    //             job.location.toLowerCase().includes(searchedQuery.toLowerCase());
-    //     });
-    //     setLocalFilteredJobs(filtered);
-    // }, [searchedQuery, allJobs]);
-
     useEffect(() => {
         // prefer local JobsPage filter (filterValue). If empty, fallback to global searchedQuery (Hero/Browse searches).
         const keyword = (filterValue && filterValue.trim()) ? filterValue.trim() : (searchedQuery && searchedQuery.trim() ? searchedQuery.trim() : "");
@@ -50,33 +24,35 @@ const JobsPage = () => {
     }, [filterValue, searchedQuery, allJobs]);
 
     return (
-        <div>
-            <div className="max-w-7xl mx-auto mt-5">
-                <div className="flex gap-5">
-                    <div className="w-20%">
-                        <FilterCard useGlobal={false} onChange={setFilterValue}/>
+        <div className='max-w-7xl mx-auto my-10 px-4'>
+            {/* Responsive layout:
+                - On small screens: single column, FilterCard appears above job list.
+                - On md and up: two-column layout with 300px sidebar (FilterCard) and job grid on right.
+            */}
+            <div className='grid grid-cols-1 md:grid-cols-[300px_1fr] gap-4'>
+                <div>
+                    {/* keep FilterCard visible on all screen sizes (not hidden) */}
+                    <FilterCard useGlobal={false} onChange={setFilterValue} />
+                </div>
+
+                <div className='space-y-4'>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {
+                            (localFilteredJobs || []).length <= 0
+                                ? <span>No jobs found</span>
+                                : localFilteredJobs.map((job) => (
+                                    <motion.div
+                                        key={job._id}
+                                        initial={{ opacity: 0, x: 100 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -100 }}
+                                        transition={{ duration: 0.3 }}
+                                    >
+                                        <Job job={job} />
+                                    </motion.div>
+                                ))
+                        }
                     </div>
-                    {
-                        localFilteredJobs.length <= 0 ? <span>No jobs found</span> : (
-                            <div className="flex-1 h-[88vh] overflow-y-auto pb-5">
-                                <div className="grid grid-cols-3 gap-4">
-                                    {
-                                        localFilteredJobs.map((job) => (
-                                            <motion.div
-                                                key={job._id}
-                                                initial={{ opacity: 0, x: 100 }}
-                                                animate={{ opacity: 1, x: 0 }}
-                                                exit={{ opacity: 0, x: -100 }}
-                                                transition={{ duration: 0.3 }}
-                                            >
-                                                <Job job={job} />
-                                            </motion.div>
-                                        ))
-                                    }
-                                </div>
-                            </div>
-                        )
-                    }
                 </div>
             </div>
         </div>

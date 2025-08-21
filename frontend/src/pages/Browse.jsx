@@ -18,11 +18,11 @@ const Browse = () => {
 
     return (
         <div>
-            <div className=' max-w-7xl mx-auto my-10'>
-                <h1 className='font-bol text-xl my-10 font-bold'>Search Results ({allJobs.length})</h1>
-                <div className='grid grid-cols-3 gap-4'>
+            <div className='max-w-7xl mx-auto my-10 px-4'>
+                <h1 className='text-xl my-10 font-bold'>Search Results ({allJobs.length})</h1>
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
                     {
-                        allJobs.map((job) => {
+                        (allJobs || []).map((job) => {
                             return (
                                 <motion.div
                                     key={job._id}

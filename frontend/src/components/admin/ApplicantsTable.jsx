@@ -52,6 +52,7 @@ const ApplicantsTable = () => {
                 <TableCaption>List of the applicants for this job </TableCaption>
                 <TableHeader>
                     <TableRow>
+                        <TableHead>S.No.</TableHead>
                         <TableHead>Name</TableHead>
                         <TableHead>Email</TableHead>
                         <TableHead>Contact</TableHead>
@@ -63,8 +64,9 @@ const ApplicantsTable = () => {
                 </TableHeader>
                 <TableBody>
                     {
-                        allApplicants && allApplicants?.applications?.map((application) => (  // 'allApplicants' is basically the job object in actual
-                            <tr key={application?._id}>
+                        allApplicants && allApplicants?.applications?.map((application, index) => (  // 'allApplicants' is basically the job object in actual
+                            <TableRow key={application?._id}>
+                                <TableCell>{index + 1}</TableCell>
                                 <TableCell>{application?.applicant?.fullName}</TableCell>
                                 <TableCell>{application?.applicant?.email}</TableCell>
                                 <TableCell>{application?.applicant?.phoneNumber}</TableCell>
@@ -109,7 +111,7 @@ const ApplicantsTable = () => {
                                         </PopoverContent>
                                     </Popover>
                                 </TableCell>
-                            </tr>
+                            </TableRow>
                         ))
                     }
                 </TableBody>
