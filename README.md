@@ -38,6 +38,7 @@ A **Full-Stack MERN-based Job Portal** where recruiters can post jobs and applic
 * TailwindCSS + shadcn/ui + Lucide React
 * Vite for faster React app build-up
 * Axios for making API requests
+* Framer Motion for animations
 
 **Backend:**
 
