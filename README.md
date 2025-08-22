@@ -2,18 +2,26 @@
 
 # 🧑‍💼 JobHunt – A Modern Full-Stack MERN-based Job Portal
 
-A **Full-Stack MERN-based Job Portal** where recruiters can post jobs and applicants can apply with many more features. Built with **React, Node.js, Express, MongoDB, Zod, and Tailwind + shadcn/ui**.
+A **Full-Stack MERN-based Job Portal** where recruiters can post jobs and applicants can apply with many more features. Built with **React, Node.js, Express, MongoDB, Zod, and Tailwind + shadcn/ui, etc**.
 
 ---
 
-## 🚀 Features
+## 🚀 Features 🌟
 
 * 🔐 **Authentication & Authorization** (JWT + bcrypt)
 * 👤 **Role-based access** – Recruiter & Applicant
-* 📄 **Job Listings** – Post, update, and delete jobs
+* 🚫 **Protected Routes** – Applicant can't access admin/recruiter routes and vice versa
+* 📄 **Job Listings** – A Recruiter can post, update, and delete jobs
 * 📝 **Applications** – Apply for jobs with validation
-* ✅ **Form Validation** using **Zod** (frontend)
-* 🎨 **Responsive UI** with **React + Tailwind + shadcn/ui**
+* 🏢 **Register Companies** – Register companies as recruiter/admin & update company info
+* 🧑🏻‍💻 **Admin Dashboard** – View, register & update companies, view & post job applications, change application status (Accepted/Rejected/Pending)
+* ⌛ **Register Companies** – Register companies as recruiters, update company info, and see the registered companies table
+* 🔍 **Search Company & Job** – Recruiter can search his/her registered company or posted job by company name or job role
+* 🧑🏻‍💼 **Applicant Profile** – Access & update your profile, upload resume, see applied jobs table with application status, etc
+* 💼 **Jobs Page** – Filter jobs on the jobs page based on location, role & salary range
+* 🔍 **Search Bar & Category Carousel** – Search using the search bar or using the category carousel available on the hero section of the home page
+* ✅ **Form Validations** - using **Zod** (frontend)
+* 📲 **Responsive UI** - across all screen sizes with **React + Tailwind + shadcn/ui**
 * ⚡ Hosted on **Render**
 
 ---
@@ -23,16 +31,30 @@ A **Full-Stack MERN-based Job Portal** where recruiters can post jobs and applic
 **Frontend:**
 
 * React.js
-* React Router
+* React Router for routing
+* Redux & Redux Toolkit for state management
+* Lucide-react to add consistent icons in React app
 * Zod (form validation)
 * TailwindCSS + shadcn/ui + Lucide React
+* Vite for faster React app build-up
+* Axios for making API requests
 
 **Backend:**
 
 * Node.js
 * Express.js
 * MongoDB (Mongoose ODM)
+* MongoDB Atlas & MongoDB Compass for managing the databases 
 * JWT for authentication
+* Bcrypt.js to hash & verify passwords
+* Dotenv for handling environment variables
+* Cloudinary to store uploaded media on the cloud
+* Cookie-parser to parse cookies sent with incoming HTTP requests
+* Nodemon for faster dev experience
+* Multer to handle uploads of type multipart/form-data
+* cors to handle cross-origin requests
+* dataUri to generate Data URI scheme
+* cross-env to run scripts that set and use environment variables across platforms
 
 **Hosting:**
 
