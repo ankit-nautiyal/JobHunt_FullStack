@@ -1,5 +1,3 @@
-
-
 # 🧑‍💼 JobHunt – A Modern Full-Stack MERN-based Job Portal
 
 A **Full-Stack MERN-based Job Portal** where recruiters can post jobs and applicants can apply with many more features. Built with **React, Node.js, Express, MongoDB, Zod, and Tailwind + shadcn/ui, etc**.
