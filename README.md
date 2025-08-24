@@ -18,7 +18,7 @@ A **Full-Stack MERN-based Job Portal** where recruiters can post jobs and applic
 * 🧑🏻‍💼 **Applicant Profile** – Access & update your profile, upload resume, see applied jobs table with application status, etc
 * 💼 **Jobs Page** – Filter jobs on the jobs page based on location, role & salary range
 * 🔍 **Search Bar & Category Carousel** – Search using the search bar or using the category carousel available on the hero section of the home page
-* ✅ **Form Validations** - using **Zod** (frontend)
+* 🛡️ **Form Validations** - using **Zod** (frontend)
 * 📲 **Responsive UI** - across all screen sizes with **React + Tailwind + shadcn/ui**
 * ⚡ Hosted on **Render**
 
