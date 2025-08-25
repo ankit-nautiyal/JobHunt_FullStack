@@ -76,8 +76,7 @@ const Signup = () => {
                     "Content-Type": "multipart/form-data"   //Lets the backend know we're sending some file data (like png, jpeg, etc)
                 },
                 withCredentials: true  //to include cookies (like token) from backend in the request
-            }
-            );
+            });
 
             if (res.data.success) {
                 navigate('/login');
