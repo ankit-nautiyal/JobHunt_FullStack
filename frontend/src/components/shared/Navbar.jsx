@@ -117,14 +117,14 @@ const Navbar = () => {
                     </div>
 
                     {/* Mobile menu button */}
-                    <div className="md:hidden flex items-center">
+                    <div className="md:hidden flex items-center">  {/*hides this div on medium 'md' screens and larger, so it's only visible on small/mobile screens*/}
                         <button onClick={() => setMobileOpen(v => !v)} aria-label="Toggle menu" className="p-2 rounded-md cursor-pointer">
-                            {mobileOpen ? <X /> : <Menu />}
+                            {mobileOpen ? <X /> : <Menu />}   {/*If mobileOpen is true, clicking will set it to false, and vice versa.*/}
                         </button>
                     </div>
                 </div>
 
-                {/* Mobile menu */}
+                {/* Mobile menu (appears ony when mobileOpen == true) */}
                 <div className={`${mobileOpen ? 'block' : 'hidden'} md:hidden pb-4`}>
                     <ul className='flex flex-col gap-3 font-medium'>
                         {user && user.role === 'recruiter' ? recruiterLinks : commonLinks}
