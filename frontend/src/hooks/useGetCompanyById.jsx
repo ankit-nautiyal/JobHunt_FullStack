@@ -20,7 +20,7 @@ const useGetCompanyById = (companyId) => { //companyId is just a parameter to th
             }
         }
         fetchSingleCompany();
-    }, [companyId, dispatch])  //*just to align with  to align with common ESLint practice, o/w [] would also work the same
+    }, [companyId, dispatch])  //*just to align with  to align with common ESLint practice, o/w [conpanyId] would also work the same
 }
 
 export default useGetCompanyById

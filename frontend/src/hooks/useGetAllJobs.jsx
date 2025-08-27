@@ -21,7 +21,7 @@ const useGetAllJobs = () => {
             }
         }
         fetchAllJobs();
-    },[dispatch, searchedQuery])  //*just to align with  to align with common ESLint practice, o/w [] would also work the same
+    },[dispatch, searchedQuery])  //*just to align with  to align with common ESLint practice, o/w [searchedQuery] would also work the same
 }
 
 export default useGetAllJobs

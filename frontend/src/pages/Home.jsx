@@ -18,7 +18,7 @@ const Home = () => {
             navigate('/admin/companies')
         }
         dispatch(setSearchedQuery(""));
-    }, [dispatch, navigate, user?.role])  //just to avoid ESLint error o/w [] would also work
+    }, [dispatch, navigate, user?.role]) 
     
     return (
         <div>

@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 const Browse = () => {
     useGetAllJobs();
     const dispatch = useDispatch();
-    const { allJobs } = useSelector(store => store.job);  //fetch the latest availabel jobs from the redux store
+    const { allJobs } = useSelector(store => store.job);  //fetch the latest availabe jobs from the redux store
 
     useEffect(() => {
         return () => {

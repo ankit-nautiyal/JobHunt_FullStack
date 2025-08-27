@@ -20,7 +20,7 @@ const useGetSingleJob = ({jobId}) => {
             }
         }
         fetchSingleJob();
-    },[dispatch, jobId])  //*just to align with  to align with common ESLint practice, o/w [] would also work the same
+    },[dispatch, jobId])  //*just to align with  to align with common ESLint practice, o/w [jobId] would also work the same
 }
 
 export default useGetSingleJob;
