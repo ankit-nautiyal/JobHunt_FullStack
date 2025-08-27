@@ -51,7 +51,7 @@ A **Full-Stack MERN-based Job Portal** where recruiters can post jobs and applic
 * Cookie-parser to parse cookies sent with incoming HTTP requests
 * Nodemon for faster dev experience
 * Multer to handle uploads of type multipart/form-data
-* cors to handle cross-origin requests
+* CORS to handle cross-origin requests
 * dataUri to generate Data URI scheme
 * cross-env to run scripts that set and use environment variables across platforms
 
