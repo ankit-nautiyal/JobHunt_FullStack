@@ -34,10 +34,11 @@ const Navbar = () => {
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.response.data.message || 'Logout failed. Please try again.');
+            toast.error(error?.response?.data?.message || 'Logout failed. Please try again.');
         }
     }
-
+    
+    //Common for the applicants and the logged out users 
     const commonLinks = (
         <>
             <li className='cursor-pointer'>
@@ -52,6 +53,7 @@ const Navbar = () => {
         </>
     );
 
+    //for recruiters only
     const recruiterLinks = (
         <>
             <li className='cursor-pointer'>
@@ -104,9 +106,9 @@ const Navbar = () => {
                                         </div>
                                         <div className='flex justify-end gap-2 mt-2'>
                                             {
-                                                user && user.role === 'applicant' && <Button variant='outline' onClick={() => navigate('/profile')} className="cursor-pointer">Profile</Button>
+                                                user && user.role === 'applicant' && <Button variant='outline' onClick={() => navigate('/profile')} className="cursor-pointer"> <User2/> Profile</Button>
                                             }
-                                            <Button onClick={handleLogout} className='bg-[#F83002] text-white cursor-pointer'>Logout</Button>
+                                            <Button onClick={handleLogout} className='bg-[#F83002] text-white cursor-pointer'> <LogOut/>Logout</Button>
                                         </div>
                                     </div>
                                 </PopoverContent>
@@ -134,7 +136,9 @@ const Navbar = () => {
                                 </div>
                             ) : (
                                 <div className='flex items-center gap-3'>
-                                    <Avatar className="cursor-pointer" onClick={()=>navigate('/profile')} ><AvatarImage src={user?.profile?.profilePhoto || "user_placeholder_pic.jpg"} /></Avatar>
+                                    <Avatar  className={user?.role === 'applicant' ? 'cursor-pointer' : ''}  onClick={() => {if (user?.role === 'applicant') {navigate('/profile')} }} >
+                                        <AvatarImage src={user?.profile?.profilePhoto || "user_placeholder_pic.jpg"} />
+                                    </Avatar>
                                     <div className='flex-1'>
                                         <div className='font-medium'>{user?.fullName}</div>
                                         <div className='text-sm text-gray-500'>{user?.email}</div>
