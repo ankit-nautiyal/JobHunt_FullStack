@@ -28,7 +28,7 @@ A **Full-Stack MERN-based Job Portal** where recruiters can post jobs and applic
 
 **Frontend:**
 
-* React.js
+* React.js for UI
 * React Router for routing
 * Redux & Redux Toolkit for state management
 * Lucide-react to add consistent icons in React app
