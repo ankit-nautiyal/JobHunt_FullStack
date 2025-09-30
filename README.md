@@ -207,8 +207,4 @@ Feel free to open a PR.
 
 ---
 
-## 🧑🏻‍💻 Author
-
-- Name: Ankit Nautiyal
-- Contact: nautiyalankit65@gmail.com
 
